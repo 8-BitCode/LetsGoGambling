@@ -1,0 +1,20 @@
+{
+  "name": "lets-go-gambling",
+  "version": "0.1.0",
+  "description": "",
+  "license": "MIT",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
+    "react-router-dom": "^7.0.2"
+  },
+  "devDependencies": {
+    "vite": "^5.4.11"
+  }
+}
