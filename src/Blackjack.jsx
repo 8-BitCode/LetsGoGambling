@@ -12,11 +12,12 @@ const Blackjack = () => {
         <>
 
         <Helmet>
-            <title>BLACKJACK!!!</title>
+            <title>BLACKJACK</title>
         </Helmet>
 
         <div>Blackjack Page</div>
-
+        <div>Insert blackjack</div>
+        
         </>
     );
 }
