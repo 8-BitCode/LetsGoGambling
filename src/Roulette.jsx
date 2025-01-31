@@ -16,7 +16,7 @@ const Roulette = () => {
         </Helmet>
 
         <div>Roulette Page</div>
-        
+        <div>wip</div>
         </>
     );
 }
