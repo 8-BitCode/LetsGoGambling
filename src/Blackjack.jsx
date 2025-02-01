@@ -4,9 +4,6 @@ import './CssFiles/Blackjack.css'
 import { Helmet } from 'react-helmet';
 
 
-
-
-
 const Blackjack = () => {
     return(
         <>
