@@ -9,11 +9,12 @@ import Slots from './Slots';
 import Roulette from './Roulette';
 import Stats from './Stats';
 
+import './CssFiles/App.css';
 export default () => (
   <>
      <BrowserRouter>
       <Routes>
-        <Route path="/TermsOfService" element={<TermsOfService />} />
+        <Route path="/TermsOfService" element={<TermsOfService />}/>
         <Route path="/UserEntry" element={<UserEntry />} />
         <Route path="/GameSelection" element={<GameSelection />} />
         <Route path="/Blackjack" element={<Blackjack />} />

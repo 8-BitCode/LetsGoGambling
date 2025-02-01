@@ -1,5 +1,5 @@
 import React from 'react';
-
+import './CssFiles/UserEntry.css';
 //Helmet is used to give each sub page a title dynamically (just a little akram detail)
 import { Helmet } from 'react-helmet';
 
@@ -14,7 +14,10 @@ const UserEntry = () => {
             <title>ENTRY ZONE!!!!!</title>
         </Helmet>
 
-        <div>Login / Register Page</div>
+        <div className='UE-Container'>
+            <p>Login / Register Page</p>
+        </div>
+
         
         </>
     );
