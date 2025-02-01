@@ -2,13 +2,13 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden; /* Optional: prevent horizontal scroll */
-    cursor: url('../Assets/CusorImages/NORMAL.cur'), auto;
+    cursor: url('../Assets/CusorImages/NORMAL.png'), auto;
 }
 a, button, .clickable, .TOS-Container .button {
-    cursor: url('../Assets/CusorImages/LINK_SELECT.cur'), pointer;
+    cursor: url('../Assets/CusorImages/LINK_SELECT.png'), pointer;
 }
 p, span, h1, h2, h3, h4, h5, h6, ul {
-    cursor: url('../Assets/CusorImages/TEXT_SELECT.cur'), text;
+    cursor: url('../Assets/CusorImages/TEXT_SELECT.png'), text;
   }
 /* If you want to make sure your container takes the full viewport height */
 html, body {
