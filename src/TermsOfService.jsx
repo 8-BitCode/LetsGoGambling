@@ -21,7 +21,7 @@ const TermsOfServicePage = () => {
 
                 <p>This website is a <span className="important">satirical parody</span> of gambling platforms. Its purpose is to critique and highlight the risks associated with gambling, not to promote or encourage it. Nothing on this site should be interpreted as an endorsement of gambling, nor should anything beyond this point be taken seriously.</p>
 
-                <h2>A Serious Note on Gambling</h2>
+                <h2>A Serious Note on Gambling:</h2>
                 <p>Gambling carries significant financial and emotional risks. While often marketed as entertainment, it can lead to financial hardship, stress, and other negative consequences. <span className="important">The reality is that gambling establishments operate in a way that ensures they always profit in the long run, often at the expense of individuals who believe they can outplay the system.</span> More than anything, this site aims to demonstrate just how unpredictable and unfavorable gambling can be.</p>
 
                 <p>If you or someone you know struggles with gambling-related issues, professional resources and support systems are available. Seeking guidance from responsible gambling organizations can provide valuable assistance in making informed financial and personal decisions.</p>
