@@ -1,22 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './CssFiles/TermsOfService.css';
 import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
 
 const TermsOfServicePage = () => {
+    const [isFading, setIsFading] = useState(false);
     const navigate = useNavigate();
 
     const goToUserEntry = () => {
-        navigate('/UserEntry');
+        setIsFading(true);
+        // Wait for the fade-out animation to complete (assuming it's 1 second)
+        setTimeout(() => {
+            navigate('/UserEntry');
+        }, 1000);  // Adjust timeout to match the duration of the fade
     };
 
-    return(
+    return (
         <>
             <Helmet>
                 <title>Terms Of Service</title>
             </Helmet>
 
-            <div className="TOS-Container">
+            <div className='TOS-Container'>
+                <div className={`fade-overlay ${isFading ? 'active' : ''}`}></div>
                 <h1>DISCLAIMER: PLEASE READ BEFORE PROCEEDING</h1>
 
                 <p>This website is a <span className="important">satirical parody</span> of gambling platforms. Its purpose is to critique and highlight the risks associated with gambling, not to promote or encourage it. Nothing on this site should be interpreted as an endorsement of gambling, nor should anything beyond this point be taken seriously.</p>
