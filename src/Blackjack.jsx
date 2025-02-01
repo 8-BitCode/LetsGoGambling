@@ -11,7 +11,7 @@ const Blackjack = () => {
         <Helmet>
             <title>BLACKJACK</title>
         </Helmet>
-        <div className='BJ-Container'>
+        <div className='Blackjack-Container'>
             <div>Blackjack Page</div>
             <div>Insert blackjack</div>
         </div>
