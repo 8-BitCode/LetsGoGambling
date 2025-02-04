@@ -14,9 +14,9 @@ body {
 a, button, .clickable, .TOS-Container .button {
     cursor: url('../Assets/CusorImages/LINK_SELECT.png'), pointer;
 }
-p, span, h1, h2, h3, h4, h5, h6, ul {
+input {
     cursor: url('../Assets/CusorImages/TEXT_SELECT.png'), text;
-  }
+}
 /* If you want to make sure your container takes the full viewport height */
 html, body {
     height: 100%; /* Ensures no overflow */
