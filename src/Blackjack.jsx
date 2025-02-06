@@ -2,9 +2,16 @@ import React from 'react';
 import './CssFiles/Blackjack.css'
 //Helmet is used to give each sub page a title dynamically (just a little akram detail)
 import { Helmet } from 'react-helmet';
+import { useNavigate } from 'react-router-dom';
 
 
 const Blackjack = () => {
+    const navigate = useNavigate();
+
+    const goToGameSelection = () => {
+        navigate('/GameSelection');
+    };
+
     return(
         <>
 
@@ -12,8 +19,14 @@ const Blackjack = () => {
             <title>BLACKJACK</title>
         </Helmet>
         <div className='Blackjack-Container'>
-            <div>Blackjack Page</div>
-            <div>Insert blackjack</div>
+            <h1>Blackjack</h1>
+
+            <div className='Blackjack-Options'>
+                <input type='button' value='Hit'/>
+                <input type='button' value='Stand'/>
+            </div>
+
+            <input type='button' value='Exit' onClick={goToGameSelection}/>
         </div>
         
         </>
