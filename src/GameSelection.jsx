@@ -1,24 +1,28 @@
 import React from 'react';
-
-//Helmet is used to give each sub page a title dynamically (just a little akram detail)
+import { useLocation } from 'react-router-dom';
+import './CssFiles/GameSelection.css';
 import { Helmet } from 'react-helmet';
 
-
-
-
-
 const GameSelection = () => {
-    return(
-        <>
+  const location = useLocation();
+  const { username } = location.state || {}; // Safely extract the username from route state
 
-        <Helmet>
-            <title>GAMES ZONE!!!!!</title>
-        </Helmet>
+  return (
+    <>
+      <Helmet>
+        <title>Game Selection</title>
+      </Helmet>
 
+      <div className='GS-Container'>
         <div>Games Selection Page</div>
-        
-        </>
-    );
-}
+        {username ? (
+          <div>Welcome, {username}!</div>  // Show username if it's set
+        ) : (
+          <div>No username set yet. Please set a username in the entry page.</div>
+        )}
+      </div>
+    </>
+  );
+};
 
 export default GameSelection;

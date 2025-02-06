@@ -1,0 +1,60 @@
+@font-face {
+    font-family: 'BIOSFont';
+    src: url('../Assets/Fonts/WebPlus_IBM_VGA_9x8.woff') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.TOS-Container {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    height: 100vh; /* Full page height */
+    background-color: black; /* Black background */
+    color: #00ff00; /* Neon green text */
+    padding: 20px; /* Padding around the whole container */
+    box-sizing: border-box; /* Ensures padding doesn't overflow */
+}
+
+.TOS-Container pre, span {
+    width: 100%;
+    text-align: left;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-x: hidden;
+    margin: 0;
+    font-family: BIOSFont;
+    line-height: 1.5;
+    color: #00ff00; /* Ensures text remains green */
+    padding: 10px; /* Padding inside the pre tag for spacing */
+    box-sizing: border-box; /* Prevents the padding from causing overflow */
+}
+
+/* Container for the prompt text and input field */
+.input-prompt-container {
+    display: flex; /* Use flex to align the prompt and input field */
+    align-items: center; /* Vertically center the text and input field */
+    margin-top: 10px; /* Space between the content and the input prompt */
+}
+
+/* Prompt text styling */
+.prompt-text {
+    margin-right: 0; /* Remove the space between the prompt text and input */
+    white-space: nowrap; /* Prevent the prompt text from wrapping */
+}
+
+/* Input field styling */
+.input-field {
+    outline: none;
+    border: none;
+    font-size: 1.3em;
+    font-family: BIOSFont; /* Ensure same font as the rest of the text */
+    background-color: black; /* Black background for the input */
+    color: #00ff00; /* Green text color */
+    flex-grow: 1; /* Allow the input field to grow and fill the remaining space */
+    padding: 5px; /* Padding inside the input field */
+    text-align: left; /* Left-align the input text */
+    width: auto; /* Let the input size adjust based on content */
+}
