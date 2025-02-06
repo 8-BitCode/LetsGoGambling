@@ -1,75 +1,60 @@
 @font-face {
-    font-family: 'PixelFont';
-    src: url('../Assets/Fonts/VCR_OSD_MONO_1.001.ttf') format('opentype');
+    font-family: 'BIOSFont';
+    src: url('../Assets/Fonts/WebPlus_IBM_VGA_9x8.woff') format('opentype');
     font-weight: normal;
     font-style: normal;
 }
 
-/* TOS Container should take full height and not overflow */
 .TOS-Container {
-    font-family: 'PixelFont';
-    background-color: #000;
-    color: #fff;
+    text-align: left;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    min-height: 100vh; /* Ensure the container is always at least the full viewport height */
-    text-align: center;
-    padding: 3.5vh 5vw;
-    box-sizing: border-box;
-    overflow: visible; /* Allow content to stretch without hiding */
+    align-items: flex-start;
+    width: 100%;
+    height: 100vh; /* Full page height */
+    background-color: black; /* Black background */
+    color: #00ff00; /* Neon green text */
+    padding: 20px; /* Padding around the whole container */
+    box-sizing: border-box; /* Ensures padding doesn't overflow */
 }
 
-.TOS-Container h1 {
-    color: #ff4444;
-    font-size: clamp(2vw, 3.5vh, 3rem);
-    margin-top: 0;
-    margin-bottom: 0.25vh;
+.TOS-Container pre, span {
+    width: 100%;
+    text-align: left;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-x: hidden;
+    margin: 0;
+    font-family: BIOSFont;
+    line-height: 1.5;
+    color: #00ff00; /* Ensures text remains green */
+    padding: 10px; /* Padding inside the pre tag for spacing */
+    box-sizing: border-box; /* Prevents the padding from causing overflow */
 }
 
-.TOS-Container h2 {
-    font-size: clamp(1.8vw, 3vh, 2.5rem);
-    margin-top: 0.25vh;
+/* Container for the prompt text and input field */
+.input-prompt-container {
+    display: flex; /* Use flex to align the prompt and input field */
+    align-items: center; /* Vertically center the text and input field */
+    margin-top: 10px; /* Space between the content and the input prompt */
 }
 
-.TOS-Container p, 
-.TOS-Container ul {
-    font-size: clamp(1.2vw, 2vh, 1.5rem);
-    margin-bottom: 0.25vh;
-    padding: 0 2vw;
+/* Prompt text styling */
+.prompt-text {
+    margin-right: 0; /* Remove the space between the prompt text and input */
+    white-space: nowrap; /* Prevent the prompt text from wrapping */
 }
 
-.TOS-Container ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.TOS-Container .important {
-    font-weight: bold;
-    color: #ff4444;
-}
-
-.TOS-Container .button {
-    display: inline-block;
-    margin-top: 2vh;
-    padding: 1vh 2.5vw;
-    background-color: #c0c0c0;
-    color: #000;
-    font-size: clamp(1.2vw, 1.8vh, 1.3rem);
-    border: 2px solid #000000;
-    border-radius: 0;
-    cursor: pointer;
-    text-decoration: none;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: inset 1px 1px 2px #ffffff, inset -1px -1px 2px #808080;
-    transition: all 0.2s ease-in-out;
-}
-
-.TOS-Container .button:hover {
-    background-color: #d1ff06;
-    border-color: #000000;
-    box-shadow: inset 1px 1px 3px #ffffff, inset -1px -1px 3px #808080;
+/* Input field styling */
+.input-field {
+    outline: none;
+    border: none;
+    font-size: 1.3em;
+    font-family: BIOSFont; /* Ensure same font as the rest of the text */
+    background-color: black; /* Black background for the input */
+    color: #00ff00; /* Green text color */
+    flex-grow: 1; /* Allow the input field to grow and fill the remaining space */
+    padding: 5px; /* Padding inside the input field */
+    text-align: left; /* Left-align the input text */
+    width: auto; /* Let the input size adjust based on content */
 }

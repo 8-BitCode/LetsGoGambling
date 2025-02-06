@@ -12,6 +12,7 @@ import Stats from './Stats';
 import './CssFiles/App.css';
 export default () => (
   <>
+  <div className='Intro-Container'>
      <BrowserRouter>
       <Routes>
         <Route path="/TermsOfService" element={<TermsOfService />}/>
@@ -23,6 +24,6 @@ export default () => (
         <Route path="/Stats" element={<Stats />} />
       </Routes>
     </BrowserRouter>
-
+  </div>
   </>
 );
