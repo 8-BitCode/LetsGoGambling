@@ -22,11 +22,11 @@ const Blackjack = () => {
             <h1>Blackjack</h1>
 
             <div className='Blackjack-Options'>
-                <input type='button' value='Hit'/>
-                <input type='button' value='Stand'/>
+                <button>Hit</button>
+                <button>Stand</button>
             </div>
 
-            <input type='button' value='Exit' onClick={goToGameSelection}/>
+            <button onClick={goToGameSelection}>Exit</button>
         </div>
         
         </>

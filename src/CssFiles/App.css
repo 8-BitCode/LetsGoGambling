@@ -11,7 +11,7 @@ body {
     overflow-x: hidden; /* Optional: prevent horizontal scroll */
     cursor: url('../Assets/CusorImages/NORMAL.png'), auto;
 }
-a, button, input, .clickable, .TOS-Container .button {
+a, button, .clickable, .TOS-Container .button {
     cursor: url('../Assets/CusorImages/LINK_SELECT.png'), pointer;
 }
 input {
