@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
 
 
-const BlackjackGame = () => {
+const Blackjack = () => {
 
     const navigate = useNavigate();
 
@@ -142,11 +142,11 @@ const BlackjackGame = () => {
             {message && <p>{message}</p>}
             
             <button onClick={goToGameSelection}>Exit</button>
-            
+
         </div>
 
         </>
     );
 };
 
-export default BlackjackGame;
+export default Blackjack;
