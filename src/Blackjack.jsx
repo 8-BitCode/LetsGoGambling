@@ -18,7 +18,7 @@ const BlackjackGame = () => {
     const [deck, setDeck] = useState([]);
     const [playerHand, setPlayerHand] = useState([]);
     const [dealerHand, setDealerHand] = useState([]);
-    const [gameOver, setGameOver] = useState(false);
+    const [gameOver, setGameOver] = useState(true);
     const [message, setMessage] = useState('');
 
     const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
@@ -116,13 +116,7 @@ const BlackjackGame = () => {
 
         <div className='Blackjack-Container'>
             <button onClick={startGame}>Start Game</button>
-            <div className='Hand'>
-                <h2>Player's Hand</h2>
-                {playerHand.map((card, index) => (
-                    <div key={index}>{card.value} of {card.suit}</div>
-                ))}
-                <p>Value: {getHandValue(playerHand)}</p>
-            </div>
+            
             <div className='Hand'>
                 <h2>Dealer's Hand</h2>
                 {dealerHand.map((card, index) => (
@@ -130,18 +124,29 @@ const BlackjackGame = () => {
                 ))}
                 <p>Value: {getHandValue(dealerHand)}</p>
             </div>
+
+            <div className='Hand'>
+                <h2>Player's Hand</h2>
+                {playerHand.map((card, index) => (
+                    <div key={index}>{card.value} of {card.suit}</div>
+                ))}
+                <p>Value: {getHandValue(playerHand)}</p>
+            </div>
+
             <div className='Blackjack-Options'>
                 <button onClick={hit} disabled={gameOver}>Hit</button>
                 <button onClick={stand} disabled={gameOver}>Stand</button>
+                
             </div>
+
             {message && <p>{message}</p>}
-
+            
             <button onClick={goToGameSelection}>Exit</button>
-
+            
         </div>
 
         </>
     );
 };
 
-export default BlackjackGame; // </div></div>
+export default BlackjackGame;
