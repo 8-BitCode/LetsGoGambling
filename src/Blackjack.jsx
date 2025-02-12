@@ -14,7 +14,6 @@ const Blackjack = () => {
     };
 
 
-
     const [deck, setDeck] = useState([]);
     const [playerHand, setPlayerHand] = useState([]);
     const [dealerHand, setDealerHand] = useState([]);
@@ -34,6 +33,7 @@ const Blackjack = () => {
         return shuffleDeck(newDeck);
     };
 
+
     const shuffleDeck = (deck) => {
         for (let i = deck.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -41,6 +41,7 @@ const Blackjack = () => {
         }
         return deck;
     };
+
 
     const startGame = () => {
         const newDeck = initializeDeck();
@@ -52,6 +53,7 @@ const Blackjack = () => {
         setGameOver(false);
         setMessage('');
     };
+
 
     const getHandValue = (hand) => {
         let value = 0;
@@ -73,6 +75,7 @@ const Blackjack = () => {
         return value;
     };
 
+
     const hit = () => {
         if (gameOver) return;
         const newDeck = [...deck];
@@ -84,6 +87,7 @@ const Blackjack = () => {
             setMessage('Bust!');
         }
     };
+
 
     const stand = () => {
         if (gameOver) return;
@@ -106,6 +110,7 @@ const Blackjack = () => {
         setGameOver(true);
     };
 
+    
     return (
 
         <>
