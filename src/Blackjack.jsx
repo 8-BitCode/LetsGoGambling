@@ -24,15 +24,11 @@ const Blackjack = () => {
     const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
     const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
     
-    // TODO: add money and bets
-    // TODO: useState for setMoney and setBet to update the money and bet
-
     const [money, setMoney] = useState(1000);
-    // let money = 1000;
     const [bet, setBet] = useState(0);
-    // let bet = 0;
 
     // TODO: if player is on 21, they win without needing to stand
+    // TODO: update the money and bet when game is over
 
     const initializeDeck = () => {
         const newDeck = [];
@@ -61,6 +57,13 @@ const Blackjack = () => {
         setDeck(newDeck);
         setPlayerHand(playerHand);
         setDealerHand(dealerHand);
+
+        if (getHandValue(playerHand) === 21) {
+            setMessage('You win!');
+            setGameOver(true);
+            // setMoney(money => money + bet);
+            // setBet(0);
+        }
         setGameOver(false);
         setMessage('');
     };
@@ -145,13 +148,14 @@ const Blackjack = () => {
         </Helmet>
 
         <div className='Blackjack-Container'>
-            <button onClick={startGame}>Start Game</button>
+
+            <h1>Blackjack</h1>
 
             <div className='Blackjack-Bet'>
                 <h2>Money = {money}</h2>
                 <h2>Bet = {bet}</h2>
 
-                <div className='Blackjack-Add'>
+                <div className='Blackjack-Bet-Buttons'>
                     <button onClick={() => betMoney(1)}> + 1 </button>
                     <button onClick={() => betMoney(10)}> + 10 </button>
                     <button onClick={() => betMoney(50)}> + 50 </button>
@@ -159,7 +163,7 @@ const Blackjack = () => {
                     <button onClick={() => betMoney(money)} > + Max </button>
                 </div>
 
-                <div className='Blackjack-Minus'>
+                <div className='Blackjack-Bet-Buttons'>
                     <button onClick={() => betMoney(-1)}> - 1 </button>
                     <button onClick={() => betMoney(-10)}> - 10 </button>
                     <button onClick={() => betMoney(-50)}> - 50 </button>
@@ -168,6 +172,7 @@ const Blackjack = () => {
                 </div>
             </div>
 
+            <button className='Blackjack-Start' onClick={startGame}>Start Game</button>
             
             <div className='Blackjack-Hand'>
                 <h2>Dealer's Hand</h2>
@@ -193,7 +198,7 @@ const Blackjack = () => {
 
             {message && <p>{message}</p>}
             
-            <button onClick={goToGameSelection}>Exit</button>
+            <button className='Blackjack-Options' onClick={goToGameSelection}>Exit</button>
 
         </div>
 
