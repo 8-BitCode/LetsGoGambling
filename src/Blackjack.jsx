@@ -17,6 +17,7 @@ const Blackjack = () => {
     const [deck, setDeck] = useState([]);
     const [playerHand, setPlayerHand] = useState([]);
     const [dealerHand, setDealerHand] = useState([]);
+    const [gameActive, setGameActive] = useState(false);
     const [gameOver, setGameOver] = useState(true);
     const [message, setMessage] = useState('');
 
@@ -28,9 +29,17 @@ const Blackjack = () => {
     const [bet, setBet] = useState(0);
 
     // TODO: if player is on 21, they win without needing to stand
+
+    // TODO: create a game active state to disable start button when game is active
+    // TODO: change start to replay after game is over
+    // TODO: add a delay between each card being dealt
     // TODO: update the money and bet when game is over
 
-    const initializeDeck = () => {
+    // TODO: create a game over function that sets game over to true, game active to false and clears hands
+
+    // Typical blackjack payout is 3:2 (1.5x), but this uses 2:1 (2x) for simplicity
+
+    const initialiseDeck = () => {
         const newDeck = [];
         for (let suit of suits) {
             for (let value of values) {
@@ -51,21 +60,34 @@ const Blackjack = () => {
 
 
     const startGame = () => {
-        const newDeck = initializeDeck();
+        if (money === 0 && bet === 0) {
+            alert('You are out of money! Please exit the game.');
+            return;
+        } else if (bet === 0) {
+            alert('Please place a bet to start the game.');
+            return;
+        } 
+
+        setGameActive(true);
+        const newDeck = initialiseDeck();
         const playerHand = [newDeck.pop(), newDeck.pop()];
         const dealerHand = [newDeck.pop(), newDeck.pop()];
         setDeck(newDeck);
         setPlayerHand(playerHand);
         setDealerHand(dealerHand);
 
-        if (getHandValue(playerHand) === 21) {
-            setMessage('You win!');
-            setGameOver(true);
-            // setMoney(money => money + bet);
-            // setBet(0);
-        }
+
         setGameOver(false);
         setMessage('');
+
+        if (getHandValue(playerHand) === 21) {
+            setMessage('Blackjack! You win! Your bet is doubled! + ' + 2 * bet);
+            setGameOver(true);
+            setGameActive(false);
+            // TODO: double bet and add it to money. set bet to 0
+            setMoney(money => money + 2 * bet);
+            setBet(0);
+        }
     };
 
 
@@ -98,7 +120,17 @@ const Blackjack = () => {
         setPlayerHand(newPlayerHand);
         if (getHandValue(newPlayerHand) > 21) {
             setGameOver(true);
-            setMessage('Bust!');
+            setGameActive(false);
+            setMessage('Bust! You lose your bet. - ' + bet);
+            // TODO: set bet to 0
+            setBet(0);
+        } else if (getHandValue(newPlayerHand) === 21) {
+            setMessage('You win! Your bet is doubled! + ' + 2 * bet);
+            setGameOver(true);
+            setGameActive(false);
+            // TODO: double bet and add it to money. set bet to 0
+            setMoney(money => money + 2 * bet);
+            setBet(0);
         }
     };
 
@@ -115,15 +147,36 @@ const Blackjack = () => {
         const playerValue = getHandValue(playerHand);
         const dealerValue = getHandValue(newDealerHand);
         if (dealerValue > 21 || playerValue > dealerValue) {
-            setMessage('You win!');
+            setMessage('You win! Your bet is doubled! + ' + 2 * bet);
+            // TODO: double bet and add it to money. set bet to 0
+            setMoney(money => money + 2 * bet);
+            setBet(0);
         } else if (playerValue < dealerValue) {
-            setMessage('Dealer wins!');
+            setMessage('Dealer wins. You lose your bet. - ' + bet);
+            // TODO: set bet to 0
+            setBet(0);
         } else {
-            setMessage('It\'s a tie!');
+            setMessage('It\'s a tie. Your bet is returned. + ' + bet);
+            // TODO: add bet back to money. set bet to 0
+            setMoney(money => money + bet);
+            setBet(0);
         }
-        setGameOver(true);
+        gameOverFunction();
+        // setGameActive(false);
+        // setGameOver(true);
     };
 
+    
+    const gameOverFunction = () => {
+        setGameOver(true);
+        setGameActive(false);
+
+        // TODO: add delay before clearing hands
+        // TODO: remove setBet(0) from each condition
+        setBet(0);
+        setPlayerHand([]);
+        setDealerHand([]);
+    };
 
     const betMoney = (amount) => {
         if (money - amount < 0) {
@@ -132,8 +185,6 @@ const Blackjack = () => {
             alert('Cannot bet negative money!');    
             // TODO: alert could be changed to a message on the screen
         } else {
-            // money -= amount;
-            // bet += amount;
             setMoney(money => money - amount);
             setBet(bet => bet + amount);
         }
@@ -160,6 +211,7 @@ const Blackjack = () => {
                     <button onClick={() => betMoney(10)}> + 10 </button>
                     <button onClick={() => betMoney(50)}> + 50 </button>
                     <button onClick={() => betMoney(100)}> + 100 </button>
+                    <button onClick={() => betMoney(500)}> + 500 </button>
                     <button onClick={() => betMoney(money)} > + Max </button>
                 </div>
 
@@ -168,11 +220,14 @@ const Blackjack = () => {
                     <button onClick={() => betMoney(-10)}> - 10 </button>
                     <button onClick={() => betMoney(-50)}> - 50 </button>
                     <button onClick={() => betMoney(-100)}> - 100 </button>
+                    <button onClick={() => betMoney(-500)}> - 500 </button>
                     <button onClick={() => betMoney(-bet)}> - Max </button>
                 </div>
             </div>
 
-            <button className='Blackjack-Start' onClick={startGame}>Start Game</button>
+            <hr/>
+
+            <button className='Blackjack-Start' onClick={startGame} disabled={gameActive}>Start Game</button>
             
             <div className='Blackjack-Hand'>
                 <h2>Dealer's Hand</h2>
