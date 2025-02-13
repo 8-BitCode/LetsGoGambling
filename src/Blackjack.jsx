@@ -23,8 +23,16 @@ const Blackjack = () => {
 
     const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
     const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+    
+    // TODO: add money and bets
+    // TODO: useState for setMoney and setBet to update the money and bet
 
-    // TODO: add money
+    const [money, setMoney] = useState(1000);
+    // let money = 1000;
+    const [bet, setBet] = useState(0);
+    // let bet = 0;
+
+    // TODO: if player is on 21, they win without needing to stand
 
     const initializeDeck = () => {
         const newDeck = [];
@@ -113,6 +121,20 @@ const Blackjack = () => {
         setGameOver(true);
     };
 
+
+    const betMoney = (amount) => {
+        if (money - amount < 0) {
+            alert('Not enough money!');
+        } else if (amount < 0 && bet + amount < 0) {
+            alert('Cannot bet negative money!');    
+            // TODO: alert could be changed to a message on the screen
+        } else {
+            // money -= amount;
+            // bet += amount;
+            setMoney(money => money - amount);
+            setBet(bet => bet + amount);
+        }
+    };
     
     return (
 
@@ -124,8 +146,30 @@ const Blackjack = () => {
 
         <div className='Blackjack-Container'>
             <button onClick={startGame}>Start Game</button>
+
+            <div className='Blackjack-Bet'>
+                <h2>Money = {money}</h2>
+                <h2>Bet = {bet}</h2>
+
+                <div className='Blackjack-Add'>
+                    <button onClick={() => betMoney(1)}> + 1 </button>
+                    <button onClick={() => betMoney(10)}> + 10 </button>
+                    <button onClick={() => betMoney(50)}> + 50 </button>
+                    <button onClick={() => betMoney(100)}> + 100 </button>
+                    <button onClick={() => betMoney(money)} > + Max </button>
+                </div>
+
+                <div className='Blackjack-Minus'>
+                    <button onClick={() => betMoney(-1)}> - 1 </button>
+                    <button onClick={() => betMoney(-10)}> - 10 </button>
+                    <button onClick={() => betMoney(-50)}> - 50 </button>
+                    <button onClick={() => betMoney(-100)}> - 100 </button>
+                    <button onClick={() => betMoney(-bet)}> - Max </button>
+                </div>
+            </div>
+
             
-            <div className='Hand'>
+            <div className='Blackjack-Hand'>
                 <h2>Dealer's Hand</h2>
                 {dealerHand.map((card, index) => (
                     <div key={index}>{card.value} of {card.suit}</div>
@@ -133,7 +177,7 @@ const Blackjack = () => {
                 <p>Value: {getHandValue(dealerHand)}</p>
             </div>
 
-            <div className='Hand'>
+            <div className='Blackjack-Hand'>
                 <h2>Player's Hand</h2>
                 {playerHand.map((card, index) => (
                     <div key={index}>{card.value} of {card.suit}</div>
