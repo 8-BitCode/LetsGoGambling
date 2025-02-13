@@ -2,9 +2,7 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './CssFiles/GameSelection.css';
 import { Helmet } from 'react-helmet';
-import { Button } from "@headlessui/react"; //download this package by "npm install @headlessui/react"
-//npm install framer-motion required to run use the module in the line below. 
-import { motion } from "framer-motion"; //visual entertainment as the user hovers the cursor above game options. 
+import { Button } from "@headlessui/react"; //download this package using "npm install @headlessui/react"
 
 const games = [
   { name: "Blackjack", description: "Test your card skills against the dealer.", path: "/blackjack" },
@@ -15,7 +13,7 @@ const games = [
 const GameSelection = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { username } = location.state || {}; // Safely extract the username from route state
+  const { username } = location.state || {}; // Extracting the username
 
   return (
     <>
@@ -33,10 +31,8 @@ const GameSelection = () => {
 
         <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
           {games.map((game) => (
-            <motion.div
+            <div
               key={game.name}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
               onClick={() => navigate(game.path)}
               className='game-card'
             >
@@ -45,7 +41,7 @@ const GameSelection = () => {
                 <p className='text-sm text-gray-400'>{game.description}</p>
                 <Button className='mt-4 bg-blue-600 hover:bg-blue-700'>Play</Button>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
