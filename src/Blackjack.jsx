@@ -30,12 +30,12 @@ const Blackjack = () => {
 
     // TODO: if player is on 21, they win without needing to stand (DONE?)
 
-    // TODO: create a game active state to disable start button when game is active
+    // TODO: create a game active state to disable start button when game is active (DONE)
     // TODO: change start to replay after game is over
     // TODO: add a delay between each card being dealt
-    // TODO: update the money and bet when game is over
+    // TODO: update the money and bet when game is over (DONE?)
 
-    // TODO: create a game over function that sets game over to true, game active to false and clears hands
+    // TODO: create a game over function that sets game over to true, game active to false and clears hands (DONE?)
 
     // Typical blackjack payout is 3:2 (1.5x), but this uses 2:1 (2x) for simplicity
 
@@ -81,11 +81,13 @@ const Blackjack = () => {
 
         if (getHandValue(playerHand) === 21) {
             setMessage('Blackjack! You win! Your bet is doubled! + ' + 2 * bet);
-            setGameOver(true);
-            setGameActive(false);
-            // TODO: double bet and add it to money. set bet to 0
+            // setGameOver(true);
+            // setGameActive(false);
+
             setMoney(money => money + 2 * bet);
-            setBet(0);
+            gameOverFunction();
+
+            // setBet(0);
         }
     };
 
@@ -183,8 +185,18 @@ const Blackjack = () => {
         // TODO: add delay before clearing hands
         // TODO: remove setBet(0) from each condition
         setBet(0);
-        setPlayerHand([]);
-        setDealerHand([]);
+
+        // uses backticks instead of speech marks to allow for variables to be inserted and multiline strings
+        setMessage(message => `${message}
+        Resetting game...`);
+        
+        // timeout function to clear hands and message after 2 seconds
+        setTimeout(() => {
+            setPlayerHand([]);
+            setDealerHand([]);
+            setMessage('');
+        } , 2000);
+        
     };
 
 

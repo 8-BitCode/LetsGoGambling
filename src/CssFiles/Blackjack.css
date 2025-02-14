@@ -1,6 +1,7 @@
 .Blackjack-Container {
     padding: 5vw 5vh;
     text-align: center;
+    white-space: pre-wrap;
 }
 
 .Blackjack-Container button {
