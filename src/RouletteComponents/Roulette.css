@@ -13,6 +13,7 @@ button {
 }
 
 #chip-container {
+    pointer-events: all;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,7 +22,10 @@ button {
 }
 
 #roulette-table {
+    pointer-events: none;
     display: flex;
+    position: relative;
+    top: 200px;
 }
 
 #roulette-table-grid {
@@ -38,11 +42,13 @@ button {
 #zero-column {
     display: grid;
     grid-area: 'zero';
-    gap: 10px;
-    height: 100px;
-    width: 100px
+    grid-template-rows: 150px;
 }
 
+#zero-column button {
+    height: 100px;
+    pointer-events: all;
+}
 
 #row-one {
     grid-area: 'one';
@@ -54,21 +60,43 @@ button {
 #row-two {
     grid-area: 'two';
     position: relative;
+    display: grid;
+    gap: 10px;
     bottom: 50px;
 }
 
 #row-three {
     grid-area: 'three';
     position: relative;
+    display: grid;
+    gap: 10px;
     bottom: 100px
 }
 
 #row-four { 
     grid-area: 'four';
+    display: flex;
+    position: relative;
+    bottom: 100px;
+    left: 100px;
+}
+
+#row-four button {
+    width: 200px;
+    pointer-events: all;
 }
 
 #row-five { 
     grid-area: 'five';
+    display: flex;
+    position: relative;
+    bottom: 100px;
+    left: 100px
+}
+
+#row-five button {
+    width: 100px;
+    pointer-events: all;
 }
 
 /*  rows are split into two rows 
@@ -78,15 +106,18 @@ button {
 .row-subdivision-one {
     display: flex;
     gap: 30px;
+
 }
 
 .row-subdivision-one button {
     height: 50px;
+    pointer-events: all;
 }
 
 .row-subdivision-two {
     position: relative;
     bottom: 50px;
+    pointer-events: none;
 }
 
 .row-subdivision-two button {
@@ -102,11 +133,17 @@ button {
 
 /* these are the horizontal double bets placed over subdivision one */
 .double-one {
-    display: flex;
+    pointer-events: none;
     position: relative;
     left: 50px;
     bottom: 50px;
-    gap: 30px;
+    display: flex;
+    gap: 50px;
+}
+
+.double-one button {
+    pointer-events: all;
+    width: 30px;
 }
 
 .double-two {
@@ -114,16 +151,22 @@ button {
     gap: 30px;
 }
 
+.double-two button {
+    pointer-events: all;
+}
+
 .quad {
     display: flex;
     gap: 60px;
     position: relative;
-    left: 50px;
+    left: 55px;
     bottom: 25px;
+    pointer-events: none;
 }
 
 .quad button {
     width: 20px;
+    pointer-events: all;
 }
 
 .columns-container {
@@ -134,5 +177,6 @@ button {
 }
 
 .columns-container button {
-    width: 20px 
+    width: 20px;
+    pointer-events: all;
 }
