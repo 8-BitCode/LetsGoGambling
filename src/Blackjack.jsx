@@ -28,7 +28,7 @@ const Blackjack = () => {
     const [money, setMoney] = useState(1000);
     const [bet, setBet] = useState(0);
 
-    // TODO: if player is on 21, they win without needing to stand
+    // TODO: if player is on 21, they win without needing to stand (DONE?)
 
     // TODO: create a game active state to disable start button when game is active
     // TODO: change start to replay after game is over
@@ -76,7 +76,6 @@ const Blackjack = () => {
         setPlayerHand(playerHand);
         setDealerHand(dealerHand);
 
-
         setGameOver(false);
         setMessage('');
 
@@ -119,18 +118,28 @@ const Blackjack = () => {
         setDeck(newDeck);
         setPlayerHand(newPlayerHand);
         if (getHandValue(newPlayerHand) > 21) {
-            setGameOver(true);
-            setGameActive(false);
+            // setGameOver(true);
+            // setGameActive(false);
+            gameOverFunction();
             setMessage('Bust! You lose your bet. - ' + bet);
-            // TODO: set bet to 0
-            setBet(0);
-        } else if (getHandValue(newPlayerHand) === 21) {
+
+            // setBet(0);
+        } else if (getHandValue(newPlayerHand) === 21 && getHandValue(dealerHand) !== 21) {
             setMessage('You win! Your bet is doubled! + ' + 2 * bet);
-            setGameOver(true);
-            setGameActive(false);
-            // TODO: double bet and add it to money. set bet to 0
+            // setGameOver(true);
+            // setGameActive(false);
+            gameOverFunction();
+
             setMoney(money => money + 2 * bet);
-            setBet(0);
+            // setBet(0);
+        } else if (getHandValue(newPlayerHand) === 21 && getHandValue(dealerHand) === 21) {
+            setMessage('It\'s a tie. Your bet is returned. + ' + bet);
+            // setGameOver(true);
+            // setGameActive(false);
+
+            gameOverFunction();
+            setMoney(money => money + bet);
+            // setBet(0);
         }
     };
 
@@ -177,6 +186,7 @@ const Blackjack = () => {
         setPlayerHand([]);
         setDealerHand([]);
     };
+
 
     const betMoney = (amount) => {
         if (money - amount < 0) {
