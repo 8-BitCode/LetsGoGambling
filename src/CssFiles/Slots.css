@@ -1,0 +1,26 @@
+<<<<<<< Updated upstream
+=======
+.gold-text {    
+    color: gold;
+    background-color: black;
+}
+
+
+.bigbuttons {
+
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
+    background-color: black;
+    border: 2px solid gold;
+    cursor: pointer;
+    width: 8%;
+    height: 24px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+/* .mulbuttons {
+    ;
+} */
+>>>>>>> Stashed changes
