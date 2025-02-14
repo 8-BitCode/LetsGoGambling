@@ -28,14 +28,10 @@ const Blackjack = () => {
     const [money, setMoney] = useState(1000);
     const [bet, setBet] = useState(0);
 
-    // TODO: if player is on 21, they win without needing to stand (DONE?)
-
-    // TODO: create a game active state to disable start button when game is active (DONE)
     // TODO: change start to replay after game is over
     // TODO: add a delay between each card being dealt
-    // TODO: update the money and bet when game is over (DONE?)
 
-    // TODO: create a game over function that sets game over to true, game active to false and clears hands (DONE?)
+    // TODO: change money to be up and down buttons that can be held down to increase or decrease the bet
 
     // Typical blackjack payout is 3:2 (1.5x), but this uses 2:1 (2x) for simplicity
 
@@ -79,7 +75,7 @@ const Blackjack = () => {
         setGameOver(false);
         setMessage('');
 
-        if (getHandValue(playerHand) === 21) {
+        if (getHandValue(playerHand) === 21 && getHandValue(dealerHand) !== 21) {
             setMessage('Blackjack! You win! Your bet is doubled! + ' + 2 * bet);
             // setGameOver(true);
             // setGameActive(false);
@@ -88,6 +84,9 @@ const Blackjack = () => {
             gameOverFunction();
 
             // setBet(0);
+        } else if (getHandValue(playerHand) === 21 && getHandValue(dealerHand) === 21) {
+            setMessage('It\'s a tie. Your bet is returned. + ' + bet);
+            gameOverFunction();
         }
     };
 
@@ -122,25 +121,25 @@ const Blackjack = () => {
         if (getHandValue(newPlayerHand) > 21) {
             // setGameOver(true);
             // setGameActive(false);
-            gameOverFunction();
             setMessage('Bust! You lose your bet. - ' + bet);
+            gameOverFunction();
 
             // setBet(0);
         } else if (getHandValue(newPlayerHand) === 21 && getHandValue(dealerHand) !== 21) {
             setMessage('You win! Your bet is doubled! + ' + 2 * bet);
             // setGameOver(true);
             // setGameActive(false);
+            setMoney(money => money + 2 * bet);
             gameOverFunction();
 
-            setMoney(money => money + 2 * bet);
             // setBet(0);
         } else if (getHandValue(newPlayerHand) === 21 && getHandValue(dealerHand) === 21) {
             setMessage('It\'s a tie. Your bet is returned. + ' + bet);
             // setGameOver(true);
             // setGameActive(false);
 
-            gameOverFunction();
             setMoney(money => money + bet);
+            gameOverFunction();
             // setBet(0);
         }
     };
@@ -159,18 +158,15 @@ const Blackjack = () => {
         const dealerValue = getHandValue(newDealerHand);
         if (dealerValue > 21 || playerValue > dealerValue) {
             setMessage('You win! Your bet is doubled! + ' + 2 * bet);
-            // TODO: double bet and add it to money. set bet to 0
             setMoney(money => money + 2 * bet);
-            setBet(0);
+            // setBet(0);
         } else if (playerValue < dealerValue) {
             setMessage('Dealer wins. You lose your bet. - ' + bet);
-            // TODO: set bet to 0
-            setBet(0);
+            // setBet(0);
         } else {
             setMessage('It\'s a tie. Your bet is returned. + ' + bet);
-            // TODO: add bet back to money. set bet to 0
             setMoney(money => money + bet);
-            setBet(0);
+            // setBet(0);
         }
         gameOverFunction();
         // setGameActive(false);
@@ -182,8 +178,6 @@ const Blackjack = () => {
         setGameOver(true);
         setGameActive(false);
 
-        // TODO: add delay before clearing hands
-        // TODO: remove setBet(0) from each condition
         setBet(0);
 
         // uses backticks instead of speech marks to allow for variables to be inserted and multiline strings
