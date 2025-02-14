@@ -1,10 +1,17 @@
 import React from 'react'
 
-function ColourBet(colour) {
+function ZeroBet(type) {
 
- return(
-    <button>{colour}</button>
- )   
+    if (type == 'single') {
+        return(
+            <button>0</button>
+        )
+    }
+    else {
+        return (
+            <button>00</button>
+        )
+    }
 };
 
-export default ColourBet;
+export default ZeroBet;

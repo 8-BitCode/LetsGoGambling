@@ -1,10 +1,10 @@
 import React from 'react'
 
-function ColourBet(colour) {
+function NumberBet({number}) {
 
  return(
-    <button>{colour}</button>
+    <button>{number}</button>
  )   
 };
 
-export default ColourBet;
+export default NumberBet;

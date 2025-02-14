@@ -1,6 +1,6 @@
 import React from 'react'
 
-function ColourBet(colour) {
+function ColourBet({colour}) {
 
  return(
     <button>{colour}</button>
