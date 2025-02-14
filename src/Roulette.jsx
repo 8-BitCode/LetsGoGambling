@@ -12,7 +12,34 @@ import ZeroBet from './RouletteComponents/ZeroBet';
 import { Helmet } from 'react-helmet';
 import './RouletteComponents/Roulette.css'
 
+
 const Roulette = () => {
+
+    const spinWheel = () => {
+        return 
+    }
+    
+    const clearBet = () => {
+        return 
+    }
+    
+    const undoBet = () => {
+        return 
+    }
+
+
+    const deposit = (amount) => {
+        
+        if (balance === undefined) {
+            setBalance(amount)
+        }
+        else {
+            setBalance(balance + amount)
+        }
+    }
+
+    const [balance, setBalance] = useState();
+    
 
     const [chipSelected, setChip] = useState();
 
@@ -109,47 +136,60 @@ const Roulette = () => {
             </Helmet>
 
             <div>Selected Chip: {chipSelected}</div>
+            <div>balance: {balance}</div>
 
             <div id='chip-container'>        
                 {chipValues.map(value => <button onClick={() => updateSelected(value)} id={value} key={value} className='chip'>{value}</button>)}
             </div>
 
 
+            <div id='buttons-container'>
+                <button onClick={() => spinWheel()}>Spin Wheel</button>
+                <button onClick={() => clearBet()}>Clear Bet</button>
+                <button onClick={() => undoBet()}>Undo Bet</button>
+                <form>
+                    <input type='text' className='deposit-input'/>
+                    <input type='button' onClick={() => deposit(parseInt(document.querySelector('.deposit-input').value))}/>
+                </form>
+            </div>
+
+
+
             <div id='roulette-table'>
                 <div id='zero-column'>
-                    {zeroTypes.map(item => <ZeroBet class='zero' type={item.type} key={item.type}/>)}
+                    {zeroTypes.map(item => <ZeroBet className='zero' type={item.type} key={item.type}/>)}
                 </div>
             <div id='roulette-table-grid'>
                 <div id='row-one'>
-                    <div class='row-subdivision-one'>
-                        {rowOneNumbers.map(number => <NumberBet class='numbers' number={number} key={number}/>)}
-                        {intervalBetsRowOne.map(item => <IntervalBet class='two-to-one' twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
+                    <div className='row-subdivision-one'>
+                        {rowOneNumbers.map(number => <NumberBet className='numbers' number={number} key={number}/>)}
+                        {intervalBetsRowOne.map(item => <IntervalBet className='two-to-one' twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
                     </div>
-                        <div class='double-one'>{doubleBetRowOne.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}</div>
-                    <div class='row-subdivision-two'>
-                        <div class='double-two'>{doubleBetRowOnev2.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}</div>
-                        <div class='quad'>{quadBetsRowOne.map(numbers => <QuadBet numbers={numbers} key={numbers}/>)}</div>
+                        <div className='double-one'>{doubleBetRowOne.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}</div>
+                    <div className='row-subdivision-two'>
+                        <div className='double-two'>{doubleBetRowOnev2.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}</div>
+                        <div className='quad'>{quadBetsRowOne.map(numbers => <QuadBet numbers={numbers} key={numbers}/>)}</div>
                     </div>
                 </div>
                 <div id='row-two'>
-                    <div class='row-subdivision-one'>
+                    <div className='row-subdivision-one'>
                         {rowTwoNumbers.map(number => <NumberBet number={number} key={number}/>)}    
                         {intervalBetsRowTwo.map(item => <IntervalBet twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
                     </div>
-                        <div class='double-one'>{doubleBetRowTwo.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}</div>
-                    <div class='row-subdivision-two'>
-                        <div class='double-two'>{doubleBetRowTwov2.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}</div>
-                        <div class='quad'>{quadBetsRowTwo.map(numbers => <QuadBet numbers={numbers} key={numbers}/>)}</div>
+                        <div className='double-one'>{doubleBetRowTwo.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}</div>
+                    <div className='row-subdivision-two'>
+                        <div className='double-two'>{doubleBetRowTwov2.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}</div>
+                        <div className='quad'>{quadBetsRowTwo.map(numbers => <QuadBet numbers={numbers} key={numbers}/>)}</div>
                     </div>
                 </div>
                 <div id='row-three'>
-                    <div class='row-subdivision-one'>
+                    <div className='row-subdivision-one'>
                         {rowThreeNumbers.map(number => <NumberBet number={number} key={number}/>)}
                         {intervalBetsRowThree.map(item => <IntervalBet twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
                     </div>
-                        <div class='double-one'>{doubleBetRowThree.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}</div>
-                    <div class='row-subdivision-two'>  
-                        <div class='columns-container'>{columnBets.map(numbers => <ColumnBet numbers={numbers} key={numbers}/> )}</div>
+                        <div className='double-one'>{doubleBetRowThree.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}</div>
+                    <div className='row-subdivision-two'>  
+                        <div className='columns-container'>{columnBets.map(numbers => <ColumnBet numbers={numbers} key={numbers}/> )}</div>
                     </div>
                 </div>
                 <div id='row-four'>
