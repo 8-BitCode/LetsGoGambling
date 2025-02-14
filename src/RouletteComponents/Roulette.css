@@ -1,3 +1,9 @@
+button {
+    border-radius: 25%; 
+    height: 30px;
+    width: 50px;
+}
+
 .chip {
     width: 50px;
     height: 50px;
@@ -12,4 +18,121 @@
     align-items: center;
     position: relative;
     top: 700px;
+}
+
+#roulette-table {
+    display: flex;
+}
+
+#roulette-table-grid {
+    display: grid;
+    grid-area: 'grid';
+    grid-template-areas:
+    'one'
+    'two'
+    'three'
+    'four'
+    'five';
+}
+
+#zero-column {
+    display: grid;
+    grid-area: 'zero';
+    gap: 10px;
+    height: 100px;
+    width: 100px
+}
+
+
+#row-one {
+    grid-area: 'one';
+    display: grid;
+    gap: 10px
+
+}
+
+#row-two {
+    grid-area: 'two';
+    position: relative;
+    bottom: 50px;
+}
+
+#row-three {
+    grid-area: 'three';
+    position: relative;
+    bottom: 100px
+}
+
+#row-four { 
+    grid-area: 'four';
+}
+
+#row-five { 
+    grid-area: 'five';
+}
+
+/*  rows are split into two rows 
+    top row contains the numbers the horizontal double bets and 2 to 1 bets
+    bottom contains the rest of the vertical double bets and quad bets*/
+
+.row-subdivision-one {
+    display: flex;
+    gap: 30px;
+}
+
+.row-subdivision-one button {
+    height: 50px;
+}
+
+.row-subdivision-two {
+    position: relative;
+    bottom: 50px;
+}
+
+.row-subdivision-two button {
+    height: 25px;
+}
+.numbers {
+    
+}
+
+.two-to-one {
+
+}
+
+/* these are the horizontal double bets placed over subdivision one */
+.double-one {
+    display: flex;
+    position: relative;
+    left: 50px;
+    bottom: 50px;
+    gap: 30px;
+}
+
+.double-two {
+    display: flex;
+    gap: 30px;
+}
+
+.quad {
+    display: flex;
+    gap: 60px;
+    position: relative;
+    left: 50px;
+    bottom: 25px;
+}
+
+.quad button {
+    width: 20px;
+}
+
+.columns-container {
+    display: flex;
+    gap: 20px;
+    position: relative;
+    left: 10px;
+}
+
+.columns-container button {
+    width: 20px 
 }

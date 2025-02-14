@@ -1,6 +1,6 @@
 import React from 'react'
 
-function ZeroBet(type) {
+function ZeroBet({type}) {
 
     if (type == 'single') {
         return(

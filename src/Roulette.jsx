@@ -66,7 +66,7 @@ const Roulette = () => {
     ]
 
     const doubleBetRowOne = [
-        [1, 4], [4, 7], [7, 10], [10, 13], [13, 16], [16, 19], [19, 22], [22, 25], [25, 28], [28, 31], [31, 34]
+        [3, 6], [6, 9], [9, 12], [12, 15], [15, 18], [18, 21], [21, 24], [24, 27], [27, 30], [30, 33], [33, 36]
     ];
     const doubleBetRowOnev2 = [
         [2, 3], [5, 6], [8, 9], [11, 12], [14, 15], [17, 18], [20, 21], [23, 24], [26, 27], [29, 30], [32, 33], [35, 36]
@@ -78,7 +78,7 @@ const Roulette = () => {
         [1, 2], [4, 5], [7, 8], [10, 11], [13, 14], [16, 17], [19, 20], [22, 23], [25, 26], [28, 29], [31, 32], [34, 35]
     ]
     const doubleBetRowThree = [
-        [3, 6], [6, 9], [9, 12], [12, 15], [15, 18], [18, 21], [21, 24], [24, 27], [27, 30], [30, 33], [33, 36]
+        [1, 4], [4, 7], [7, 10], [10, 13], [13, 16], [16, 19], [19, 22], [22, 25], [25, 28], [28, 31], [31, 34]
     ];
 
     const quadBetsRowOne = [
@@ -117,28 +117,40 @@ const Roulette = () => {
 
             <div id='roulette-table'>
                 <div id='zero-column'>
-                    {zeroTypes.map(item => <ZeroBet type={item.type} key={item.type}/>)}
+                    {zeroTypes.map(item => <ZeroBet class='zero' type={item.type} key={item.type}/>)}
                 </div>
+            <div id='roulette-table-grid'>
                 <div id='row-one'>
-                    {rowOneNumbers.map(number => <NumberBet number={number} key={number}/>)}
-                    {intervalBetsRowOne.map(item => <IntervalBet twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
-                    {doubleBetRowOne.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}
-                    {doubleBetRowOnev2.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}
-                    {quadBetsRowOne.map(numbers => <QuadBet numbers={numbers} key={numbers}/>)}
+                    <div class='row-subdivision-one'>
+                        {rowOneNumbers.map(number => <NumberBet class='numbers' number={number} key={number}/>)}
+                        {intervalBetsRowOne.map(item => <IntervalBet class='two-to-one' twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
+                    </div>
+                        <div class='double-one'>{doubleBetRowOne.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}</div>
+                    <div class='row-subdivision-two'>
+                        <div class='double-two'>{doubleBetRowOnev2.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}</div>
+                        <div class='quad'>{quadBetsRowOne.map(numbers => <QuadBet numbers={numbers} key={numbers}/>)}</div>
+                    </div>
                 </div>
                 <div id='row-two'>
-                    {rowTwoNumbers.map(number => <NumberBet number={number} key={number}/>)}    
-                    {intervalBetsRowTwo.map(item => <IntervalBet twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
-                    {doubleBetRowTwo.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}
-                    {doubleBetRowTwov2.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}
-                    {quadBetsRowTwo.map(numbers => <QuadBet numbers={numbers} key={numbers}/>)}
+                    <div class='row-subdivision-one'>
+                        {rowTwoNumbers.map(number => <NumberBet number={number} key={number}/>)}    
+                        {intervalBetsRowTwo.map(item => <IntervalBet twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
+                    </div>
+                        <div class='double-one'>{doubleBetRowTwo.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}</div>
+                    <div class='row-subdivision-two'>
+                        <div class='double-two'>{doubleBetRowTwov2.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}</div>
+                        <div class='quad'>{quadBetsRowTwo.map(numbers => <QuadBet numbers={numbers} key={numbers}/>)}</div>
+                    </div>
                 </div>
                 <div id='row-three'>
-                    {rowThreeNumbers.map(number => <NumberBet number={number} key={number}/>)}
-                    {intervalBetsRowThree.map(item => <IntervalBet twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
-                    {doubleBetRowThree.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}
-                    {columnBets.map(numbers => <ColumnBet numbers={numbers} key={numbers}/> )}
-
+                    <div class='row-subdivision-one'>
+                        {rowThreeNumbers.map(number => <NumberBet number={number} key={number}/>)}
+                        {intervalBetsRowThree.map(item => <IntervalBet twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
+                    </div>
+                        <div class='double-one'>{doubleBetRowThree.map(numbers => <DoubleBet numbers={numbers} key={numbers}/>)}</div>
+                    <div class='row-subdivision-two'>  
+                        <div class='columns-container'>{columnBets.map(numbers => <ColumnBet numbers={numbers} key={numbers}/> )}</div>
+                    </div>
                 </div>
                 <div id='row-four'>
                     {intervalBetsRowFour.map(item => <IntervalBet twoToOne={item.twoToOne} interval={item.interval} key={item.key}/>)}
@@ -148,6 +160,7 @@ const Roulette = () => {
                     {colours.map(item => <ColourBet colour={item.colour} key={item.colour}/>)}
                     {intervalBetsRowFive.map(item => <IntervalBet twoTwoOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
                 </div>            
+            </div>
             </div>
 
         </div>
