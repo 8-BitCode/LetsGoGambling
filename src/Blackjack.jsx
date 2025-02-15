@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './CssFiles/Blackjack.css';
 import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
@@ -19,6 +19,15 @@ const Blackjack = () => {
 
     const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
     const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+
+
+    // TODO: change start to replay after game is over
+    // TODO: add a delay between each card being dealt
+
+    // TODO: change money to be up and down buttons that can be held down to increase or decrease the bet
+
+    // Typical blackjack payout is 3:2 (1.5x), but this uses 2:1 (2x) for simplicity
+
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -141,15 +150,15 @@ const Blackjack = () => {
         const newPlayerHandValue = getHandValue(newPlayerHand);
         if (newPlayerHandValue > 21) {
             setMessage(`Bust! You lose your bet. - ${bet}`);
-            updateMoney(Math.max(money - bet, 0)); // Ensure money doesn't go below 0
+            updateMoney(Math.max(money, 0)); // Ensure money doesn't go below 0
             gameOverFunction();
         } else if (newPlayerHandValue === 21 && getHandValue(dealerHand) !== 21) {
             setMessage(`You win! Your bet is doubled! + ${2 * bet}`);
-            updateMoney(Math.min(money + 2 * bet, money)); // Prevent increasing money beyond original
+            updateMoney(money + 2 * bet); 
             gameOverFunction();
         } else if (newPlayerHandValue === 21 && getHandValue(dealerHand) === 21) {
             setMessage(`It's a tie. Your bet is returned. + ${bet}`);
-            updateMoney(Math.min(money + bet, money)); // Prevent increasing money beyond original
+            updateMoney(money + bet); 
             gameOverFunction();
         }
     };
@@ -169,13 +178,13 @@ const Blackjack = () => {
         
         if (dealerValue > 21 || playerValue > dealerValue) {
             setMessage(`You win! Your bet is doubled! + ${2 * bet}`);
-            updateMoney(Math.min(money + 2 * bet, money)); // Prevent increasing money beyond original
+            updateMoney(money + 2 * bet);
         } else if (playerValue < dealerValue) {
             setMessage(`Dealer wins. You lose your bet. - ${bet}`);
-            updateMoney(Math.max(money - bet, 0)); // Ensure money doesn't go below 0
+            updateMoney(Math.max(money, 0)); // Ensure money doesn't go below 0
         } else {
             setMessage(`It's a tie. Your bet is returned. + ${bet}`);
-            updateMoney(Math.min(money + bet, money)); // Prevent increasing money beyond original
+            updateMoney(money + bet);
         }
         gameOverFunction();
     };
@@ -185,7 +194,8 @@ const Blackjack = () => {
         setGameOver(true);
         setGameActive(false);
         setBet(0);
-        setMessage(`${message} Resetting game...`);
+        setMessage(message => `${message}
+        Resetting game...`);
         setTimeout(() => {
             setPlayerHand([]);
             setDealerHand([]);
@@ -199,10 +209,30 @@ const Blackjack = () => {
         } else if (amount < 0 && bet + amount < 0) {
             alert('Cannot bet negative money!');
         } else {
-            setMoney(money - amount);
-            setBet(bet + amount);
+            setMoney(money => money - amount);
+            setBet(bet => bet + amount);
         }
     };
+
+    const intervalRef = useRef(null);
+
+    const startIncrementBet = (amount) => {
+        if (intervalRef.current) return;
+        else if (amount < 0 && bet === 0) stopIncrementBet();
+        else if (amount > 0 && money === 0) stopIncrementBet();
+        intervalRef.current = setInterval(() => {
+            // FIXME: only increment if there is money to bet and only decrement if the bet is > 0
+            betMoney(amount);
+        }, 100);
+    };
+
+    const stopIncrementBet = () => {
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+        }
+    };
+
 
     return (
         <>
@@ -214,11 +244,21 @@ const Blackjack = () => {
                 <h1>Blackjack</h1>
 
                 <div className='Blackjack-Bet'>
-                    <h2>Money = {money}</h2>
-                    <h2>Bet = {bet}</h2>
+                    <div className='Blackjack-Money'>
+                        <div className='Blackjack-Money-Child'>
+                            <h2>Money = {money}</h2>
+                            <h2>Bet = {bet}</h2>
+                        </div>
+                        <div className='Blackjack-Money-Child'>
+                            <button onMouseDown={() => startIncrementBet(1)} onMouseUp={stopIncrementBet}> + 1 </button>
+                            <button onMouseDown={() => startIncrementBet(-1)} onMouseUp={stopIncrementBet}> - 1 </button>
+                        </div>
+                    </div>
+
+                    <button onClick={() => updateMoney(money + 1000)}>Free Money</button>
 
                     <div className='Blackjack-Bet-Buttons'>
-                        <button onClick={() => betMoney(1)}> + 1 </button>
+                        {/* <button onClick={() => betMoney(1)}> + 1 </button> */}
                         <button onClick={() => betMoney(10)}> + 10 </button>
                         <button onClick={() => betMoney(50)}> + 50 </button>
                         <button onClick={() => betMoney(100)}> + 100 </button>
@@ -227,7 +267,7 @@ const Blackjack = () => {
                     </div>
 
                     <div className='Blackjack-Bet-Buttons'>
-                        <button onClick={() => betMoney(-1)}> - 1 </button>
+                        {/* <button onClick={() => betMoney(-1)}> - 1 </button> */}
                         <button onClick={() => betMoney(-10)}> - 10 </button>
                         <button onClick={() => betMoney(-50)}> - 50 </button>
                         <button onClick={() => betMoney(-100)}> - 100 </button>
@@ -271,3 +311,5 @@ const Blackjack = () => {
 };
 
 export default Blackjack;
+
+
