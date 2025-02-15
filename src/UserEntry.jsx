@@ -56,7 +56,6 @@ const UserEntry = () => {
       setError(err.message);
     }
   };
-  
 
   // Handle username input
   const handleUsernameChange = (e) => {
@@ -71,13 +70,14 @@ const UserEntry = () => {
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
-      // Username is available, save it
+      // Username is available, save it with initial money
       await setDoc(doc(db, "Players", username), {
         uid: user.uid,
         username: username,
+        money: 1000 // Initial money set to 1000
       });
       setIsUsernameSet(true);
-      navigate("/GameSelection", { state: { username } });
+      navigate("/GameSelection", { state: { username, money: 1000 } });  // Pass username and money
     } else {
       // Username already taken
       setUsernameAvailable(false);
@@ -87,7 +87,7 @@ const UserEntry = () => {
   // Handle navigation to GameSelection
   const handleGoToGameSelection = () => {
     if (isUsernameSet) {
-      navigate("/GameSelection", { state: { username } });
+      navigate("/GameSelection", { state: { username, money: 1000 } }); // Pass username and money
     } else {
       alert("You need to set a username first!");
     }
