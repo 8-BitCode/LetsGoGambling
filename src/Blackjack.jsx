@@ -32,6 +32,11 @@ const Blackjack = () => {
     // TODO: add a delay between each card being dealt
 
     // TODO: change money to be up and down buttons that can be held down to increase or decrease the bet
+    // TODO: leave buttons but remove +/- 1
+
+    // TODO: disable bet buttons when game is active and when that amount cannot be added
+
+    // TODO: put dealer and player hand next to each other
 
     // Typical blackjack payout is 3:2 (1.5x), but this uses 2:1 (2x) for simplicity
 
@@ -244,7 +249,7 @@ const Blackjack = () => {
             <hr/>
 
             <button className='Blackjack-Start' onClick={startGame} disabled={gameActive}>Start Game</button>
-            
+
             <div className='Blackjack-Hand'>
                 <h2>Dealer's Hand</h2>
                 {dealerHand.map((card, index) => (
