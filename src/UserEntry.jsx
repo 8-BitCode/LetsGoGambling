@@ -4,6 +4,8 @@ import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { onAuthStateChanged } from "firebase/auth"; // Import the missing function
+import "./CssFiles/UserEntry.css"; // Import the external CSS file
+import TheCreature from "./Assets/PDTheCreature.png";
 
 const UserEntry = () => {
   const [user, setUser] = useState(null);
@@ -11,43 +13,46 @@ const UserEntry = () => {
   const [username, setUsername] = useState("");
   const [usernameAvailable, setUsernameAvailable] = useState(true);
   const [isUsernameSet, setIsUsernameSet] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Track loading state
+  const [isLoading, setIsLoading] = useState(true);
+  const [dateTime, setDateTime] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Listen for authentication state changes
+    const interval = setInterval(() => {
+      const now = new Date();
+      const options = { weekday: "long", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" };
+      setDateTime(now.toLocaleString("en-GB", options));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-        checkUsername(currentUser.uid); // Check if the user has a username
+        checkUsername(currentUser.uid);
       } else {
         setUser(null);
-        setIsUsernameSet(false); // Reset isUsernameSet when logged out
-        setIsLoading(false); // End loading when there's no user
+        setIsUsernameSet(false);
+        setIsLoading(false);
       }
     });
-
-    return () => unsubscribe(); // Clean up the listener
+    return () => unsubscribe();
   }, []);
 
-  // Check if the user already has a username set in the database
   const checkUsername = async (uid) => {
     const usernameRef = collection(db, "Players");
     const q = query(usernameRef, where("uid", "==", uid));
     const querySnapshot = await getDocs(q);
-
     if (!querySnapshot.empty) {
-      // User already has a username set
       setIsUsernameSet(true);
-      setUsername(querySnapshot.docs[0].data().username); // Set the username
+      setUsername(querySnapshot.docs[0].data().username);
     } else {
-      // No username set yet
       setIsUsernameSet(false);
     }
-    setIsLoading(false); // End loading once the check is complete
+    setIsLoading(false);
   };
 
-  // Handle Google login
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
@@ -57,43 +62,36 @@ const UserEntry = () => {
     }
   };
 
-  // Handle username input
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };
 
-  // Handle form submission for username
   const handleUsernameSubmit = async (e) => {
     e.preventDefault();
     const usernameRef = collection(db, "Players");
     const q = query(usernameRef, where("username", "==", username));
     const querySnapshot = await getDocs(q);
-
     if (querySnapshot.empty) {
-      // Username is available, save it with initial money
       await setDoc(doc(db, "Players", username), {
         uid: user.uid,
         username: username,
-        money: 1000 // Initial money set to 1000
+        money: 1000
       });
       setIsUsernameSet(true);
-      navigate("/GameSelection", { state: { username, money: 1000 } });  // Pass username and money
+      navigate("/GameSelection", { state: { username, money: 1000 } });
     } else {
-      // Username already taken
       setUsernameAvailable(false);
     }
   };
 
-  // Handle navigation to GameSelection
   const handleGoToGameSelection = () => {
     if (isUsernameSet) {
-      navigate("/GameSelection", { state: { username, money: 1000 } }); // Pass username and money
+      navigate("/GameSelection", { state: { username, money: 1000 } });
     } else {
       alert("You need to set a username first!");
     }
   };
 
-  // Don't render anything until username check is complete (prevent flickering)
   if (isLoading) return <div>Loading...</div>;
 
   return (
@@ -102,36 +100,31 @@ const UserEntry = () => {
         <title>User Entry</title>
       </Helmet>
       <div className="UE-Container">
-        <button onClick={handleGoogleLogin}>Sign in with Google</button>
+        <div className="date-time-display top-left">{dateTime}</div>
+        <div className="content-wrapper">
+          <img src={TheCreature} className="placeholder-image" />
+          <button onClick={handleGoogleLogin}>Sign in with Google</button>
 
-        {user && !isUsernameSet && (
-          <div>
-            <h3>Please choose a username:</h3>
-            <form onSubmit={handleUsernameSubmit}>
-              <input
-                type="text"
-                value={username}
-                onChange={handleUsernameChange}
-                placeholder="Enter your username"
-              />
-              <button type="submit">Submit</button>
-            </form>
-            {!usernameAvailable && <div className="error">Username is already taken. Please choose another one.</div>}
-          </div>
-        )}
+          {user && !isUsernameSet && (
+            <div>
+              <h3>Please choose a username:</h3>
+              <form onSubmit={handleUsernameSubmit}>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={handleUsernameChange}
+                  placeholder="Enter your username"
+                />
+                <button type="submit">-→</button>
+              </form>
+              {!usernameAvailable && <div className="error">Username is already taken. Please choose another one.</div>}
+            </div>
+          )}
 
-        {user && isUsernameSet && (
-          <div>
-            <h3>Welcome, {username}!</h3>
-            <p>Your username is already set.</p>
-          </div>
-        )}
-
-        <button onClick={handleGoToGameSelection}>
-          Go to Game Selection
-        </button>
-
-        {error && <div className="error">{error}</div>}
+          <button onClick={handleGoToGameSelection}>Go to Game Selection</button>
+          {user && isUsernameSet && <div><p>Already Signed In</p></div>}
+          {error && <div className="error">{error}</div>}
+        </div>
       </div>
     </>
   );
