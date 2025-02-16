@@ -102,11 +102,11 @@ const Blackjack = () => {
 
         if (getHandValue(playerHand) === 21 && getHandValue(dealerHand) !== 21) {
             setMessage(`Blackjack! You win! Your bet is doubled! + ${2 * bet}`);
-            updateMoney(money + 2 * bet);
+            updateMoney(money + 2 * bet); // Add double the bet to money
             gameOverFunction();
         } else if (getHandValue(playerHand) === 21 && getHandValue(dealerHand) === 21) {
             setMessage(`It's a tie. Your bet is returned. + ${bet}`);
-            updateMoney(money + bet);
+            updateMoney(money + bet); // Bet is returned, no change
             gameOverFunction();
         }
     };
@@ -141,17 +141,18 @@ const Blackjack = () => {
         const newPlayerHandValue = getHandValue(newPlayerHand);
         if (newPlayerHandValue > 21) {
             setMessage(`Bust! You lose your bet. - ${bet}`);
-            updateMoney(Math.max(money - bet, 0)); // Ensure money doesn't go below 0
+            updateMoney(money); // Subtract bet on loss
             gameOverFunction();
         } else if (newPlayerHandValue === 21 && getHandValue(dealerHand) !== 21) {
             setMessage(`You win! Your bet is doubled! + ${2 * bet}`);
-            updateMoney(Math.min(money + 2 * bet, money)); // Prevent increasing money beyond original
+            updateMoney(money + 2 * bet); // Add double the bet to money
             gameOverFunction();
         } else if (newPlayerHandValue === 21 && getHandValue(dealerHand) === 21) {
             setMessage(`It's a tie. Your bet is returned. + ${bet}`);
-            updateMoney(Math.min(money + bet, money)); // Prevent increasing money beyond original
+            updateMoney(money + bet); // Bet is returned, no change
             gameOverFunction();
         }
+
     };
     
     const stand = () => {
@@ -166,18 +167,19 @@ const Blackjack = () => {
     
         const playerValue = getHandValue(playerHand);
         const dealerValue = getHandValue(newDealerHand);
-        
+
         if (dealerValue > 21 || playerValue > dealerValue) {
             setMessage(`You win! Your bet is doubled! + ${2 * bet}`);
-            updateMoney(Math.min(money + 2 * bet, money)); // Prevent increasing money beyond original
+            updateMoney(money + 2 * bet); // Add double the bet to money
         } else if (playerValue < dealerValue) {
             setMessage(`Dealer wins. You lose your bet. - ${bet}`);
-            updateMoney(Math.max(money - bet, 0)); // Ensure money doesn't go below 0
+            updateMoney(money); // Subtract bet on loss
         } else {
             setMessage(`It's a tie. Your bet is returned. + ${bet}`);
-            updateMoney(Math.min(money + bet, money)); // Prevent increasing money beyond original
+            updateMoney(money + bet); // Bet is returned, no change
         }
         gameOverFunction();
+
     };
     
 
