@@ -11,7 +11,7 @@ const TitlePage = () => {
     return (
         <>
             <Helmet>
-                <title>HOME PAGE</title>
+                <title>MALWARE DETECTED</title>
             </Helmet>
 
             <div className='Windows95-Theme'>
