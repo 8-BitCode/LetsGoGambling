@@ -1,0 +1,70 @@
+/* Windows 95 Theme - Now Includes the Title Bar */
+.Windows95-Theme {
+    background: silver;
+    height: 100vh;
+    width:100vw;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Title Bar - Now Integrated as Top Section */
+.Window-Title-Bar {
+    width: 100%;
+    height: 7vh;
+    background: linear-gradient(to right, #000080, #1084d0);
+    color: white;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    font-family: 'BIOSFont', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    box-sizing: border-box;
+    border: 4px solid #808080;
+}
+
+/* Content Wrapper - Starts Right After Title Bar */
+.TitlePageContent {
+    width: calc(100% - 16px); /* Ensure the content width is aligned with title bar */
+    height: 92%;
+    background-color: white;
+    border: 8px solid #808080; /* Increased border width */
+    box-shadow: inset -4px -4px 0px #c0c0c0, inset 4px 4px 0px #000000;
+    background-image: url('../Assets/PDBackgroundWithEffects.png');
+}
+
+/* Button Styling */
+.ButtonCon {
+    display: flex; /* Use flexbox to align the buttons */
+    justify-content: flex-end; /* Align buttons to the right */
+    width: 100%; /* Ensure buttons take full width of the container */
+    margin-right: 10px;
+    margin-bottom: 0.2vh;
+}
+
+.ButtonCon button {
+    background-color: silver;
+    box-shadow: -1px 0 #000, 0 -1px #000, -1px -1px #000, 1px 0 #000, 0 1px #000, 1px 1px #000, 1px -1px #000, -1px 2px #000, 2px -1px #000, 2px 2px #000;
+    margin-left: 10px; /* Add space between buttons */
+    font-family: 'PixelFont', sans-serif;
+    font-size: 2em; /* Make the buttons' text larger */
+    color: black;
+}
+
+/* Hover effect to make buttons interactive */
+.ButtonCon button:hover {
+    background-color: #b0b0b0;
+}
+.MainTitle{
+    font-size: 7em;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: black;
+}
+.StartButton{
+    margin-top: 15vh;
+    font-size:5em;
+    box-shadow: -1px 0 #000, 0 -1px #000, -1px -1px #000, 1px 0 #000, 0 1px #000, 1px 1px #000, 1px -1px #000, -1px 2px #000, 2px -1px #000, 2px 2px #000;
+}
