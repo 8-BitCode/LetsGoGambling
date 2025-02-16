@@ -66,6 +66,7 @@
     margin-bottom: 10px;
     font-family: PixelFont;
     background-color: black;
+    color:white;
   }
   .UE-Container ::placeholder { /* Edge 12-18 */
     color: white;
