@@ -15,15 +15,24 @@ import './RouletteComponents/Roulette.css'
 
 const Roulette = () => {
 
+    // main functions within the game
     const spinWheel = () => {
-        return 
+        previousBets = betsPlaced
+        betsPlaced = []
     }
     
     const clearBet = () => {
-        return 
+        setPlaced(0) 
+        betsPlaced = []
     }
     
     const undoBet = () => {
+        recentBet = betsPlaced[betsPlaced.length - 1]
+        betsPlaced.pop()
+        setPlaced(betPlaced - recentBet)
+    }
+
+    const reBet = () => {
         return 
     }
 
@@ -38,10 +47,13 @@ const Roulette = () => {
         }
     }
 
+    // defining variables that get updated 
     const [balance, setBalance] = useState();
-    
-
     const [chipSelected, setChip] = useState();
+    const [betPlaced, setPlaced] = useState();
+
+    let betsPlaced = [];
+    let previousBets = [];
 
     function updateSelected(value) {
         setChip(value)
@@ -136,7 +148,8 @@ const Roulette = () => {
             </Helmet>
 
             <div>Selected Chip: {chipSelected}</div>
-            <div>balance: {balance}</div>
+            <div>Balance: {balance}</div>
+            <div>Bet Placed: {betPlaced}</div>
 
             <div id='chip-container'>        
                 {chipValues.map(value => <button onClick={() => updateSelected(value)} id={value} key={value} className='chip'>{value}</button>)}
@@ -144,9 +157,11 @@ const Roulette = () => {
 
 
             <div id='buttons-container'>
-                <button onClick={() => spinWheel()}>Spin Wheel</button>
+                <button onClick={() => reBet()}>Re-Bet</button>
                 <button onClick={() => clearBet()}>Clear Bet</button>
                 <button onClick={() => undoBet()}>Undo Bet</button>
+                <button onClick={() => spinWheel()}>Spin Wheel</button>
+
                 <form>
                     <input type='text' className='deposit-input'/>
                     <input type='button' onClick={() => deposit(parseInt(document.querySelector('.deposit-input').value))}/>
