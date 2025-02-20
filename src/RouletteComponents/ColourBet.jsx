@@ -1,10 +1,9 @@
 import React from 'react'
-import { default as placeBet } from './PlaceBet';
 
-function ColourBet({colour, betAmount}) {
+function ColourBet({onClick, colour}) {
 
  return(
-    <button onClick={() => placeBet(colour, betAmount, 2)}>{colour}</button>
+    <button onClick={onClick}>{colour}</button>
  )   
 };
 

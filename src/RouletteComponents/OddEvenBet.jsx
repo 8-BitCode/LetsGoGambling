@@ -1,9 +1,9 @@
 import React from 'react'
 
-function OddEvenBet({type}) {
+function OddEvenBet({onClick, type}) {
 
  return(
-    <button>{type}</button>
+    <button onClick={onClick}>{type}</button>
  )   
 };
 

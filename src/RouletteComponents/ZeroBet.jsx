@@ -1,15 +1,15 @@
 import React from 'react'
 
-function ZeroBet({type}) {
+function ZeroBet({onClick, type}) {
 
     if (type == 'single') {
         return(
-            <button>0</button>
+            <button onClick={onClick}>0</button>
         )
     }
     else {
         return (
-            <button>00</button>
+            <button onClick={onClick}>00</button>
         )
     }
 };

@@ -1,12 +1,12 @@
 import React from 'react'
 
-function IntervalBet({twoToOne, interval}) {
+function IntervalBet({onClick, twoToOne, interval}) {
 
     // includes 2 to 1 type bet (entire row)
 
     if (twoToOne === true) {
         return(
-            <button>2/1</button>
+            <button onClick={onClick}>2/1</button>
         )
     }
 
@@ -16,7 +16,7 @@ function IntervalBet({twoToOne, interval}) {
         const finalNumber = interval[interval.length - 1]
 
         return(
-            <button>{firstNumber} to {finalNumber}</button>
+            <button onClick={onClick}>{firstNumber} to {finalNumber}</button>
         )
     }
 

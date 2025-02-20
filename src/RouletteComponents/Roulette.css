@@ -173,7 +173,7 @@
     display: flex;
     gap: 20px;
     position: relative;
-    left: 10px;
+    left: -20px;
 }
 
 .columns-container button {

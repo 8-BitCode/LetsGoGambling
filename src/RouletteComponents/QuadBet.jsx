@@ -1,9 +1,9 @@
 import React from 'react'
 
-function QuadBet({numbers}) {
+function QuadBet({onClick, numbers}) {
 
  return(
-    <button></button>
+    <button onClick={onClick}></button>
  )   
 };
 

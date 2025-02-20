@@ -1,9 +1,9 @@
 import React from 'react'
 
-function DoubleBet({numbers}) {
+function DoubleBet({onClick, numbers}) {
 
  return(
-    <button>{numbers[0]}/{numbers[1]}</button>
+    <button onClick={onClick}>{numbers[0]}/{numbers[1]}</button>
  )   
 };
 

@@ -1,9 +1,9 @@
 import React from 'react'
 
-function NumberBet({number}) {
+function NumberBet({onClick, number}) {
 
  return(
-    <button>{number}</button>
+    <button onClick={onClick}>{number}</button>
  )   
 };
 
