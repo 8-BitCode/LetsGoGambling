@@ -18,60 +18,121 @@ const Roulette = () => {
     // main functions within the game
     const spinWheel = () => {
 
-        console.log(betsPlaced)
-
-        betsPlaced.forEach(element => {
-            console.log(element[0])
-        });
-
-
-        setWin(parseInt(Math.random() * 38) - 1)
-
-        // check each bet for a win
-        // each bet is checked for colour, even/ odd first 
-        // then if it is a single 
-        // this leaves the bet ids that are arrays left allowing to check if the winning bet is in th array
-
-        betsPlaced.forEach(element => {
-            let id = element[0]
-
-            // checking colour 
-            if (id == 'red' || id == 'black') {
-
-                if (redNumbers.includes(winningNumber)) {
-                    winningColour = 'red';
-                } 
-                else {
-                    winningColour = 'black';
-                }
-
-                if (winningColour == id) {
-                    //console.log('bet won')
-                }
-            }
-
-            // checking even or odd
-            if (id == 'even' || id == 'odd') {
-
-
-            }
-        }
-        )
-
+        // number from 'wheel spin'
+        setWin(Math.floor(Math.random() * 38) - 1)  
+        setPrevious(betsPlaced)      
     }
+
+    // check each bet for a win
+    // each bet is checked for colour, even/ odd first 
+    // then if it is a single 
+    // this leaves the bet ids that are arrays left allowing to check if the winning bet is in th array
+
+    useEffect(() =>  {
+       if (winningNumber !== null) {
+        
+            // since the winning number is soon cleared
+            // this allows the number to still be displayed 
+            setDisplay(winningNumber)
+
+            betsPlaced.forEach(element => {
+                let id = element[0]
+                console.log(id)
+                // checking colour 
+                if (id == 'red' || id == 'black') {
+        
+                    if (redNumbers.includes(winningNumber)) {
+                        winningColour = 'red';
+                    } 
+                    else {
+                        winningColour = 'black';
+                    }
+        
+                    if (winningColour == id) {
+                        handleWin(Element)
+                    }
+                }
+        
+                // checking even or odd
+                else if (id == 'even' || id == 'odd') {
+                        
+                    if (evenNumbers.includes(winningNumber)) {
+                        winningEvenOdd = 'even';
+                    }
+                    else {
+                        winningEvenOdd = 'odd'; 
+                    }
+                        
+                    if (winningEvenOdd == id) {
+                        console.log(winningEvenOdd, id)
+                        handleWin(element)
+                    }
+                }
+
+                else if (Number.isInteger(id)) {
+                    if (id == winningNumber)
+                        handleWin(element)
+                }
+
+                else if (id.includes(winningNumber)) {
+                    handleWin(element)
+                }
+            }
+        )
+        // prevents the function from being continually called 
+        if (betsPlaced.length > 0) {
+            clearBet()
+        }
+        setWin(null)
+    }})
+
+
     
     const clearBet = () => {
-        return
+        setPlaced([])
     }
     
     const undoBet = () => {
-        
+        let lastNum = betsPlaced.pop()
+        setPlaced(betsPlaced)
+
+        console.log(lastNum)
     }
 
     const reBet = () => {
-        return 
+
+        console.log(betsPlaced)
+        console.log(previousBets)
+
+        if (betsPlaced.includes(previousBets) || betsPlaced == previousBets) {
+            
+        }
+        else{
+        setPlaced(previousBets)
+
+        let sum = 0
+        previousBets.forEach(element => {
+            sum += element[1]
+        })
+        if (sum > balance) {
+            alert('not enough money in balance')
+        }
+        else {
+            setBalance(balance - sum)
+        }}
     }
 
+    const handleWin = () => {
+        alert('You Won')
+
+        betsPlaced.forEach(element => {
+            let betAmount = element[1]
+            let multiplier = element[2]
+            let amountWonFromBet = betAmount * multiplier 
+            setBalance(balance + amountWonFromBet)
+        })
+
+    }
 
     const deposit = (amount) => {
         
@@ -88,18 +149,34 @@ const Roulette = () => {
     const [chipSelected, setChip] = useState();
     const [stakePlaced, setStake] = useState();
     const [betsPlaced, setPlaced] = useState([]);
-    const [winningNumber, setWin] = useState()
+    const [previousBets, setPrevious] = useState([])
+    const [winningNumber, setWin] = useState(null);
+    const [displayWin, setDisplay] = useState();
 
     let multiplier = 0
     let winningColour = 0
-
-    let previousBets = [];
+    let winningEvenOdd = 0
 
     const placeBet = (betAmount, id) => {
         
         if (betAmount === undefined) {
             alert('Please select a bet amount')
             return 
+        }
+
+
+        if (betAmount > balance || balance == undefined) {
+            alert('balance is too low')
+            return
+        }
+
+        setBalance(balance - betAmount)
+        
+        if (stakePlaced === undefined) {
+            setStake(betAmount);
+        }
+        else {
+            setStake(stakePlaced + betAmount);
         }
 
         // calculates the appropriate multiplier based on the id
@@ -241,7 +318,7 @@ const Roulette = () => {
             <div>Balance: {balance}</div>
             <div>Bet Placed: {stakePlaced}</div>
 
-            <div>Wheel: {winningNumber}</div>
+            <div>Wheel: {displayWin}</div>
 
             <div id='chip-container'>        
                 {chipValues.map(value => <button onClick={() => updateSelected(value)} id={value} key={value} className='chip'>{value}</button>)}
