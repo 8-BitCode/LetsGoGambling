@@ -50,7 +50,7 @@ const Roulette = () => {
                     }
         
                     if (winningColour == id) {
-                        handleWin(Element)
+                        handleWin(element)
                     }
                 }
         
@@ -145,16 +145,10 @@ const Roulette = () => {
         setStake(stakePlaced + sum - addAmount);
     }
 
-    const handleWin = () => {
-        alert('You Won')
-
-        betsPlaced.forEach(element => {
-            let betAmount = element[1]
-            let multiplier = element[2]
-            let amountWonFromBet = betAmount * multiplier 
-            setBalance(balance + amountWonFromBet)
-        })
-
+    const handleWin = (element) => {
+        alert('You Won ' + (element[1] * element[2]))
+        console.log(balance)
+        setBalance(balance + (element[1] * element[2]))
     }
 
     const deposit = (amount) => {
