@@ -17,10 +17,11 @@ const Roulette = () => {
 
     // main functions within the game
     const spinWheel = () => {
-
+        console.log(betsPlaced)
         // number from 'wheel spin'
         setWin(Math.floor(Math.random() * 38) - 1)  
-        setPrevious(betsPlaced)      
+        setPrevious(betsPlaced)
+        setStake(undefined)      
     }
 
     // check each bet for a win
@@ -89,6 +90,14 @@ const Roulette = () => {
 
     
     const clearBet = () => {
+        // resets the stake and balance
+        let sum = 0
+        betsPlaced.forEach(element => {
+            sum += element[1]
+        })
+        setBalance(balance + sum)
+        setStake(0)
+
         setPlaced([])
     }
     
@@ -96,7 +105,8 @@ const Roulette = () => {
         let lastNum = betsPlaced.pop()
         setPlaced(betsPlaced)
 
-        console.log(lastNum)
+        setBalance(balance + lastNum[1])
+        setStake(stakePlaced - lastNum[1])
     }
 
     const reBet = () => {
@@ -104,10 +114,18 @@ const Roulette = () => {
         console.log(betsPlaced)
         console.log(previousBets)
 
-        if (betsPlaced.includes(previousBets) || betsPlaced == previousBets) {
-            
+        if (betsPlaced.includes(previousBets) || betsPlaced == previousBets || previousBets.length == 0) {
+            console.log('hello')
+            return
         }
-        else{
+        // if bets are already placed, this will remove the bet amount of those bets from the stake
+        let addAmount = 0
+        if (betsPlaced.length > 0) {
+            betsPlaced.forEach(element => {
+                addAmount += element[1]
+            })
+        }
+        console.log('passed through')
         setPlaced(previousBets)
 
         let sum = 0
@@ -116,10 +134,15 @@ const Roulette = () => {
         })
         if (sum > balance) {
             alert('not enough money in balance')
+            return
         }
-        else {
-            setBalance(balance - sum)
-        }}
+        console.log(sum, addAmount);
+        setBalance(balance - sum + addAmount);
+        if (betsPlaced == undefined) {
+            setStake(sum)
+            return
+        }
+        setStake(stakePlaced + sum - addAmount);
     }
 
     const handleWin = () => {
