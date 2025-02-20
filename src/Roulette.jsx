@@ -82,7 +82,8 @@ const Roulette = () => {
         )
         // prevents the function from being continually called 
         if (betsPlaced.length > 0) {
-            clearBet()
+            setPlaced([])
+            setStake(0)
         }
         setWin(null)
     }})
@@ -148,6 +149,7 @@ const Roulette = () => {
     const handleWin = (element) => {
         alert('You Won ' + (element[1] * element[2]))
         console.log(balance)
+        console.log(balance + (element[1] * element[2]))
         setBalance(balance + (element[1] * element[2]))
     }
 
