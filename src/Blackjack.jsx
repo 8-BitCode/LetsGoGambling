@@ -16,6 +16,9 @@ const Blackjack = () => {
     const [gameOver, setGameOver] = useState(true);
     const [message, setMessage] = useState('');
     const [userDocId, setUserDocId] = useState(null);
+    
+    const [upIncrement, setUpIncrement] = useState(false)
+    const [downIncrement, setDownIncrement] = useState(false)
 
     const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
     const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
@@ -25,6 +28,8 @@ const Blackjack = () => {
     // TODO: add a delay between each card being dealt
 
     // TODO: change money to be up and down buttons that can be held down to increase or decrease the bet
+
+    // TODO: put dealer hands side by side
 
     // Typical blackjack payout is 3:2 (1.5x), but this uses 2:1 (2x) for simplicity
 
@@ -40,6 +45,7 @@ const Blackjack = () => {
         });
         return () => unsubscribe();
     }, [navigate]);
+
 
     const fetchMoney = async (uid) => {
         try {
@@ -59,6 +65,7 @@ const Blackjack = () => {
         }
     };
 
+
     const updateMoney = async (newMoney) => {
         try {
             if (userDocId) {
@@ -71,6 +78,7 @@ const Blackjack = () => {
         }
     };
 
+
     const initialiseDeck = () => {
         const newDeck = [];
         for (let suit of suits) {
@@ -81,6 +89,7 @@ const Blackjack = () => {
         return shuffleDeck(newDeck);
     };
 
+
     const shuffleDeck = (deck) => {
         for (let i = deck.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -88,6 +97,7 @@ const Blackjack = () => {
         }
         return deck;
     };
+
 
     const startGame = () => {
         if (money === 0 && bet === 0) {
@@ -120,6 +130,7 @@ const Blackjack = () => {
         }
     };
 
+
     const getHandValue = (hand) => {
         let value = 0;
         let numAces = 0;
@@ -139,6 +150,7 @@ const Blackjack = () => {
         }
         return value;
     };
+
 
     const hit = () => {
         if (gameOver) return;
@@ -163,6 +175,7 @@ const Blackjack = () => {
         }
     };
     
+
     const stand = () => {
         if (gameOver) return;
         let newDeck = [...deck];
@@ -203,6 +216,7 @@ const Blackjack = () => {
         }, 2000);
     };
 
+
     const betMoney = (amount) => {
         if (money - amount < 0) {
             alert('Not enough money!');
@@ -214,17 +228,21 @@ const Blackjack = () => {
         }
     };
 
-    const intervalRef = useRef(null);
-
+    // TODO: change to while loop ?
+    // const intervalRef = useRef(null);
+    /*
     const startIncrementBet = (amount) => {
         if (intervalRef.current) return;
         else if (amount < 0 && bet === 0) stopIncrementBet();
         else if (amount > 0 && money === 0) stopIncrementBet();
-        intervalRef.current = setInterval(() => {
+        intervalRef.current = setInter
+
+        val(() => {
             // FIXME: only increment if there is money to bet and only decrement if the bet is > 0
             betMoney(amount);
         }, 100);
     };
+
 
     const stopIncrementBet = () => {
         if (intervalRef.current) {
@@ -232,6 +250,22 @@ const Blackjack = () => {
             intervalRef.current = null;
         }
     };
+    */
+    
+
+    // setTimeout is non-blocking
+    // use another function to ensure while loop doesn't loop forever
+    while (upIncrement == true && money > 0) {
+        setTimeout(() => {
+            betMoney(1);
+        }, 100);
+    }
+
+    while (downIncrement == true && bet > 0) {
+        setTimeout(() => {
+            betMoney(-1);
+        }, 100);
+    }
 
 
     return (
@@ -250,8 +284,13 @@ const Blackjack = () => {
                             <h2>Bet = {bet}</h2>
                         </div>
                         <div className='Blackjack-Money-Child'>
-                            <button onMouseDown={() => startIncrementBet(1)} onMouseUp={stopIncrementBet}> + 1 </button>
-                            <button onMouseDown={() => startIncrementBet(-1)} onMouseUp={stopIncrementBet}> - 1 </button>
+                            {/* TODO: set up held and down held to true:
+                             TODO: while held == true, increment bet */}
+                            {/* <button onMouseDown={() => startIncrementBet(1)} onMouseUp={stopIncrementBet}> ↑ </button>
+                            <button onMouseDown={() => startIncrementBet(-1)} onMouseUp={stopIncrementBet}> ↓ </button> */}
+
+                            <button onMouseDown={() => setUpIncrement(true)} onMouseUp={() => setUpIncrementBet(false)}> ↑ </button>
+                            <button onMouseDown={() => setDownIncrement(true)} onMouseUp={() => setDownIncrementBet(false)}> ↓ </button>
                         </div>
                     </div>
 
