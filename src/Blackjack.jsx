@@ -1,9 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './CssFiles/Blackjack.css';
-import { Helmet } from 'react-helmet';
-import { useNavigate } from 'react-router-dom';
-import { auth, db, collection, query, where, getDocs, updateDoc, doc } from './firebase';
-import { onAuthStateChanged } from 'firebase/auth';
+import React, { useState, useEffect, useRef } from "react";
+import "./CssFiles/Blackjack.css";
+import { Helmet } from "react-helmet";
+import { useNavigate } from "react-router-dom";
+import {
+    auth,
+    db,
+    collection,
+    query,
+    where,
+    getDocs,
+    updateDoc,
+    doc,
+} from "./firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Blackjack = () => {
     const navigate = useNavigate();
@@ -14,15 +23,27 @@ const Blackjack = () => {
     const [dealerHand, setDealerHand] = useState([]);
     const [gameActive, setGameActive] = useState(false);
     const [gameOver, setGameOver] = useState(true);
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState("");
     const [userDocId, setUserDocId] = useState(null);
-    
-    const [upIncrement, setUpIncrement] = useState(false)
-    const [downIncrement, setDownIncrement] = useState(false)
 
-    const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
-    const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-
+    const [upIncrement, setUpIncrement] = useState(false);
+    const [downIncrement, setDownIncrement] = useState(false);
+    const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
+    const values = [
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "J",
+        "Q",
+        "K",
+        "A",
+    ];
 
     // TODO: change start to replay after game is over
     // TODO: add a delay between each card being dealt
@@ -33,24 +54,22 @@ const Blackjack = () => {
 
     // Typical blackjack payout is 3:2 (1.5x), but this uses 2:1 (2x) for simplicity
 
-
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 fetchMoney(user.uid);
             } else {
-                alert('User not authenticated');
-                navigate('/GameSelection');
+                alert("User not authenticated");
+                navigate("/GameSelection");
             }
         });
         return () => unsubscribe();
     }, [navigate]);
 
-
     const fetchMoney = async (uid) => {
         try {
-            const playersRef = collection(db, 'Players');
-            const q = query(playersRef, where('uid', '==', uid));
+            const playersRef = collection(db, "Players");
+            const q = query(playersRef, where("uid", "==", uid));
             const querySnapshot = await getDocs(q);
 
             if (!querySnapshot.empty) {
@@ -58,26 +77,24 @@ const Blackjack = () => {
                 setMoney(userDoc.data().money);
                 setUserDocId(userDoc.id); // Store document ID for future updates
             } else {
-                alert('User data not found.');
+                alert("User data not found.");
             }
         } catch (err) {
-            alert('Failed to fetch money: ' + err.message);
+            alert("Failed to fetch money: " + err.message);
         }
     };
-
 
     const updateMoney = async (newMoney) => {
         try {
             if (userDocId) {
-                const userDocRef = doc(db, 'Players', userDocId);
+                const userDocRef = doc(db, "Players", userDocId);
                 await updateDoc(userDocRef, { money: newMoney });
                 setMoney(newMoney); // Update local state
             }
         } catch (err) {
-            alert('Failed to update money: ' + err.message);
+            alert("Failed to update money: " + err.message);
         }
     };
-
 
     const initialiseDeck = () => {
         const newDeck = [];
@@ -89,7 +106,6 @@ const Blackjack = () => {
         return shuffleDeck(newDeck);
     };
 
-
     const shuffleDeck = (deck) => {
         for (let i = deck.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -98,13 +114,12 @@ const Blackjack = () => {
         return deck;
     };
 
-
     const startGame = () => {
         if (money === 0 && bet === 0) {
-            alert('You are out of money! Please exit the game.');
+            alert("You are out of money! Please exit the game.");
             return;
         } else if (bet === 0) {
-            alert('Please place a bet to start the game.');
+            alert("Please place a bet to start the game.");
             return;
         }
 
@@ -117,28 +132,30 @@ const Blackjack = () => {
         setDealerHand(dealerHand);
 
         setGameOver(false);
-        setMessage('');
+        setMessage("");
 
         if (getHandValue(playerHand) === 21 && getHandValue(dealerHand) !== 21) {
             setMessage(`Blackjack! You win! Your bet is doubled! + ${2 * bet}`);
             updateMoney(money + 2 * bet);
             gameOverFunction();
-        } else if (getHandValue(playerHand) === 21 && getHandValue(dealerHand) === 21) {
+        } else if (
+            getHandValue(playerHand) === 21 &&
+            getHandValue(dealerHand) === 21
+        ) {
             setMessage(`It's a tie. Your bet is returned. + ${bet}`);
             updateMoney(money + bet);
             gameOverFunction();
         }
     };
 
-
     const getHandValue = (hand) => {
         let value = 0;
         let numAces = 0;
         for (let card of hand) {
-            if (card.value === 'A') {
+            if (card.value === "A") {
                 numAces += 1;
                 value += 11;
-            } else if (['K', 'Q', 'J'].includes(card.value)) {
+            } else if (["K", "Q", "J"].includes(card.value)) {
                 value += 10;
             } else {
                 value += parseInt(card.value);
@@ -151,14 +168,13 @@ const Blackjack = () => {
         return value;
     };
 
-
     const hit = () => {
         if (gameOver) return;
         const newDeck = [...deck];
         const newPlayerHand = [...playerHand, newDeck.pop()];
         setDeck(newDeck);
         setPlayerHand(newPlayerHand);
-    
+
         const newPlayerHandValue = getHandValue(newPlayerHand);
         if (newPlayerHandValue > 21) {
             setMessage(`Bust! You lose your bet. - ${bet}`);
@@ -166,15 +182,14 @@ const Blackjack = () => {
             gameOverFunction();
         } else if (newPlayerHandValue === 21 && getHandValue(dealerHand) !== 21) {
             setMessage(`You win! Your bet is doubled! + ${2 * bet}`);
-            updateMoney(money + 2 * bet); 
+            updateMoney(money + 2 * bet);
             gameOverFunction();
         } else if (newPlayerHandValue === 21 && getHandValue(dealerHand) === 21) {
             setMessage(`It's a tie. Your bet is returned. + ${bet}`);
-            updateMoney(money + bet); 
+            updateMoney(money + bet);
             gameOverFunction();
         }
     };
-    
 
     const stand = () => {
         if (gameOver) return;
@@ -185,10 +200,10 @@ const Blackjack = () => {
         }
         setDeck(newDeck);
         setDealerHand(newDealerHand);
-    
+
         const playerValue = getHandValue(playerHand);
         const dealerValue = getHandValue(newDealerHand);
-        
+
         if (dealerValue > 21 || playerValue > dealerValue) {
             setMessage(`You win! Your bet is doubled! + ${2 * bet}`);
             updateMoney(money + 2 * bet);
@@ -201,21 +216,21 @@ const Blackjack = () => {
         }
         gameOverFunction();
     };
-    
 
     const gameOverFunction = () => {
         setGameOver(true);
         setGameActive(false);
         setBet(0);
-        setMessage(message => `${message}
-        Resetting game...`);
+        setMessage(
+            (message) => `${message}
+        Resetting game...`,
+        );
         setTimeout(() => {
             setPlayerHand([]);
             setDealerHand([]);
-            setMessage('');
+            setMessage("");
         }, 2000);
     };
-
 
     // const betMoney = (amount) => {
     //     if (money - amount < 0) {
@@ -231,38 +246,38 @@ const Blackjack = () => {
     const betMoney = (amount) => {
         setMoney((prevMoney) => {
             const newMoney = prevMoney - amount;
-    
+
             if (newMoney < 0) {
                 alert("Not enough money!");
                 return prevMoney;
             }
             if (bet + amount < 0) {
-                alert("Cannot bet negative money!")
+                alert("Cannot bet negative money!");
                 return prevMoney;
             }
-    
+
             setBet((prevBet) => {
                 const newBet = prevBet + amount;
-    
+
                 if (newBet < 0) {
                     alert("Cannot bet negative money!");
                     return prevBet;
                 }
-    
+
                 if (amount < 0 && prevBet === 0) {
                     return prevBet;
                 }
-    
+
                 return newBet;
             });
-    
+
             return newMoney;
         });
-    }
+    };
 
     // TODO: change to while loop ?
     // const intervalRef = useRef(null);
-    
+
     // const startIncrementBet = (amount) => {
     //     if (intervalRef.current) return;
     //     else if (amount < 0 && bet === 0) stopIncrementBet();
@@ -275,14 +290,12 @@ const Blackjack = () => {
     //     }, 100);
     // };
 
-
     // const stopIncrementBet = () => {
     //     if (intervalRef.current) {
     //         clearInterval(intervalRef.current);
     //         intervalRef.current = null;
     //     }
     // };
-    
 
     // setTimeout is non-blocking
     // use another function to ensure while loop doesn't loop forever
@@ -293,8 +306,6 @@ const Blackjack = () => {
     //             betMoney(1);
     //     }
     // }
-
-    
 
     // while (upIncrement == true && money > 0) {
     //     setTimeout(() => {
@@ -313,16 +324,16 @@ const Blackjack = () => {
 
     const startIncrement = () => {
         if (!incrementInterval.current) {
-          incrementInterval.current = setInterval(() => {
-            betMoney(1);
-          }, 100);
+            incrementInterval.current = setInterval(() => {
+                betMoney(1);
+            }, 100);
         }
-    }
+    };
 
     const stopIncrement = () => {
         clearInterval(incrementInterval.current);
         incrementInterval.current = null;
-    }
+    };
 
     const startDecrement = () => {
         if (!decrementInterval.current) {
@@ -330,12 +341,12 @@ const Blackjack = () => {
                 betMoney(-1);
             }, 100);
         }
-    }
+    };
 
     const stopDecrement = () => {
         clearInterval(decrementInterval.current);
         decrementInterval.current = null;
-    }
+    };
 
     return (
         <>
@@ -343,38 +354,44 @@ const Blackjack = () => {
                 <title>BLACKJACK</title>
             </Helmet>
 
-            <div className='Blackjack-Container'>
+            <div className="Blackjack-Container">
                 <h1>Blackjack</h1>
 
-                <div className='Blackjack-Bet'>
-                    <div className='Blackjack-Money'>
-                        <div className='Blackjack-Money-Child'>
+                <div className="Blackjack-Bet">
+                    <div className="Blackjack-Money">
+                        <div className="Blackjack-Money-Child">
                             <h2>Money = {money}</h2>
                             <h2>Bet = {bet}</h2>
                         </div>
-                        <div className='Blackjack-Money-Child'>
+                        <div className="Blackjack-Money-Child">
                             {/* TODO: set up held and down held to true:
                              TODO: while held == true, increment bet */}
                             {/* <button onMouseDown={() => startIncrementBet(1)} onMouseUp={stopIncrementBet}> ↑ </button>
                             <button onMouseDown={() => startIncrementBet(-1)} onMouseUp={stopIncrementBet}> ↓ </button> */}
 
-                            <button onMouseDown={startIncrement} onMouseUp={stopIncrement}> ↑ </button>
-                            <button onMouseDown={startDecrement} onMouseUp={stopDecrement}> ↓ </button>
+                            <button onMouseDown={startIncrement} onMouseUp={stopIncrement}>
+                                {" "}
+                                ↑{" "}
+                            </button>
+                            <button onMouseDown={startDecrement} onMouseUp={stopDecrement}>
+                                {" "}
+                                ↓{" "}
+                            </button>
                         </div>
                     </div>
 
                     <button onClick={() => updateMoney(money + 1000)}>Free Money</button>
 
-                    <div className='Blackjack-Bet-Buttons'>
+                    <div className="Blackjack-Bet-Buttons">
                         {/* <button onClick={() => betMoney(1)}> + 1 </button> */}
                         <button onClick={() => betMoney(10)}> + 10 </button>
                         <button onClick={() => betMoney(50)}> + 50 </button>
                         <button onClick={() => betMoney(100)}> + 100 </button>
                         <button onClick={() => betMoney(500)}> + 500 </button>
-                        <button onClick={() => betMoney(money)} > + Max </button>
+                        <button onClick={() => betMoney(money)}> + Max </button>
                     </div>
 
-                    <div className='Blackjack-Bet-Buttons'>
+                    <div className="Blackjack-Bet-Buttons">
                         {/* <button onClick={() => betMoney(-1)}> - 1 </button> */}
                         <button onClick={() => betMoney(-10)}> - 10 </button>
                         <button onClick={() => betMoney(-50)}> - 50 </button>
@@ -386,38 +403,54 @@ const Blackjack = () => {
 
                 <hr />
 
-                <button className='Blackjack-Start' onClick={startGame} disabled={gameActive}>Start Game</button>
+                <button
+                    className="Blackjack-Start"
+                    onClick={startGame}
+                    disabled={gameActive}
+                >
+                    Start Game
+                </button>
 
-                <div className='Blackjack-Hand'>
+                <div className="Blackjack-Hand">
                     <h2>Dealer's Hand</h2>
                     {dealerHand.map((card, index) => (
-                        <div key={index}>{card.value} of {card.suit}</div>
+                        <div key={index}>
+                            {card.value} of {card.suit}
+                        </div>
                     ))}
                     <p>Value: {getHandValue(dealerHand)}</p>
                 </div>
 
-                <div className='Blackjack-Hand'>
+                <div className="Blackjack-Hand">
                     <h2>Player's Hand</h2>
                     {playerHand.map((card, index) => (
-                        <div key={index}>{card.value} of {card.suit}</div>
+                        <div key={index}>
+                            {card.value} of {card.suit}
+                        </div>
                     ))}
                     <p>Value: {getHandValue(playerHand)}</p>
                 </div>
 
-                <div className='Blackjack-Options'>
-                    <button onClick={hit} disabled={gameOver}>Hit</button>
-                    <button onClick={stand} disabled={gameOver}>Stand</button>
+                <div className="Blackjack-Options">
+                    <button onClick={hit} disabled={gameOver}>
+                        Hit
+                    </button>
+                    <button onClick={stand} disabled={gameOver}>
+                        Stand
+                    </button>
                 </div>
 
                 {message && <p>{message}</p>}
 
-                <button className='Blackjack-Options' onClick={() => navigate('/GameSelection')}>Exit</button>
-
+                <button
+                    className="Blackjack-Options"
+                    onClick={() => navigate("/GameSelection")}
+                >
+                    Exit
+                </button>
             </div>
         </>
     );
 };
 
 export default Blackjack;
-
-
