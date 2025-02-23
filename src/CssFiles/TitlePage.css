@@ -1,16 +1,12 @@
 /* Windows95App.css */
 
-body {
-    background-color: #008080;
-    cursor: url('https://www.example.com/custom-cursor.cur'), auto;
-    font-family: 'Courier New', monospace;
-  }
   
   .app-container {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #008080;
   }
   
   .window-frame {
