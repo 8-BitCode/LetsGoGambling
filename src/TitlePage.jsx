@@ -1,45 +1,70 @@
 import React, { useState } from 'react';
-import { Helmet } from 'react-helmet';
 import './CssFiles/TitlePage.css';
-import { useNavigate } from 'react-router-dom';
+import Draggable from 'react-draggable'; // The default
+import { useNavigate } from "react-router-dom";
 
-const TitlePage = () => {
-    const navigate = useNavigate();
-    const [isGlitching, setIsGlitching] = useState(false);
+export default function Windows95App() {
+  const [showPopup, setShowPopup] = useState(false);
+  const navigate = useNavigate();
+  // Sound effect on button click
+  const playClickSound = () => {
+    setShowPopup(true);
+  };
 
-    function TOS() {
-        setIsGlitching(true);
-        setTimeout(() => {
-            navigate('/TermsOfService');
-        }, 500); // 1.5 seconds of glitch effect
-    }
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+  const Continue = () =>{
+    navigate('./TermsOfService')
+  }
 
-    return (
-        <>
-            <Helmet>
-                <title>MALWARE DETECTED</title>
-            </Helmet>
+  return (
+    <div className="app-container">
+    
+      {/* Full Window Frame - square shape */}
+      <Draggable>
+      <div className="window-frame">
+        {/* Windows 95 style top bar for full application window */}
+        <div className="window-title-bar">
+          <span className="window-title">Le�s_�o_��m�li�g.exe</span>
+          <div className="window-controls">
+            <button className="control-button">-</button>
+            <button className="control-button close-button">X</button>
+          </div>
+        </div>
 
-            <div className={`Windows95-Theme ${isGlitching ? 'glitch' : ''}`}>
-                {/* Title Bar */}
-                <div className="Window-Title-Bar">
-                    <span className="Window-Title">Le�s_�o_��m�li�g.exe</span>
-                    <div className="ButtonCon">
-                        <button>-</button>
-                        <button>X</button>
-                    </div>
-                </div>
-                
-                {/* Main Content */}
-                <div className="TitlePageContent">
-                    <div className="ContentCenter" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingTop: '10vh', color:'white' }}>
-                        <h1 className="MainTitle">Let Goo Gamblingg!!!</h1>
-                        <button className="StartButton" onClick={TOS}>Continue? (100% safe!!!)</button>
-                    </div>
-                </div>
+        {/* Main content */}
+        <div className="window-content">
+          {/* Static Blocky Title */}
+          <h1 className="window-title-text">Lets Go Gambling</h1>
+
+          {/* Windows 95 Style Popup Button */}
+          <button onClick={playClickSound} className="continue-button">
+            Continue
+          </button>
+        </div>
+      </div>
+      </Draggable>
+      {/* Windows 95 Style Popup */}
+      {showPopup && (
+        <Draggable>
+        <div className="popup">
+          {/* Popup Title Bar */}
+          <div className="popup-title-bar">
+            <span className="popup-title">Prompt</span>
+            <button onClick={closePopup} className="control-button close-button">X</button>
+          </div>
+          {/* Popup Content */}
+          <div className="popup-content">
+            Are you sure you want to continue?
+            <div className="popup-buttons">
+              <button onClick={Continue} className="popup-button">Yes</button>
+              <button onClick={closePopup} className="popup-button">No</button>
             </div>
-        </>
-    );
+          </div>
+        </div>
+        </Draggable>
+      )}
+    </div>
+  );
 }
-
-export default TitlePage;
