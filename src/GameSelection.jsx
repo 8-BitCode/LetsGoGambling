@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Draggable from 'react-draggable';
-import { auth, db, collection, query, where, getDocs, updateDoc, doc } from './firebase';
+import { auth, db, collection, query, where, getDocs, updateDoc, doc, onSnapshot } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import Creature from './Assets/PDTheCreature.png';
 
@@ -89,6 +89,14 @@ const GameSelection = () => {
         setMoney(userDoc.data().money); // Set the user's money
         setUsername(userDoc.data().username); // Set the username
         setUserDocId(userDoc.id); // Store document ID for future updates
+
+        // Set up real-time listener to track changes in the user's money
+        const userDocRef = doc(db, 'Players', userDoc.id);
+        onSnapshot(userDocRef, (docSnap) => {
+          if (docSnap.exists()) {
+            setMoney(docSnap.data().money); // Update money live when the document changes
+          }
+        });
       } else {
         alert('User data not found.');
       }
