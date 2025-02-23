@@ -1,0 +1,195 @@
+.GS-Container {
+    min-height: 100vh;
+    background-color: #008080;
+    font-family: 'BIOSFont', sans-serif;
+    color: white;
+    position: relative;
+  }
+  
+  .GS-TimeDisplay {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    -webkit-text-stroke: 5px black;
+    paint-order: stroke fill;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 1.5em;
+  }
+  
+  .GS-Icons {
+    position: absolute;
+    left: 20px;
+    top: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .GS-Icon {
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .GS-IconImage {
+    font-size: 32px;
+  }
+  .GS-IconLabel{
+    margin-top: 4px;
+    font-size: 10px;
+  }
+  .GS-IconHover {
+    margin-top: 5px;
+    background-color: black;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  
+  .GS-MoneyDisplay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: black;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .GS-Taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background-color: #C0C0C0;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .GS-StartButton {
+    background-color: #808080;
+    color: white;
+    padding: 5px 10px;
+    margin-right: 10px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .GS-TaskbarButtons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .GS-TaskbarButton {
+    background-color: #A0A0A0;
+    color: black;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .GS-UsernameInput {
+    position: absolute;
+    bottom: 80px;
+    right: 20px;
+    background-color: #C0C0C0;
+    color: black;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .GS-UsernameInput input {
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid #808080;
+  }
+  
+  .GS-EasterEgg {
+    position: absolute;
+    bottom: 60px; /* Adjust this to place the bin above the taskbar */
+    right: 20px;  /* Adjust this to position the bin from the right side */
+    font-size: 50px; /* Adjust the size of the bin icon if necessary */
+    cursor: pointer;
+  }
+  .GS-TaskbarUsername {
+    margin-left: auto;  /* Push the username to the right */
+    color: black;
+    margin-right:17px;
+  }
+
+
+.money-slot-window {
+  width: 260px;
+  background: #c0c0c0;
+  border: 2px solid #808080;
+  box-shadow: inset -2px -2px #fff, inset 2px 2px #000;
+  font-family: 'PixelFont', monospace;
+  margin-top: 10%;
+
+}
+
+.title-bar {
+  background: #000080;
+  color: white;
+  padding: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #808080;
+}
+
+.title-text {
+  font-size: 10px;
+}
+
+.window-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.window-btn {
+  width: 12px;
+  height: 12px;
+  background: #c0c0c0;
+  border: 1px solid #000;
+}
+
+.window-btn.minimize {
+  background: #808080;
+}
+
+.window-btn.close {
+  background: #800000;
+}
+
+.slot-display {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  background: #e0e0e0;
+  border-top: 2px solid #808080;
+}
+
+.slot-digit {
+  width: 40px;
+  height: 60px;
+  margin: 0 2px;
+  background: white;
+  border: 2px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  box-shadow: inset -2px -2px #fff, inset 2px 2px #000;
+}
+.PDImage{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 5%;
+  user-select: none;
+}
