@@ -121,11 +121,11 @@ const Blackjack = () => {
 
         if (getHandValue(playerHand) === 21 && getHandValue(dealerHand) !== 21) {
             setMessage(`Blackjack! You win! Your bet is doubled! + ${2 * bet}`);
-            updateMoney(money + 2 * bet);
+            updateMoney(money + 2 * bet); // Add double the bet to money
             gameOverFunction();
         } else if (getHandValue(playerHand) === 21 && getHandValue(dealerHand) === 21) {
             setMessage(`It's a tie. Your bet is returned. + ${bet}`);
-            updateMoney(money + bet);
+            updateMoney(money + bet); // Bet is returned, no change
             gameOverFunction();
         }
     };
@@ -173,6 +173,7 @@ const Blackjack = () => {
             updateMoney(money + bet); 
             gameOverFunction();
         }
+
     };
     
 
@@ -188,7 +189,7 @@ const Blackjack = () => {
     
         const playerValue = getHandValue(playerHand);
         const dealerValue = getHandValue(newDealerHand);
-        
+
         if (dealerValue > 21 || playerValue > dealerValue) {
             setMessage(`You win! Your bet is doubled! + ${2 * bet}`);
             updateMoney(money + 2 * bet);
@@ -200,6 +201,7 @@ const Blackjack = () => {
             updateMoney(money + bet);
         }
         gameOverFunction();
+
     };
     
 

@@ -5,13 +5,13 @@
     font-style: normal;
 }
 
-body {
+body{
     margin: 0;
     padding: 0;
     overflow-x: hidden; /* Optional: prevent horizontal scroll */
     cursor: url('../Assets/CusorImages/NORMAL.png'), auto;
 }
-a, button, .clickable, .TOS-Container .button {
+a, button, .clickable, .TOS-Container .button, .GS-Icon, .GS-EasterEgg, .continue-button, .control-button {
     cursor: url('../Assets/CusorImages/LINK_SELECT.png'), pointer;
 }
 input {
@@ -21,3 +21,28 @@ input {
 html, body {
     height: 100%; /* Ensures no overflow */
 }
+.funny-message {
+    background-color: black;
+    color: white;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 3rem; /* Bigger text */
+    padding: 40px; /* Extra padding */
+    box-sizing: border-box; /* Ensures padding doesn’t mess with width */
+    font-family: PixelFont;
+  }
+
+  .funny-message h1 {
+    font-size: 4rem; /* Make the heading bigger */
+    margin-bottom: 20px; /* Space between heading and text */
+  }
+
+  .funny-message p {
+    max-width: 80%; /* Prevents text from stretching across the screen */
+    line-height: 1.5; /* Makes it easier to read */
+  }
