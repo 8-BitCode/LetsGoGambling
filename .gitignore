@@ -2,4 +2,3 @@ node_modules
 dist
 .cache
 .env
-eslint.config.mjs
