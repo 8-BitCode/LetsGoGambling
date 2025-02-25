@@ -18,7 +18,7 @@
     box-sizing: border-box; /* Ensures padding doesn't overflow */
 }
 
-.TOS-Container pre, span {
+.TOS-Container pre, .TOS-Container span {
     width: 100%;
     text-align: left;
     white-space: pre-wrap;

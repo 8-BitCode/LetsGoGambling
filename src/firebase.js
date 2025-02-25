@@ -9,7 +9,8 @@ import {
   collection, 
   query, 
   where, 
-  getDocs 
+  getDocs,
+  onSnapshot
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -30,4 +31,4 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 
-export { auth, provider, db, doc, setDoc, getDoc, updateDoc, collection, query, where, getDocs };
+export { auth, provider, db, doc, setDoc, getDoc, updateDoc, collection, query, where, getDocs, onSnapshot };
