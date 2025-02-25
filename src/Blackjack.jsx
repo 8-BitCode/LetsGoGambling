@@ -26,8 +26,6 @@ const Blackjack = () => {
     const [message, setMessage] = useState("");
     const [userDocId, setUserDocId] = useState(null);
 
-    const [upIncrement, setUpIncrement] = useState(false);
-    const [downIncrement, setDownIncrement] = useState(false);
     const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
     const values = [
         "2",
@@ -232,28 +230,15 @@ const Blackjack = () => {
         }, 2000);
     };
 
-    // const betMoney = (amount) => {
-    //     if (money - amount < 0) {
-    //         alert('Not enough money!');
-    //     } else if (amount < 0 && bet + amount < 0) {
-    //         alert('Cannot bet negative money!');
-    //     } else {
-    //         setMoney(money => money - amount);
-    //         setBet(bet => bet + amount);
-    //     }
-    // };
-
     const betMoney = (amount) => {
         if (amount > 0) {
             setMoney((prevMoney) => {
                 const newMoney = prevMoney - amount;
 
                 if (newMoney < 0) {
-                    alert("Not enough money!");
                     return prevMoney;
                 }
                 if (bet + amount < 0) {
-                    alert("Cannot bet negative money!");
                     return prevMoney;
                 }
 
@@ -261,7 +246,6 @@ const Blackjack = () => {
                     const newBet = prevBet + amount;
 
                     if (newBet < 0) {
-                        alert("Cannot bet negative money!");
                         return prevBet;
                     }
 
@@ -279,7 +263,6 @@ const Blackjack = () => {
                 const newBet = prevBet + amount;
 
                 if (newBet < 0) {
-                    alert("Cannot bet negative money!");
                     return prevBet;
                 }
 
@@ -291,64 +274,19 @@ const Blackjack = () => {
                     const newMoney = prevMoney - amount;
 
                     if (newMoney < 0) {
-                        alert("Not enough money!");
                         return prevMoney;
                     }
                     if (bet + amount < 0) {
-                        alert("Cannot bet negative money!");
                         return prevMoney;
                     }
 
                     return newMoney;
                 });
+
                 return newBet;
             });
         }
     };
-
-    // TODO: change to while loop ?
-    // const intervalRef = useRef(null);
-
-    // const startIncrementBet = (amount) => {
-    //     if (intervalRef.current) return;
-    //     else if (amount < 0 && bet === 0) stopIncrementBet();
-    //     else if (amount > 0 && money === 0) stopIncrementBet();
-    //     intervalRef.current = setInter
-
-    //     val(() => {
-    //         FIXME: only increment if there is money to bet and only decrement if the bet is > 0
-    //         betMoney(amount);
-    //     }, 100);
-    // };
-
-    // const stopIncrementBet = () => {
-    //     if (intervalRef.current) {
-    //         clearInterval(intervalRef.current);
-    //         intervalRef.current = null;
-    //     }
-    // };
-
-    // setTimeout is non-blocking
-    // use another function to ensure while loop doesn't loop forever
-    // async function setUpIncrementBet(upIncrement) {
-    //     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-    //     while (upIncrement == true && money > 0) {
-    //         await delay(100);
-    //             betMoney(1);
-    //     }
-    // }
-
-    // while (upIncrement == true && money > 0) {
-    //     setTimeout(() => {
-    //         betMoney(1);
-    //     }, 100);
-    // }
-
-    // while (downIncrement == true && bet > 0) {
-    //     setTimeout(() => {
-    //         betMoney(-1);
-    //     }, 100);
-    // }
 
     const incrementInterval = useRef(null);
     const decrementInterval = useRef(null);
@@ -400,11 +338,11 @@ const Blackjack = () => {
                             {/* <button onMouseDown={() => startIncrementBet(1)} onMouseUp={stopIncrementBet}> ↑ </button>
                             <button onMouseDown={() => startIncrementBet(-1)} onMouseUp={stopIncrementBet}> ↓ </button> */}
 
-                            <button onMouseDown={startIncrement} onMouseUp={stopIncrement}>
+                            <button onMouseDown={startIncrement} onMouseUp={stopIncrement} onMouseLeave={stopIncrement}>
                                 {" "}
                                 ↑{" "}
                             </button>
-                            <button onMouseDown={startDecrement} onMouseUp={stopDecrement}>
+                            <button onMouseDown={startDecrement} onMouseUp={stopDecrement} onMouseLeave={stopDecrement}>
                                 {" "}
                                 ↓{" "}
                             </button>
