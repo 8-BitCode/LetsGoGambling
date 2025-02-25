@@ -7,6 +7,7 @@ import Draggable from 'react-draggable';
 import { auth, db, collection, query, where, getDocs, updateDoc, doc, onSnapshot } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import Creature from './Assets/PDTheCreature.png';
+import Slots from './Slots'; // Import the Slots component
 
 const MoneySlot = ({ amount }) => {
   const digits = amount.toString().split(''); // Split the amount digits
@@ -50,8 +51,18 @@ const GameSelection = () => {
   const [username, setUsername] = useState('Guest');
   const [currentTime, setCurrentTime] = useState('');
   const [taskInput, setTaskInput] = useState('');
-  const [userDocId, setUserDocId] = useState(null); // Store the user document ID for future updates
+  const [userDocId, setUserDocId] = useState(null);
+  const [activeGame, setActiveGame] = useState(null); // State for active game
   const navigate = useNavigate();
+
+  const games = [
+    { id: 1, name: 'Statistics', icon: '📈', route: '/Stats' },
+    { id: 2, name: 'Black Jack', icon: '🃏', route: '/Blackjack' },
+    { id: 3, name: 'Roulette', icon: '🛞', route: '/Roulette' },
+    { id: 4, name: 'Slots', icon: '🎰', route: '/Slots' },
+    { id: 5, name: 'Locked', icon: '🔒', route: '/GameSelection' },
+    { id: 6, name: 'Mystery', icon: '❓', route: '/GameSelection' },
+  ];
 
   useEffect(() => {
     const updateClock = () => {
@@ -68,7 +79,7 @@ const GameSelection = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        fetchUserData(user.uid); // Fetch the user's data when authenticated
+        fetchUserData(user.uid);
       } else {
         alert('User not authenticated');
         navigate('/GameSelection');
@@ -77,7 +88,6 @@ const GameSelection = () => {
     return () => unsubscribe();
   }, [navigate]);
 
-  // Function to fetch user data (money and username) from Firebase
   const fetchUserData = async (uid) => {
     try {
       const playersRef = collection(db, 'Players');
@@ -86,15 +96,14 @@ const GameSelection = () => {
 
       if (!querySnapshot.empty) {
         const userDoc = querySnapshot.docs[0];
-        setMoney(userDoc.data().money); // Set the user's money
-        setUsername(userDoc.data().username); // Set the username
-        setUserDocId(userDoc.id); // Store document ID for future updates
+        setMoney(userDoc.data().money);
+        setUsername(userDoc.data().username);
+        setUserDocId(userDoc.id);
 
-        // Set up real-time listener to track changes in the user's money
         const userDocRef = doc(db, 'Players', userDoc.id);
         onSnapshot(userDocRef, (docSnap) => {
           if (docSnap.exists()) {
-            setMoney(docSnap.data().money); // Update money live when the document changes
+            setMoney(docSnap.data().money);
           }
         });
       } else {
@@ -105,30 +114,28 @@ const GameSelection = () => {
     }
   };
 
-  // Function to update the user's money in the database
   const updateMoney = async (newMoney) => {
     try {
       if (userDocId) {
         const userDocRef = doc(db, 'Players', userDocId);
         await updateDoc(userDocRef, { money: newMoney });
-        setMoney(newMoney); // Update local state
+        setMoney(newMoney);
       }
     } catch (err) {
       alert('Failed to update money: ' + err.message);
     }
   };
 
-  const games = [
-    { id: 1, name: 'Statistics', icon: '📈', route: '/Stats' },
-    { id: 2, name: 'Black Jack', icon: '🃏', route: '/Blackjack' },
-    { id: 3, name: 'Roulette', icon: '🛞', route: '/Roulette' },
-    { id: 4, name: 'Slots', icon: '🎰', route: '/Slots' },
-    { id: 5, name: 'Locked', icon: '🔒', route: '/GameSelection' },
-    { id: 6, name: 'Mystery', icon: '❓', route: '/GameSelection' },
-  ];
+  const handleGameDoubleClick = (game) => {
+    if (game.name === 'Slots') {
+      setActiveGame('Slots'); // Activate Slots game without navigating
+    } else {
+      navigate(game.route);
+    }
+  };
 
-  const handleNavigation = (route) => {
-    navigate(route);
+  const closeActiveGame = () => {
+    setActiveGame(null); // Close the active game
   };
 
   return (
@@ -148,21 +155,30 @@ const GameSelection = () => {
         </div>
       </Draggable>
 
-      {/* Desktop Icons */}
+      {/* Always Show Game Icons */}
       <div className="GS-Icons">
         {games.map((game) => (
           <div
             key={game.id}
             className="GS-IconLink"
-            onClick={() => handleNavigation(game.route)}
+            onDoubleClick={() => handleGameDoubleClick(game)}
           >
+            <Draggable>
             <div className="GS-Icon">
               <div className="GS-IconImage">{game.icon}</div>
               <div className="GS-IconLabel">{game.name}</div>
             </div>
+            </Draggable>
           </div>
         ))}
       </div>
+
+      {/* Display Active Game Overlay */}
+      {activeGame && (
+        <div className="GS-ActiveGame">
+          {activeGame === 'Slots' && <Slots closeGame={closeActiveGame} />} {/* Pass closeGame prop */}
+        </div>
+      )}
 
       {/* Taskbar */}
       <div className="GS-Taskbar">
