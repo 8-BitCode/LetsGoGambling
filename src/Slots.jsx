@@ -7,7 +7,6 @@ import './CssFiles/Slots.css';
 
 
 const Slots = () => {
-  // Store gambucks and bet in state so that updates trigger a re-render
   // Game state
   const [gambucks, setGambucks] = useState(1000);
   const [bet, setBet] = useState(100);
@@ -43,33 +42,6 @@ const Slots = () => {
 
     setMessage('');
     // Update first reel immediately
-    const newNum1 = Math.floor(Math.random() * 3);
-    setNum1(newNum1);
-
-    // After 1 second, update the second reel
-    setTimeout(() => {
-      const newNum2 = Math.floor(Math.random() * 3);
-      setNum2(newNum2);
-
-      // After another 1 second, update the third reel
-      setTimeout(() => {
-        const newNum3 = Math.floor(Math.random() * 3);
-        setNum3(newNum3);
-
-        // After an additional 1 second, check the win/loss condition
-        setTimeout(() => {
-          if (newNum1 === newNum2 && newNum2 === newNum3) {
-            // Win condition: reels match
-            if (newNum1 === 0) {
-              // Special win: three zeros
-              setMessage(`ULTIMATE JACKPOT PRIZE! SPECIAL REELS MATCH! YOU JUST DECUPLED YOUR MONEY!!! ${bet * 10} gambucks! (but if only you'd bet higher...)`);
-              setGambucks(prev => prev + bet * 10);
-            } else {
-              setMessage(`WOOHOO! You win ${bet * 2} gambucks! Keep going for the ultimate prize!`);
-              setGambucks(prev => prev + bet * 2);
-            }
-          } else {
-            // Loss: subtract the bet amount
     const newNum1 = Math.floor(Math.random() * 6);
     setNum1(newNum1);
 
@@ -136,13 +108,6 @@ const Slots = () => {
             onChange={(e) => setBet(Number(e.target.value))}
             min="1"
           />
-        </div>
-        <br />
-        <div>{num1 - 1}, {num2 - 1}, {num3 - 1}</div>
-        <div>{num1}, {num2}, {num3}</div>
-        <div>{num1 + 1}, {num2 + 1}, {num3 + 1}</div>
-        <div>{message}</div>
-        <button onClick={spinSlots}>SPIN</button>
           <br/>
           <button className="bigbuttons" onClick={() => setBet(bet +10)}>+10</button>
           <button className="bigbuttons" onClick={() => setBet(bet +100)}>+100</button>
@@ -217,8 +182,11 @@ const Slots = () => {
             </button> 
           </div>
         </div>
+      </div>
     </>
   );
-});
+};
+
 
 export default Slots;
+

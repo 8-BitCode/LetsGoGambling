@@ -363,8 +363,6 @@ const Blackjack = () => {
                         </div>
                     </div>
 
-                    <button onClick={() => updateMoney(money + 1000)}>Free Money</button>
-
                     <div className='Blackjack-Bet-Buttons'>
                         {/* <button onClick={() => betMoney(1)}> + 1 </button> */}
                         <button onClick={() => betMoney(10)}> + 10 </button>
