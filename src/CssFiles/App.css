@@ -21,6 +21,7 @@ input {
 html, body {
     height: 100%; /* Ensures no overflow */
 }
+
 .funny-message {
     background-color: black;
     color: white;
@@ -42,7 +43,7 @@ html, body {
     margin-bottom: 20px; /* Space between heading and text */
   }
 
-  .funny-message p {
+.funny-message p {
     max-width: 80%; /* Prevents text from stretching across the screen */
     line-height: 1.5; /* Makes it easier to read */
   }
