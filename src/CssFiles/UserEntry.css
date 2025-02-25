@@ -19,3 +19,68 @@
     font-family: 'PixelFont';
     box-shadow: -1px 0 #000,0 -1px #000,-1px -1px #000,1px 0 #000,0 1px #000,1px 1px #000,1px -1px #000,-1px 2px #000,2px -1px #000,2px 2px #000;
 }
+/* UserEntry.css */
+.UE-Container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    background-color: #f0f0f0;
+    font-family: BIOSFont;
+  }
+  
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .placeholder-image {
+    width: 200px;
+    height: 200px;
+  }
+  .UE-Container h3{
+    margin-top: 30px;
+  }
+  .UE-Container button {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    background-color: #007bff;
+    color: black;
+    cursor: pointer;
+    margin-top: 20px;
+    background-color: silver;
+    font-family: PixelFont;
+    box-shadow: -1px 0 #000, 0 -1px #000, -1px -1px #000, 1px 0 #000, 0 1px #000, 1px 1px #000, 1px -1px #000, -1px 2px #000, 2px -1px #000, 2px 2px #000;
+    cursor: url('../Assets/CusorImages/LINK_SELECT.png'), pointer;
+  }
+  
+  
+  .UE-Container input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    width: 200px;
+    margin-bottom: 10px;
+    font-family: PixelFont;
+    background-color: black;
+    color:white;
+  }
+  .UE-Container ::placeholder { /* Edge 12-18 */
+    color: white;
+  }
+  .error {
+    color: red;
+    font-size: 14px;
+    margin-top: 30px;
+  }
+  .date-time-display.top-left {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  

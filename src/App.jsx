@@ -8,6 +8,7 @@ import Blackjack from "./Blackjack";
 import Slots from "./Slots";
 import Roulette from "./Roulette";
 import Stats from "./Stats";
+import TitlePage from "./TitlePage"
 
 import "./CssFiles/App.css";
 
@@ -38,6 +39,7 @@ export default () => {
     <div className="Intro-Container">
       <BrowserRouter>
         <Routes>
+          <Route index element={<TitlePage />} />
           <Route path="/TermsOfService" element={<TermsOfService />} />
           <Route path="/UserEntry" element={<UserEntry />} />
           <Route path="/GameSelection" element={<GameSelection />} />
