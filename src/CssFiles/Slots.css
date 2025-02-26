@@ -5,7 +5,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'MS Sans Serif', sans-serif;
   }
   
   .slot-machine-window {
@@ -62,6 +61,7 @@
   .bet-controls {
     display: flex;
     align-items: center;
+    font-family: BIOSFont;
   }
   
   .bet-adjust {
