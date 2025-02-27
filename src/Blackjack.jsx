@@ -46,8 +46,6 @@ const Blackjack = () => {
     // TODO: change start to replay after game is over
     // TODO: add a delay between each card being dealt
 
-    // TODO: change money to be up and down buttons that can be held down to increase or decrease the bet
-
     // TODO: put dealer hands side by side
 
     // Typical blackjack payout is 3:2 (1.5x), but this uses 2:1 (2x) for simplicity
@@ -184,7 +182,7 @@ const Blackjack = () => {
             gameOverFunction();
         } else if (newPlayerHandValue === 21 && getHandValue(dealerHand) === 21) {
             setMessage(`It's a tie. Your bet is returned. + ${bet}`);
-            updateMoney(money + bet); 
+            updateMoney(money + bet);
             gameOverFunction();
         }
     };
@@ -333,23 +331,26 @@ const Blackjack = () => {
                             <h2>Bet = {bet}</h2>
                         </div>
                         <div className="Blackjack-Money-Child">
-                            {/* TODO: set up held and down held to true:
-                             TODO: while held == true, increment bet */}
-                            {/* <button onMouseDown={() => startIncrementBet(1)} onMouseUp={stopIncrementBet}> ↑ </button>
-                            <button onMouseDown={() => startIncrementBet(-1)} onMouseUp={stopIncrementBet}> ↓ </button> */}
-
-                            <button onMouseDown={startIncrement} onMouseUp={stopIncrement} onMouseLeave={stopIncrement}>
+                            <button
+                                onMouseDown={startIncrement}
+                                onMouseUp={stopIncrement}
+                                onMouseLeave={stopIncrement}
+                            >
                                 {" "}
                                 ↑{" "}
                             </button>
-                            <button onMouseDown={startDecrement} onMouseUp={stopDecrement} onMouseLeave={stopDecrement}>
+                            <button
+                                onMouseDown={startDecrement}
+                                onMouseUp={stopDecrement}
+                                onMouseLeave={stopDecrement}
+                            >
                                 {" "}
                                 ↓{" "}
                             </button>
                         </div>
                     </div>
 
-                    <div className='Blackjack-Bet-Buttons'>
+                    <div className="Blackjack-Bet-Buttons">
                         {/* <button onClick={() => betMoney(1)}> + 1 </button> */}
                         <button onClick={() => betMoney(10)}> + 10 </button>
                         <button onClick={() => betMoney(50)}> + 50 </button>
