@@ -353,7 +353,6 @@ const Blackjack = () => {
                     </div>
 
                     <div className="Blackjack-Bet-Buttons">
-                        {/* <button onClick={() => betMoney(1)}> + 1 </button> */}
                         <button disabled={gameActive} onClick={() => betMoney(10)}> + 10 </button>
                         <button disabled={gameActive} onClick={() => betMoney(50)}> + 50 </button>
                         <button disabled={gameActive} onClick={() => betMoney(100)}> + 100 </button>
@@ -362,7 +361,6 @@ const Blackjack = () => {
                     </div>
 
                     <div className="Blackjack-Bet-Buttons">
-                        {/* <button onClick={() => betMoney(-1)}> - 1 </button> */}
                         <button disabled={gameActive} onClick={() => betMoney(-10)}> - 10 </button>
                         <button disabled={gameActive} onClick={() => betMoney(-50)}> - 50 </button>
                         <button disabled={gameActive} onClick={() => betMoney(-100)}> - 100 </button>
