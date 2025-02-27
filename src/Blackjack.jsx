@@ -335,6 +335,7 @@ const Blackjack = () => {
                                 onMouseDown={startIncrement}
                                 onMouseUp={stopIncrement}
                                 onMouseLeave={stopIncrement}
+                                disabled={gameActive}
                             >
                                 {" "}
                                 ↑{" "}
@@ -343,6 +344,7 @@ const Blackjack = () => {
                                 onMouseDown={startDecrement}
                                 onMouseUp={stopDecrement}
                                 onMouseLeave={stopDecrement}
+                                disabled={gameActive}
                             >
                                 {" "}
                                 ↓{" "}
@@ -352,20 +354,20 @@ const Blackjack = () => {
 
                     <div className="Blackjack-Bet-Buttons">
                         {/* <button onClick={() => betMoney(1)}> + 1 </button> */}
-                        <button onClick={() => betMoney(10)}> + 10 </button>
-                        <button onClick={() => betMoney(50)}> + 50 </button>
-                        <button onClick={() => betMoney(100)}> + 100 </button>
-                        <button onClick={() => betMoney(500)}> + 500 </button>
-                        <button onClick={() => betMoney(money)}> + Max </button>
+                        <button disabled={gameActive} onClick={() => betMoney(10)}> + 10 </button>
+                        <button disabled={gameActive} onClick={() => betMoney(50)}> + 50 </button>
+                        <button disabled={gameActive} onClick={() => betMoney(100)}> + 100 </button>
+                        <button disabled={gameActive} onClick={() => betMoney(500)}> + 500 </button>
+                        <button disabled={gameActive} onClick={() => betMoney(money)}> + Max </button>
                     </div>
 
                     <div className="Blackjack-Bet-Buttons">
                         {/* <button onClick={() => betMoney(-1)}> - 1 </button> */}
-                        <button onClick={() => betMoney(-10)}> - 10 </button>
-                        <button onClick={() => betMoney(-50)}> - 50 </button>
-                        <button onClick={() => betMoney(-100)}> - 100 </button>
-                        <button onClick={() => betMoney(-500)}> - 500 </button>
-                        <button onClick={() => betMoney(-bet)}> - Max </button>
+                        <button disabled={gameActive} onClick={() => betMoney(-10)}> - 10 </button>
+                        <button disabled={gameActive} onClick={() => betMoney(-50)}> - 50 </button>
+                        <button disabled={gameActive} onClick={() => betMoney(-100)}> - 100 </button>
+                        <button disabled={gameActive} onClick={() => betMoney(-500)}> - 500 </button>
+                        <button disabled={gameActive} onClick={() => betMoney(-bet)}> - Max </button>
                     </div>
                 </div>
 
