@@ -10,6 +10,7 @@ import Creature from './Assets/PDTheCreature.png';
 import Slots from './Slots';
 import Stats from './Stats';
 import Bank from './Bank'
+import Blackjack from './Blackjack'
 import { doc, getDoc, setDoc, updateDoc, increment } from "firebase/firestore";
 
 const MoneySlot = ({ amount }) => {
@@ -60,7 +61,7 @@ const GameSelection = () => {
 
   const games = [
     { id: 1, name: 'Statistics', icon: '📈', route: '/GameSelection' },
-    { id: 2, name: 'Black Jack', icon: '🃏', route: '/Blackjack' },
+    { id: 2, name: 'Black Jack', icon: '🃏', route: '/GameSelection' },
     { id: 3, name: 'Roulette', icon: '🛞', route: '/Roulette' },
     { id: 4, name: 'Slots', icon: '🎰', route: '/GameSelection' },
     { id: 5, name: 'Bank', icon: '🏦', route: '/GameSelection' },
@@ -169,7 +170,7 @@ const GameSelection = () => {
         {activeGames.includes('Slots') && <Slots closeGame={() => closeActiveGame('Slots')} />}
         {activeGames.includes('Statistics') && <Stats closeGame={() => closeActiveGame('Statistics')} />}
         {activeGames.includes('Bank') && <Bank closeBank={() => closeActiveGame('Bank')} />}
-
+        {activeGames.includes('Black Jack') && <Blackjack closeGame={() => closeActiveGame('Black Jack')} />}
       </div>
 
       {/* Taskbar */}
