@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Draggable from "react-draggable";
 import "./CssFiles/Slots.css";
 
@@ -21,14 +21,22 @@ export default function SlotMachine({ closeGame }) {
     setCredits(credits - bet);
     setHighlighted([]);
 
+    let spinDuration = 1000;
+    let interval = setInterval(() => {
+      setReels((prevReels) =>
+        prevReels.map((row) => row.map(() => symbols[Math.floor(Math.random() * symbols.length)]))
+      );
+    }, 100);
+
     setTimeout(() => {
+      clearInterval(interval);
       const newReels = reels.map((row) =>
         row.map(() => symbols[Math.floor(Math.random() * symbols.length)])
       );
       setReels(newReels);
       setSpinning(false);
       checkWins(newReels);
-    }, 1000);
+    }, spinDuration);
   };
 
   const checkWins = (grid) => {
@@ -80,7 +88,7 @@ export default function SlotMachine({ closeGame }) {
           <div className="top-bar">
             <span className="top-bar-title">SlotMachine95.exe</span>
             <div className="top-bar-buttons">
-              <button className="close-button" onClick={closeGame}>X</button> {/* Close game on click */}
+              <button className="close-button" onClick={closeGame}>X</button>
             </div>
           </div>
 
@@ -98,16 +106,18 @@ export default function SlotMachine({ closeGame }) {
               </div>
 
               <div className="slot-reels">
-                {reels.map((row, rowIndex) =>
-                  row.map((symbol, colIndex) => (
-                    <div
-                      key={`${rowIndex}-${colIndex}`}
-                      className={`slot-cell ${isHighlighted(rowIndex, colIndex) ? "highlighted" : ""}`}
-                    >
-                      {symbol}
-                    </div>
-                  ))
-                )}
+                {reels.map((row, rowIndex) => (
+                  <div key={rowIndex} className="slot-reel">
+                    {row.map((symbol, colIndex) => (
+                      <div
+                        key={`${rowIndex}-${colIndex}`}
+                        className={`slot-cell ${isHighlighted(rowIndex, colIndex) ? "highlighted" : ""}`}
+                      >
+                        {symbol}
+                      </div>
+                    ))}
+                  </div>
+                ))}
               </div>
 
               <div className="bet-adjust bet-increase">

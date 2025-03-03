@@ -73,7 +73,7 @@
   border: 2px outset #4f4f4f; /* Changed to outset border */
   box-shadow: inset 2px 2px 4px #808080;
   font-weight: bold;
-  cursor: pointer;
+  cursor: url('../Assets/CusorImages/LINK_SELECT.png'), pointer;
 }
 
 .bet-adjust button:hover {
