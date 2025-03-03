@@ -9,6 +9,7 @@ import Slots from "./Slots";
 import Roulette from "./Roulette";
 import Stats from "./Stats";
 import TitlePage from "./TitlePage"
+import Bank from './Bank'
 
 import "./CssFiles/App.css";
 
@@ -30,7 +31,7 @@ export default () => {
     return (
       <div className="funny-message">
         <h1>🎰 Bad Bet, Buddy! 🎰</h1>
-        <p>We don’t gamble in portrait mode. Flip your phone, or you’re out of luck! 🍀</p>
+        <p>We don't gamble in portrait mode. Flip your phone, or you're out of luck! 🍀</p>
       </div>
     );
   }
@@ -47,6 +48,7 @@ export default () => {
           <Route path="/Slots" element={<Slots />} />
           <Route path="/Roulette" element={<Roulette />} />
           <Route path="/Stats" element={<Stats />} />
+          <Route path="/Bank" element={<Bank />} />
         </Routes>
       </BrowserRouter>
     </div>
