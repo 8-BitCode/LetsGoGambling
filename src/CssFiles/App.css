@@ -10,7 +10,6 @@ body{
     padding: 0;
     overflow-x: hidden; /* Optional: prevent horizontal scroll */
     cursor: url('../Assets/CusorImages/NORMAL.png'), auto;
-    overflow-y: hidden;
 }
 a, button, .clickable, .TOS-Container .button, .GS-Icon, .GS-EasterEgg, .continue-button, .control-button, .spin-button, .bet-adjust, .bet-decrease{
     cursor: url('../Assets/CusorImages/LINK_SELECT.png'), pointer;

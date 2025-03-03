@@ -21,7 +21,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    cursor: move;
     font-family: BIOSFont;
     border-bottom: 2px inset #808080;
     z-index: 1;
