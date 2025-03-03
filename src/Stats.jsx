@@ -19,8 +19,11 @@ const initialData = [
 ];
 
 export default function Stats({ closeGame }) {
+    // Generate a random position for the window
+    const randomX = Math.floor(Math.random() * (window.innerWidth - 600));
+    const randomY = Math.floor(Math.random() * (window.innerHeight - 400 - 40));
   return (
-    <Draggable handle=".title-bar">
+    <Draggable handle=".title-bar" defaultPosition={{ x: randomX, y: randomY }}>
       <div className="win95-app-container">
         <div className="title-bar">
           <span>USER SEARCH.XLS</span>

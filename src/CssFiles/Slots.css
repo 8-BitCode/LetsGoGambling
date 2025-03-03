@@ -1,10 +1,6 @@
 .slot-machine-container {
-  min-height: 100vh;
-  background-color: #008080;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'MS Sans Serif', sans-serif;
+  position: absolute;
+  z-index: 500; /* Lower z-index to ensure it stays behind Bank */
 }
 
 .slot-machine-window {
@@ -13,6 +9,7 @@
   border: 4px outset #808080; /* Changed border to outset */
   display: flex;
   flex-direction: column;
+  height: 490px;
 }
 
 .top-bar {

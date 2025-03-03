@@ -63,7 +63,7 @@ const GameSelection = () => {
     { id: 2, name: 'Black Jack', icon: '🃏', route: '/Blackjack' },
     { id: 3, name: 'Roulette', icon: '🛞', route: '/Roulette' },
     { id: 4, name: 'Slots', icon: '🎰', route: '/GameSelection' },
-    { id: 5, name: 'Bank', icon: '🏦', route: '/Bank' },
+    { id: 5, name: 'Bank', icon: '🏦', route: '/GameSelection' },
     { id: 6, name: 'Locked', icon: '🔒', route: '/GameSelection' },
   ];
 
@@ -168,6 +168,8 @@ const GameSelection = () => {
       <div className="GS-ActiveGames" >
         {activeGames.includes('Slots') && <Slots closeGame={() => closeActiveGame('Slots')} />}
         {activeGames.includes('Statistics') && <Stats closeGame={() => closeActiveGame('Statistics')} />}
+        {activeGames.includes('Bank') && <Bank closeBank={() => closeActiveGame('Bank')} />}
+
       </div>
 
       {/* Taskbar */}

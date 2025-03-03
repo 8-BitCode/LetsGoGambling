@@ -1,0 +1,83 @@
+.bank-window {
+    width: 400px;
+    background-color: #c0c0c0;
+    border: 4px outset #808080;
+    font-family: PixelFont;
+    position: absolute;
+    z-index: 600;
+    height: 275px;
+  }
+  
+  .top-bar {
+    background-color: #000080;
+    color: white;
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px inset #808080;
+    font-family: BIOSFont;
+  }
+  
+  .top-bar-title {
+    font-size: 12px;
+  }
+  
+  .top-bar-buttons button {
+    width: 20px;
+    height: 20px;
+    background-color: #c0c0c0;
+    border: 1px outset #4f4f4f;
+    font-weight: bold;
+  }
+  
+  .bank-content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .balance-display, .loan-display {
+    margin-bottom: 16px;
+    font-size: 18px;
+    color: black;
+    background-color: white;
+    padding: 8px;
+    border: 2px inset #808080;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .money-input {
+    padding: 8px;
+    width: 100%;
+    font-size: 16px;
+    border: 2px inset #808080;
+    background-color: white;
+    color: black;
+    margin-bottom: 16px;
+  }
+  
+  .button-group {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .bank-button {
+    padding: 8px 16px;
+    background-color: #c0c0c0;
+    border: 2px outset #4f4f4f;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .bank-button:hover {
+    background-color: #808080;
+  }
+  
+  .bank-button:disabled {
+    background-color: #808080;
+    color: #b0b0b0;
+    cursor: not-allowed;
+  }

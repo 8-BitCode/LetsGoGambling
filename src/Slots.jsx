@@ -5,6 +5,8 @@ import "./CssFiles/Slots.css";
 const symbols = ["7", "🎵", "🍀", "🔔", "💎", "🐎"];
 
 export default function SlotMachine({ closeGame }) {
+  const randomX = Math.floor(Math.random() * (window.innerWidth - 600));
+  const randomY = Math.floor(Math.random() * (window.innerHeight - 490 - 40)); // - 40 becuase of the button bar
   const [reels, setReels] = useState([
     ["7", "7", "7"],
     ["7", "7", "7"],
@@ -82,8 +84,8 @@ export default function SlotMachine({ closeGame }) {
   };
 
   return (
+    <Draggable>
     <div className="slot-machine-container">
-      <Draggable>
         <div className="slot-machine-window">
           <div className="top-bar">
             <span className="top-bar-title">SlotMachine95.exe</span>
@@ -138,7 +140,7 @@ export default function SlotMachine({ closeGame }) {
             </button>
           </div>
         </div>
-      </Draggable>
     </div>
+    </Draggable>
   );
 }
