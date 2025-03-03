@@ -195,3 +195,6 @@
   opacity: 5%;
   user-select: none;
 }
+.popup{
+  z-index: 9999;
+}

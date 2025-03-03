@@ -9,15 +9,15 @@ import { onAuthStateChanged } from 'firebase/auth';
 import Creature from './Assets/PDTheCreature.png';
 import Slots from './Slots';
 import Stats from './Stats';
-import Bank from './Bank'
-import Blackjack from './Blackjack'
+import Bank from './Bank';
+import Blackjack from './Blackjack';
 import { doc, getDoc, setDoc, updateDoc, increment } from "firebase/firestore";
 
 const MoneySlot = ({ amount }) => {
-  const digits = amount.toString().split(''); 
-
+  const digits = amount.toString().split('');
+  
   return (
-    <div className="money-slot-window" style={{ width: `${(digits.length + 1) * 50}px` }}>
+    <div className="money-slot-window" style={{ width: (digits.length + 1) * 50 + 'px' }}>
       <div className="title-bar">
         <span className="title-text">Money</span>
         <div className="window-buttons">
@@ -56,8 +56,13 @@ const GameSelection = () => {
   const [currentTime, setCurrentTime] = useState('');
   const [taskInput, setTaskInput] = useState('');
   const [userDocId, setUserDocId] = useState(null);
-  const [activeGames, setActiveGames] = useState([]); // Changed to array
+  const [activeGames, setActiveGames] = useState([]);
+  const [activePopups, setActivePopups] = useState([]); // Track active popups
+  const [gameToClose, setGameToClose] = useState(null); // Track the game to be closed
   const navigate = useNavigate();
+
+  const randomX = Math.floor(Math.random() * (window.innerWidth - 500));
+  const randomY = Math.floor(Math.random() * (window.innerHeight - 500 - 40)); // - 40 becuase of the button bar
 
   const games = [
     { id: 1, name: 'Statistics', icon: '📈', route: '/GameSelection' },
@@ -122,12 +127,39 @@ const GameSelection = () => {
     if (!activeGames.includes(game.name)) {
       setActiveGames([...activeGames, game.name]);
       navigate(game.route);
-    } else { 
     }
   };
 
-  const closeActiveGame = (gameName) => {
+  const openLeavePopup = (gameName) => {
+    // List of games where we want the popup to appear
+    const gamesWithPopupChance = ['Black Jack', 'Slots', 'Roulette'];
+  
+    // Check if the game is in the list of games with the 1 in 5 chance for the popup
+    if (gamesWithPopupChance.includes(gameName)) {
+      const randomChance = Math.floor(Math.random() * 5) + 1; // Random number between 1 and 5
+  
+      // If the random number is 1, show the popup
+      if (randomChance === 1) {
+        setActivePopups((prev) => [...prev, gameName]); // Show the popup for the game
+      } else {
+        // Otherwise, close the game normally
+        setActiveGames((prev) => prev.filter((game) => game !== gameName));
+      }
+    } else {
+      // If the game is not in the list, just close it normally
+      setActiveGames((prev) => prev.filter((game) => game !== gameName));
+    }
+  };
+  
+  
+
+  const closeLeavePopup = (gameName) => {
+    setActivePopups(prev => prev.filter(game => game !== gameName)); // Remove from the active popups array
+  };
+
+  const handleConfirmLeave = (gameName) => {
     setActiveGames(activeGames.filter(game => game !== gameName));
+    closeLeavePopup(gameName);
   };
 
   return (
@@ -166,11 +198,11 @@ const GameSelection = () => {
       </div>
 
       {/* Display Active Game Overlays */}
-      <div className="GS-ActiveGames" >
-        {activeGames.includes('Slots') && <Slots closeGame={() => closeActiveGame('Slots')} />}
-        {activeGames.includes('Statistics') && <Stats closeGame={() => closeActiveGame('Statistics')} />}
-        {activeGames.includes('Bank') && <Bank closeBank={() => closeActiveGame('Bank')} />}
-        {activeGames.includes('Black Jack') && <Blackjack closeGame={() => closeActiveGame('Black Jack')} />}
+      <div className="GS-ActiveGames">
+        {activeGames.includes('Slots') && <Slots closeGame={() => openLeavePopup('Slots')} />}
+        {activeGames.includes('Statistics') && <Stats closeGame={() => openLeavePopup('Statistics')} />}
+        {activeGames.includes('Bank') && <Bank closeBank={() => openLeavePopup('Bank')} />}
+        {activeGames.includes('Black Jack') && <Blackjack closeGame={() => openLeavePopup('Black Jack')} />}
       </div>
 
       {/* Taskbar */}
@@ -187,6 +219,25 @@ const GameSelection = () => {
 
       {/* Easter Egg Icon */}
       <div className="GS-EasterEgg">🗑️</div>
+
+      {/* Confirmation Popups */}
+      {activePopups.map((gameName) => (
+        <Draggable key={gameName} defaultPosition={{ x: randomX, y: randomY }}>
+          <div className="popup">
+            <div className="popup-title-bar">
+              <span className="popup-title">Are you sure?</span>
+              <button onClick={() => closeLeavePopup(gameName)} className="control-button close-button">X</button>
+            </div>
+            <div className="popup-content">
+              One more game! something tells me you'll get really lucky really soon
+              <div className="popup-buttons">
+                <button onClick={() => closeLeavePopup(gameName)} className="popup-button">Yes</button>
+                <button onClick={() => closeLeavePopup(gameName)} className="popup-button">Yes</button>
+              </div>
+            </div>
+          </div>
+        </Draggable>
+      ))}
     </div>
   );
 };
