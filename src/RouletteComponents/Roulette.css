@@ -4,6 +4,26 @@
     width: 50px;
 }
 
+#information-container {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    position: relative;
+    top: 25px
+}
+
+#deposit-container {
+    position: relative;
+    bottom: 50px;
+}
+
+#wheel {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    top: 125px
+}
+
 .chip {
     width: 50px;
     height: 50px;
@@ -18,7 +38,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    top: 700px;
+    top: 665px;
 }
 
 #roulette-table {
@@ -26,6 +46,8 @@
     display: flex;
     position: relative;
     top: 200px;
+    left: 28px;
+    justify-content: center;
 }
 
 #roulette-table-grid {
@@ -39,14 +61,23 @@
     'five';
 }
 
+#buttons-container {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    top: 600px;
+}
+
 #zero-column {
     display: grid;
     grid-area: 'zero';
-    grid-template-rows: 150px;
+    grid-template-rows: 75px;
+    position: relative;
+    top: 10px;
 }
 
 #zero-column button {
-    height: 100px;
+    height: 75px;
     pointer-events: all;
 }
 
@@ -62,7 +93,7 @@
     position: relative;
     display: grid;
     gap: 10px;
-    bottom: 50px;
+    bottom: 70px;
 }
 
 #row-three {
@@ -70,32 +101,31 @@
     position: relative;
     display: grid;
     gap: 10px;
-    bottom: 100px
+    bottom: 140px
 }
 
 #row-four { 
     grid-area: 'four';
     display: flex;
     position: relative;
-    bottom: 100px;
-    left: 100px;
+    bottom: 200px;
 }
 
 #row-four button {
-    width: 200px;
+    width: 300px;
     pointer-events: all;
+
 }
 
 #row-five { 
     grid-area: 'five';
     display: flex;
     position: relative;
-    bottom: 100px;
-    left: 100px
+    bottom: 200px; 
 }
 
 #row-five button {
-    width: 100px;
+    width: 150px;
     pointer-events: all;
 }
 
@@ -116,34 +146,28 @@
 
 .row-subdivision-two {
     position: relative;
-    bottom: 50px;
+    bottom: 60px;
     pointer-events: none;
 }
 
 .row-subdivision-two button {
-    height: 25px;
-}
-.numbers {
-    
-}
-
-.two-to-one {
-
+    height: 10px;
 }
 
 /* these are the horizontal double bets placed over subdivision one */
 .double-one {
     pointer-events: none;
     position: relative;
-    left: 50px;
+    left: 55px;
     bottom: 50px;
     display: flex;
-    gap: 50px;
+    gap: 64px;
 }
 
 .double-one button {
     pointer-events: all;
-    width: 30px;
+    width: 10px;
+    height: 40px
 }
 
 .double-two {
@@ -160,7 +184,7 @@
     gap: 60px;
     position: relative;
     left: 55px;
-    bottom: 25px;
+    bottom: 10px;
     pointer-events: none;
 }
 
@@ -171,12 +195,11 @@
 
 .columns-container {
     display: flex;
-    gap: 20px;
     position: relative;
-    left: -20px;
+    left: -30px;
 }
 
 .columns-container button {
-    width: 20px;
+    width: 40px;
     pointer-events: all;
 }

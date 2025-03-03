@@ -6,7 +6,7 @@ function IntervalBet({onClick, twoToOne, interval}) {
 
     if (twoToOne === true) {
         return(
-            <button onClick={onClick}>2/1</button>
+            <button style={{position: 'relative', right: '30px'}} onClick={onClick}>2/1</button>
         )
     }
 

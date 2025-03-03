@@ -333,11 +333,14 @@ const Roulette = () => {
                 <title>ROULETTE!!!!!</title>
             </Helmet>
 
-            <div>Selected Chip: {chipSelected}</div>
-            <div>Balance: {balance}</div>
-            <div>Bet Placed: {stakePlaced}</div>
+            <div id='information-container'>
+                <div>Selected Chip: {chipSelected}</div>
+                <div>Balance: {balance}</div>
+                <div>Bet Placed: {stakePlaced}</div>
+            </div>            
 
-            <div>Wheel: {displayWin}</div>
+
+            <div id='wheel'>Wheel: {displayWin}</div>
 
             <div id='chip-container'>        
                 {chipValues.map(value => <button onClick={() => updateSelected(value)} id={value} key={value} className='chip'>{value}</button>)}
@@ -349,12 +352,14 @@ const Roulette = () => {
                 <button onClick={() => clearBet()}>Clear Bet</button>
                 <button onClick={() => undoBet()}>Undo Bet</button>
                 <button onClick={() => spinWheel()}>Spin Wheel</button>
-
-                <form>
-                    <input type='text' className='deposit-input'/>
-                    <input type='button' onClick={() => deposit(parseInt(document.querySelector('.deposit-input').value))}/>
-                </form>
             </div>
+
+            <form id='deposit-container'>
+                <div>Deposit</div>
+                <input type='text' className='deposit-input'/>
+                <input type='button' onClick={() => deposit(parseInt(document.querySelector('.deposit-input').value))}/>
+            </form>
+
 
 
 
