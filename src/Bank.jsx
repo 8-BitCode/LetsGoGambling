@@ -1,31 +1,68 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Draggable from "react-draggable";
 import { Helmet } from "react-helmet";
+import { db, doc, getDoc, updateDoc } from "./firebase"; // Import the necessary functions
 import "./CssFiles/Bank.css";
 
-export default function Bank({ closeBank }) {
+export default function Bank({ closeBank, userId }) {
   const [balance, setBalance] = useState(0);
-  const [loan, setLoan] = useState(0);
+  const [debt, setDebt] = useState(0); // Only track debt now
   const [amount, setAmount] = useState(0);
 
   // Generate a random position for the window
   const randomX = Math.floor(Math.random() * (window.innerWidth - 400));
-  const randomY = Math.floor(Math.random() * (window.innerHeight - 275 - 40)); // - 40 becuase of the button bar
-  
+  const randomY = Math.floor(Math.random() * (window.innerHeight - 275 - 40));
 
-  const handleTakeLoan = () => {
+  // Fetch data from Firebase when the component mounts
+  useEffect(() => {
+    const fetchBankData = async () => {
+      const docRef = doc(db, "Players", userId); // Assumes you have a collection "Players" and userId is passed as a prop
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setBalance(docSnap.data().money || 0);
+        setDebt(docSnap.data().debt || 0); // Fetch debt from the database
+      } else {
+        console.log("No such document!");
+      }
+    };
+    fetchBankData();
+  }, [userId]);
+
+  const handleTakeLoan = async () => {
     if (amount > 0) {
-      setBalance(balance + amount);
-      setLoan(loan + amount);
+      const newBalance = balance + amount;
+      const newDebt = debt + amount; // Increase the debt by the loan amount
+
+      // Update state
+      setBalance(newBalance);
+      setDebt(newDebt);
       setAmount(0);
+
+      // Update data in Firestore
+      const docRef = doc(db, "Players", userId);
+      await updateDoc(docRef, {
+        money: newBalance,
+        debt: newDebt, // Update the debt field
+      });
     }
   };
 
-  const handleRepayLoan = () => {
-    if (amount > 0 && amount <= balance && amount <= loan) {
-      setBalance(balance - amount);
-      setLoan(loan - amount);
+  const handleRepayLoan = async () => {
+    if (amount > 0 && amount <= balance && amount <= debt) {
+      const newBalance = balance - amount;
+      const newDebt = debt - amount; // Decrease the debt by the repayment amount
+
+      // Update state
+      setBalance(newBalance);
+      setDebt(newDebt);
       setAmount(0);
+
+      // Update data in Firestore
+      const docRef = doc(db, "Players", userId);
+      await updateDoc(docRef, {
+        money: newBalance,
+        debt: newDebt, // Update the debt field
+      });
     }
   };
 
@@ -43,7 +80,7 @@ export default function Bank({ closeBank }) {
         </div>
         <div className="bank-content">
           <div className="balance-display">Balance: ${balance}</div>
-          <div className="loan-display">Loan: ${loan}</div>
+          <div className="balance-display">Debt: ${debt}</div> {/* Display the debt */}
           <input
             type="number"
             className="money-input"
@@ -52,7 +89,7 @@ export default function Bank({ closeBank }) {
           />
           <div className="button-group">
             <button className="bank-button" onClick={handleTakeLoan}>Take Loan</button>
-            <button className="bank-button" onClick={handleRepayLoan} disabled={amount > balance || amount > loan}>
+            <button className="bank-button" onClick={handleRepayLoan} disabled={amount > balance || amount > debt}>
               Repay Loan
             </button>
           </div>

@@ -201,7 +201,7 @@ const GameSelection = () => {
       <div className="GS-ActiveGames">
         {activeGames.includes('Slots') && <Slots closeGame={() => openLeavePopup('Slots')} />}
         {activeGames.includes('Statistics') && <Stats closeGame={() => openLeavePopup('Statistics')} />}
-        {activeGames.includes('Bank') && <Bank closeBank={() => openLeavePopup('Bank')} />}
+        {activeGames.includes('Bank') && <Bank closeBank={() => openLeavePopup('Bank')} userId={userDocId} />}
         {activeGames.includes('Black Jack') && <Blackjack closeGame={() => openLeavePopup('Black Jack')} />}
       </div>
 
