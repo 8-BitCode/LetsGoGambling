@@ -131,30 +131,22 @@ const GameSelection = () => {
   };
 
   const openLeavePopup = (gameName) => {
-    // List of games where we want the popup to appear
     const gamesWithPopupChance = ['Black Jack', 'Slots', 'Roulette'];
   
-    // Check if the game is in the list of games with the 1 in 5 chance for the popup
     if (gamesWithPopupChance.includes(gameName)) {
-      const randomChance = Math.floor(Math.random() * 5) + 1; // Random number between 1 and 5
-  
-      // If the random number is 1, show the popup
+      const randomChance = Math.floor(Math.random() * 5) + 1; 
       if (randomChance === 1) {
-        setActivePopups((prev) => [...prev, gameName]); // Show the popup for the game
+        setActivePopups((prev) => [...prev, gameName]);
       } else {
-        // Otherwise, close the game normally
         setActiveGames((prev) => prev.filter((game) => game !== gameName));
       }
     } else {
-      // If the game is not in the list, just close it normally
       setActiveGames((prev) => prev.filter((game) => game !== gameName));
     }
   };
-  
-  
 
   const closeLeavePopup = (gameName) => {
-    setActivePopups(prev => prev.filter(game => game !== gameName)); // Remove from the active popups array
+    setActivePopups(prev => prev.filter(game => game !== gameName));
   };
 
   const handleConfirmLeave = (gameName) => {
@@ -169,17 +161,14 @@ const GameSelection = () => {
       </Helmet>
       <img className="PDImage" src={Creature} alt="cur" />
 
-      {/* Time Display */}
       <div className="GS-TimeDisplay">{currentTime}</div>
 
-      {/* Money Slot Display */}
       <Draggable>
         <div className="GS-MoneyDisplay">
           <MoneySlot amount={money} />
         </div>
       </Draggable>
 
-      {/* Always Show Game Icons */}
       <div className="GS-Icons">
         {games.map((game) => (
           <div
@@ -197,15 +186,13 @@ const GameSelection = () => {
         ))}
       </div>
 
-      {/* Display Active Game Overlays */}
       <div className="GS-ActiveGames">
         {activeGames.includes('Slots') && <Slots closeGame={() => openLeavePopup('Slots')} />}
-        {activeGames.includes('Statistics') && <Stats closeGame={() => openLeavePopup('Statistics')} />}
+        {activeGames.includes('Statistics') && <Stats closeGame={() => openLeavePopup('Statistics')} loggedInUser={username} />}
         {activeGames.includes('Bank') && <Bank closeBank={() => openLeavePopup('Bank')} userId={userDocId} />}
         {activeGames.includes('Black Jack') && <Blackjack closeGame={() => openLeavePopup('Black Jack')} />}
       </div>
 
-      {/* Taskbar */}
       <div className="GS-Taskbar">
         <input
           type="text"
@@ -217,10 +204,8 @@ const GameSelection = () => {
         <div className="GS-TaskbarUsername">Hello, {username}</div>
       </div>
 
-      {/* Easter Egg Icon */}
       <div className="GS-EasterEgg">🗑️</div>
 
-      {/* Confirmation Popups */}
       {activePopups.map((gameName) => (
         <Draggable key={gameName} defaultPosition={{ x: randomX, y: randomY }}>
           <div className="popup">

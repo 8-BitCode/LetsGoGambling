@@ -1,27 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Draggable from "react-draggable";
+import { db, collection, onSnapshot } from "./firebase"; // Import the necessary Firestore functions
 import "./CssFiles/Stats.css";
 
-const initialData = [
-  ["NAME", "CASH", "LOSS", "REVENUE", "AVG. PROFIT"],
-  ["X_JOE_X", "-$1000", "-$1000", "$0", "-$100"],
-  ["JEB", "$2", "-$100", "$102", "$0"],
-  ["COOL_GUY_64", "$105", "$0", "$105", "$10"],
-  ["ETC ETC", "$50", "-$10", "$80", "$5"],
-  ["USER_123", "$500", "-$50", "$600", "$50"],
-  ["GAMER_X", "$300", "-$20", "$400", "$30"],
-  ["RETRO_FAN", "$120", "-$10", "$140", "$10"],
-  ["PIXEL_PETE", "$200", "-$15", "$250", "$20"],
-  ["DOS_MASTER", "$180", "-$25", "$230", "$15"],
-  ["DOS_MASTER", "$180", "-$25", "$230", "$15"],
-  ["DOS_MASTER", "$180", "-$25", "$230", "$15"],
-  ["DOS_MASTER", "$180", "-$25", "$230", "$15"],
-];
+export default function Stats({ closeGame, loggedInUser }) {
+  const [players, setPlayers] = useState([]);
 
-export default function Stats({ closeGame }) {
-    // Generate a random position for the window
-    const randomX = Math.floor(Math.random() * (window.innerWidth - 600));
-    const randomY = Math.floor(Math.random() * (window.innerHeight - 400 - 40));
+  // Debugging: log the logged-in user
+  useEffect(() => {
+    console.log("Logged-in user:", loggedInUser);
+  }, [loggedInUser]);
+
+  // Generate a random position for the window
+  const randomX = Math.floor(Math.random() * (window.innerWidth - 600));
+  const randomY = Math.floor(Math.random() * (window.innerHeight - 400 - 40));
+
+  // Fetch player data from Firestore with real-time updates using onSnapshot
+  useEffect(() => {
+    const playersRef = collection(db, "Players");
+
+    // Set up the real-time listener
+    const unsubscribe = onSnapshot(playersRef, (querySnapshot) => {
+      const playerData = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          name: data.username,
+          cash: `$${data.money}`,  // Assuming "money" represents the cash
+          debt: `$${data.debt}`,   // Assuming "debt" represents the debt
+        };
+      });
+      setPlayers(playerData);
+    });
+
+    // Cleanup the listener when the component is unmounted
+    return () => unsubscribe();
+  }, []);
+
+  // Debugging: log the players data
+  useEffect(() => {
+    console.log("Players data:", players);
+  }, [players]);
+
   return (
     <Draggable handle=".title-bar" defaultPosition={{ x: randomX, y: randomY }}>
       <div className="win95-app-container">
@@ -35,17 +54,22 @@ export default function Stats({ closeGame }) {
           <table>
             <thead>
               <tr>
-                {initialData[0].map((header, index) => (
-                  <th key={index}>{header}</th>
-                ))}
+                <th>Name</th>
+                <th>MONEY!!!!</th>
+                <th><s>debt</s> anti cash.</th>
               </tr>
             </thead>
             <tbody>
-              {initialData.slice(1).map((row, rowIndex) => (
-                <tr key={rowIndex}>
-                  {row.map((cell, colIndex) => (
-                    <td key={colIndex} title={cell}>{cell}</td>
-                  ))}
+              {players.map((player, index) => (
+                <tr
+                  key={index}
+                  style={{
+                    backgroundColor: loggedInUser && player.name.toLowerCase() === loggedInUser.toLowerCase() ? "yellow" : "white"
+                  }}
+                >
+                  <td>{player.name}</td>
+                  <td style={{ color: 'green' }}>{player.cash}</td>
+                  <td style={{ color: 'rgba(0, 0, 0, 0.5)' }}>{player.debt}</td>
                 </tr>
               ))}
             </tbody>
