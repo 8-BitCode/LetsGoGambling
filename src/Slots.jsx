@@ -84,7 +84,7 @@ export default function SlotMachine({ closeGame }) {
   };
 
   return (
-    <Draggable>
+    <Draggable defaultPosition={{ x: randomX, y: randomY }}>
     <div className="slot-machine-container">
         <div className="slot-machine-window">
           <div className="top-bar">
