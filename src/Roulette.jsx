@@ -411,6 +411,23 @@ const Roulette = () => {
             </div>
             </div>
 
+            <div id="bets-list" style={{ marginLeft: "20px" }}>
+    <h3>Active Bets</h3>
+    {betsPlaced.length > 0 ? (
+        <ul>
+            {betsPlaced.map((bet, index) => (
+                <li key={index}>
+                    Bet on: <strong>{Array.isArray(bet[0]) ? bet[0].join(", ") : bet[0]}</strong> 
+                    | Amount: <strong>${bet[1]}</strong> 
+                    | Potential Winnings: <strong>${bet[1] * bet[2]}</strong>
+                </li>
+            ))}
+        </ul>
+        ) : (
+        <p>No bets placed</p>
+    )}
+    </div>
+
         </div>
         </Fragment>
     );
