@@ -164,7 +164,7 @@ const Roulette = () => {
     }
 
     // defining variables that get updated 
-    const [balance, setBalance] = useState();
+    const [balance, setBalance] = useState(1000);
     const [chipSelected, setChip] = useState();
     const [stakePlaced, setStake] = useState();
     const [betsPlaced, setPlaced] = useState([]);
@@ -350,10 +350,6 @@ const Roulette = () => {
                 <button onClick={() => undoBet()}>Undo Bet</button>
                 <button onClick={() => spinWheel()}>Spin Wheel</button>
 
-                <form>
-                    <input type='text' className='deposit-input'/>
-                    <input type='button' onClick={() => deposit(parseInt(document.querySelector('.deposit-input').value))}/>
-                </form>
             </div>
 
 
@@ -362,6 +358,7 @@ const Roulette = () => {
                 <div id='zero-column'>
                     {zeroTypes.map(item => <ZeroBet onClick={() => placeBet(chipSelected, item.type)} className='zero' type={item.type} key={item.type}/>)}
                 </div>
+
             <div id='roulette-table-grid'>
                 <div id='row-one'>
                     <div className='row-subdivision-one'>
@@ -374,6 +371,7 @@ const Roulette = () => {
                         <div className='quad'>{quadBetsRowOne.map(numbers => <QuadBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
                     </div>
                 </div>
+                
                 <div id='row-two'>
                     <div className='row-subdivision-one'>
                         {rowTwoNumbers.map(number => <NumberBet onClick={() => placeBet(chipSelected, number)} number={number} key={number}/>)}    
@@ -402,8 +400,27 @@ const Roulette = () => {
                     {oddEven.map(item => <OddEvenBet onClick={() => placeBet(chipSelected, item.type)} type={item.type} key={item.type}/>)}
                     {colours.map(item => <ColourBet onClick={() => placeBet(chipSelected, item.colour)} colour={item.colour} key={item.colour}/>)}
                     {intervalBetsRowFive.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval)} twoTwoOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
-                </div>            
+                </div> 
+           
             </div>
+            <div id="bets-list" style={{ marginLeft: "20px" }}>
+    <h3>Active Bets</h3>
+    {betsPlaced.length > 0 ? (
+        <ul>
+            {betsPlaced.map((bet, index) => (
+                <li key={index}>
+                    Bet on: <strong>{Array.isArray(bet[0]) ? bet[0].join(", ") : bet[0]}</strong> 
+                    | Amount: <strong>${bet[1]}</strong> 
+                    | Potential Winnings: <strong>${bet[1] * bet[2]}</strong>
+                </li>
+            ))}
+        </ul>
+    ) : (
+        <p>No bets placed</p>
+    )}
+</div>
+
+
             </div>
 
         </div>
