@@ -13,23 +13,32 @@ export default function SlotMachine({ closeGame }) {
     ["7", "7", "7"]
   ]);
   const [credits, setCredits] = useState(100);
-  const [bet, setBet] = useState(1);
+  const [bet, setBet] = useState(0);
   const [spinning, setSpinning] = useState(false);
   const [highlighted, setHighlighted] = useState([]);
 
   const spin = () => {
     if (spinning || credits < bet) return;
+  
+    // Check if the bet is zero
+    if (bet === 0) {
+      alert("Please place a bet to start the game.");
+      return;
+    }
+  
     setSpinning(true);
     setCredits(credits - bet);
     setHighlighted([]);
-
+  
     let spinDuration = 1000;
     let interval = setInterval(() => {
       setReels((prevReels) =>
-        prevReels.map((row) => row.map(() => symbols[Math.floor(Math.random() * symbols.length)]))
+        prevReels.map((row) =>
+          row.map(() => symbols[Math.floor(Math.random() * symbols.length)])
+        )
       );
     }, 100);
-
+  
     setTimeout(() => {
       clearInterval(interval);
       const newReels = reels.map((row) =>
@@ -40,6 +49,7 @@ export default function SlotMachine({ closeGame }) {
       checkWins(newReels);
     }, spinDuration);
   };
+  
 
   const checkWins = (grid) => {
     let wins = [];
