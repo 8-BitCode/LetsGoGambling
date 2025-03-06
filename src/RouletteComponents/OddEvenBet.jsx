@@ -3,7 +3,7 @@ import React from 'react'
 function OddEvenBet({onClick, type}) {
 
  return(
-    <button onClick={onClick}>{type}</button>
+    <button onClick={onClick}></button>
  )   
 };
 
