@@ -7,6 +7,7 @@ import NumberBet from './RouletteComponents/NumberBet';
 import OddEvenBet from './RouletteComponents/OddEvenBet';
 import QuadBet from './RouletteComponents/QuadBet';
 import ZeroBet from './RouletteComponents/ZeroBet';
+import BetListItem from './RouletteComponents/BetListItem'
 
 //Helmet is used to give each sub page a title dynamically (just a little akram detail)
 import { Helmet } from 'react-helmet';
@@ -417,9 +418,7 @@ const Roulette = () => {
         <ul>
             {betsPlaced.map((bet, index) => (
                 <li key={index}>
-                    Bet on: <strong>{Array.isArray(bet[0]) ? bet[0].join(", ") : bet[0]}</strong> 
-                    | Amount: <strong>${bet[1]}</strong> 
-                    | Potential Winnings: <strong>${bet[1] * bet[2]}</strong>
+                    <BetListItem bet={bet} />
                 </li>
             ))}
         </ul>
