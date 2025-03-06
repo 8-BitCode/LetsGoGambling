@@ -3,6 +3,17 @@ import "./CssFiles/Blackjack.css";
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import Draggable from "react-draggable";
+import {
+    auth,
+    db,
+    collection,
+    query,
+    where,
+    getDocs,
+    updateDoc,
+    doc,
+} from "./firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Blackjack = ({ closeGame }) => {
   const navigate = useNavigate();
@@ -35,6 +46,49 @@ const Blackjack = ({ closeGame }) => {
     "K",
     "A",
   ];
+
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                fetchMoney(user.uid);
+            } else {
+                alert("User not authenticated");
+                navigate("/GameSelection");
+            }
+        });
+        return () => unsubscribe();
+    }, [navigate]);
+
+    const fetchMoney = async (uid) => {
+        try {
+            const playersRef = collection(db, "Players");
+            const q = query(playersRef, where("uid", "==", uid));
+            const querySnapshot = await getDocs(q);
+
+            if (!querySnapshot.empty) {
+                const userDoc = querySnapshot.docs[0];
+                setMoney(userDoc.data().money);
+                setUserDocId(userDoc.id); // Store document ID for future updates
+            } else {
+                alert("User data not found.");
+            }
+        } catch (err) {
+            alert("Failed to fetch money: " + err.message);
+        }
+    };
+
+    const updateMoney = async (newMoney) => {
+        try {
+            if (userDocId) {
+                const userDocRef = doc(db, "Players", userDocId);
+                await updateDoc(userDocRef, { money: newMoney });
+                setMoney(newMoney); // Update local state
+            }
+        } catch (err) {
+            alert("Failed to update money: " + err.message);
+        }
+    };
 
   // Initialize Deck & Shuffle
   const initialiseDeck = () => {
@@ -78,14 +132,14 @@ const Blackjack = ({ closeGame }) => {
 
     if (getHandValue(playerHand) === 21 && getHandValue(dealerHand) !== 21) {
       setMessage(`Blackjack! You win! Your bet is doubled! + ${2 * bet}`);
-      setMoney(money + 2 * bet);
+      updateMoney(money + 2 * bet);
       gameOverFunction();
     } else if (
       getHandValue(playerHand) === 21 &&
       getHandValue(dealerHand) === 21
     ) {
       setMessage(`It's a tie. Your bet is returned. + ${bet}`);
-      setMoney(money + bet);
+      updateMoney(money + bet);
       gameOverFunction();
     }
   };
@@ -122,15 +176,15 @@ const Blackjack = ({ closeGame }) => {
     const newPlayerHandValue = getHandValue(newPlayerHand);
     if (newPlayerHandValue > 21) {
       setMessage(`Bust! You lose your bet. - ${bet}`);
-      setMoney(Math.max(money, 0)); // Ensure money doesn't go below 0
+      updateMoney(Math.max(money, 0)); // Ensure money doesn't go below 0
       gameOverFunction();
     } else if (newPlayerHandValue === 21 && getHandValue(dealerHand) !== 21) {
       setMessage(`You win! Your bet is doubled! + ${2 * bet}`);
-      setMoney(money + 2 * bet);
+      updateMoney(money + 2 * bet);
       gameOverFunction();
     } else if (newPlayerHandValue === 21 && getHandValue(dealerHand) === 21) {
       setMessage(`It's a tie. Your bet is returned. + ${bet}`);
-      setMoney(money + bet);
+      updateMoney(money + bet);
       gameOverFunction();
     }
   };
@@ -151,13 +205,13 @@ const Blackjack = ({ closeGame }) => {
 
     if (dealerValue > 21 || playerValue > dealerValue) {
       setMessage(`You win! Your bet is doubled! + ${2 * bet}`);
-      setMoney(money + 2 * bet);
+      updateMoney(money + 2 * bet);
     } else if (playerValue < dealerValue) {
       setMessage(`Dealer wins. You lose your bet. - ${bet}`);
-      setMoney(Math.max(money, 0)); // Ensure money doesn't go below 0
+      updateMoney(Math.max(money, 0)); // Ensure money doesn't go below 0
     } else {
       setMessage(`It's a tie. Your bet is returned. + ${bet}`);
-      setMoney(money + bet);
+      updateMoney(money + bet);
     }
     gameOverFunction();
   };
