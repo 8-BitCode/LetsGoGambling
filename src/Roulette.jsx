@@ -156,6 +156,13 @@ const Roulette = () => {
 
     const deposit = (amount) => {
         
+        amount = Number.parseInt(amount);
+
+        if (isNaN(amount)) {
+            alert("Select an amount to deposit")
+            return;
+        }
+
         if (balance === undefined) {
             setBalance(amount)
         }
@@ -165,13 +172,13 @@ const Roulette = () => {
     }
 
     // defining variables that get updated 
-    const [balance, setBalance] = useState();
-    const [chipSelected, setChip] = useState();
-    const [stakePlaced, setStake] = useState();
+    const [balance, setBalance] = useState(0);
+    const [chipSelected, setChip] = useState(0);
+    const [stakePlaced, setStake] = useState(0);
     const [betsPlaced, setPlaced] = useState([]);
     const [previousBets, setPrevious] = useState([])
     const [winningNumber, setWin] = useState(null);
-    const [displayWin, setDisplay] = useState();
+    const [displayWin, setDisplay] = useState(Math.floor(Math.random() * 36));
 
     let multiplier = 0
     let winningColour = 0
@@ -179,7 +186,7 @@ const Roulette = () => {
 
     const placeBet = (betAmount, id) => {
         
-        if (betAmount === undefined) {
+        if (betAmount === undefined || betAmount == 0) {
             alert('Please select a bet amount')
             return 
         }
@@ -327,6 +334,12 @@ const Roulette = () => {
     ];
     
 
+    // all potention outcomes from wheel spin 
+    const possibleOutcomes = ['single', 'double', 1, 2, 3, 4, 5, 6, 7, 
+                              8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 
+                              19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+                              30, 31, 32, 33, 34, 35, 36];
+
     return(
         <Fragment>
         <div className='Roulette-Container'>
@@ -335,13 +348,18 @@ const Roulette = () => {
             </Helmet>
 
             <div id='information-container'>
-                <div>Selected Chip: {chipSelected}</div>
-                <div>Balance: {balance}</div>
-                <div>Bet Placed: {stakePlaced}</div>
+                <div>Selected Chip</div>
+                <div>{chipSelected}</div>
+                <div>Balance</div>
+                <div>{balance}</div>
+                <div>Bet Placed</div>
+                <div>{stakePlaced}</div>
             </div>            
 
+            
+            <div class='image-container'><img src='roulettetable.png'></img></div>
 
-            <div id='wheel'>Wheel: {displayWin}</div>
+            <div id='wheel'>{displayWin}</div>
 
             <div id='chip-container'>        
                 {chipValues.map(value => <button onClick={() => updateSelected(value)} id={value} key={value} className='chip'>{value}</button>)}
@@ -358,7 +376,7 @@ const Roulette = () => {
             <form id='deposit-container'>
                 <div>Deposit</div>
                 <input type='text' className='deposit-input'/>
-                <input type='button' onClick={() => deposit(parseInt(document.querySelector('.deposit-input').value))}/>
+                <input id = 'submit-deposit' type='button' value='+' onClick={() => deposit(parseInt(document.querySelector('.deposit-input').value))}/>
             </form>
 
 
@@ -372,7 +390,7 @@ const Roulette = () => {
                 <div id='row-one'>
                     <div className='row-subdivision-one'>
                         {rowOneNumbers.map(number => <NumberBet onClick={() => placeBet(chipSelected, number)} className='numbers' number={number} key={number}/>)}
-                        {intervalBetsRowOne.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval[0])} className='two-to-one' twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
+                        <div className='two-to-one'>{intervalBetsRowOne.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval[0])} twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}</div>
                     </div>
                         <div className='double-one'>{doubleBetRowOne.map(numbers => <DoubleBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
                     <div className='row-subdivision-two'>
@@ -383,7 +401,7 @@ const Roulette = () => {
                 <div id='row-two'>
                     <div className='row-subdivision-one'>
                         {rowTwoNumbers.map(number => <NumberBet onClick={() => placeBet(chipSelected, number)} number={number} key={number}/>)}    
-                        {intervalBetsRowTwo.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval[0])} twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
+                        <div className='two-to-one'>{intervalBetsRowTwo.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval[0])} twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}</div>
                     </div>
                         <div className='double-one'>{doubleBetRowTwo.map(numbers => <DoubleBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
                     <div className='row-subdivision-two'>
@@ -394,7 +412,7 @@ const Roulette = () => {
                 <div id='row-three'>
                     <div className='row-subdivision-one'>
                         {rowThreeNumbers.map(number => <NumberBet onClick={() => placeBet(chipSelected, number)} number={number} key={number}/>)}
-                        {intervalBetsRowThree.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval[0])} twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
+                        <div className='two-to-one'>{intervalBetsRowThree.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval[0])} twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}</div>
                     </div>
                         <div className='double-one'>{doubleBetRowThree.map(numbers => <DoubleBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
                     <div className='row-subdivision-two'>  
@@ -415,7 +433,7 @@ const Roulette = () => {
             <div id="bets-list" style={{ marginLeft: "20px" }}>
     <h3>Active Bets</h3>
     {betsPlaced.length > 0 ? (
-        <ul>
+        <ul class='bets=list-items'>
             {betsPlaced.map((bet, index) => (
                 <li key={index}>
                     <BetListItem bet={bet} />

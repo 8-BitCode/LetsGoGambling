@@ -40,13 +40,13 @@ function BetListItem({bet}) {
 
                     // dozen bets
                     case 2:
-                        output = `First Dozen - ${bet[0][0]} to ${bet[0][11]}`;
+                        output = `First Dozen`;
                         break;
                     case 14:
-                        output = `Second Dozen - ${bet[0][0]} to ${bet[0][11]}`;
+                        output = `Second Dozen`;
                         break;                     
                     case 26:
-                        output = `Third Dozen - ${bet[0][0]} to ${bet[0][11]}`;
+                        output = `Third Dozen`;
                         break;
                     }
                 break;
@@ -81,7 +81,7 @@ function BetListItem({bet}) {
             output = `${bet[0]}`
         }
 
-        return <div>{`${output} | Stake ${bet[1]} | Payout ${bet[1] * bet[2]} `}</div>
+        return <div>{`${output} | Stake: ${bet[1]} | Payout: ${bet[1] * bet[2]} `}</div>
     }
 };
 
