@@ -12,7 +12,7 @@ export default function SlotMachine({ closeGame }) {
     ["7", "7", "7"],
     ["7", "7", "7"]
   ]);
-  const [credits, setCredits] = useState(100);
+  const [credits, setCredits] = useState(1000);
   const [bet, setBet] = useState(0);
   const [spinning, setSpinning] = useState(false);
   const [highlighted, setHighlighted] = useState([]);
@@ -22,7 +22,7 @@ export default function SlotMachine({ closeGame }) {
   
     // Check if the bet is zero
     if (bet === 0) {
-      alert("Please place a bet to start the game.");
+      alert("Please place a bet to start the game."); 
       return;
     }
   
@@ -54,10 +54,12 @@ export default function SlotMachine({ closeGame }) {
   const checkWins = (grid) => {
     let wins = [];
     let winDetected = false;
+    let TypeOfWin;
 
     grid.forEach((row, rowIndex) => {
       if (row.every((symbol) => symbol === row[0])) {
         winDetected = true;
+        TypeOfWin = 1;
         wins.push(...row.map((_, colIndex) => [rowIndex, colIndex]));
       }
     });
@@ -66,21 +68,43 @@ export default function SlotMachine({ closeGame }) {
       const column = [grid[0][col], grid[1][col], grid[2][col]];
       if (column.every((symbol) => symbol === column[0])) {
         winDetected = true;
+        TypeOfWin = 2;
         wins.push(...column.map((_, rowIndex) => [rowIndex, col]));
       }
     }
 
     if (grid[0][0] === grid[1][1] && grid[1][1] === grid[2][2]) {
       winDetected = true;
+      TypeOfWin = 3;
       wins.push([0, 0], [1, 1], [2, 2]);
     }
     if (grid[0][2] === grid[1][1] && grid[1][1] === grid[2][0]) {
       winDetected = true;
+      TypeOfWin = 4;
       wins.push([0, 2], [1, 1], [2, 0]);
     }
 
-    if (winDetected) {
-      setCredits((prevCredits) => prevCredits + bet * 50);
+
+    // BASIC WIN actually not sure
+    if (winDetected && TypeOfWin === 1) {
+      setCredits((prevCredits) => prevCredits + bet * 10);
+      setHighlighted(wins);
+    }
+
+
+    if (winDetected && TypeOfWin === 2) {
+      setCredits((prevCredits) => prevCredits + bet * 2);
+      setHighlighted(wins);
+    }
+
+    // DIAGONAL MATCH definitely not sure
+    if (winDetected && TypeOfWin === 3) {
+      setCredits((prevCredits) => prevCredits + bet * 100);
+      setHighlighted(wins);
+    }
+
+    if (winDetected && TypeOfWin === 4) {
+      setCredits((prevCredits) => prevCredits + bet * 0.5);
       setHighlighted(wins);
     }
   };
@@ -105,19 +129,20 @@ export default function SlotMachine({ closeGame }) {
           </div>
 
           <div className="slot-machine-content">
-            <div className="credits">Credits: {credits}</div>
+            <div className="credits">Gambucks: {credits}</div>
             <div className="bet">Bet: {bet}</div>
 
             <div className="bet-controls">
               <div className="bet-adjust bet-decrease">
-                {[1, 5, 10, 50, 100, 500].map((value) => (
+                {[1, 10, 100, 1000].map((value) => (
                   <button key={value} onClick={() => adjustBet(-value)}>
                     -{value}
                   </button>
                 ))}
-              </div>
+                <button onClick={() => setBet((prevBet) => prevBet / 2)}>Halve</button> 
+              </div> 
 
-              <div className="slot-reels">
+              <div className="slot-reels"> 
                 {reels.map((row, rowIndex) => (
                   <div key={rowIndex} className="slot-reel">
                     {row.map((symbol, colIndex) => (
@@ -132,12 +157,13 @@ export default function SlotMachine({ closeGame }) {
                 ))}
               </div>
 
-              <div className="bet-adjust bet-increase">
-                {[1, 5, 10, 50, 100, 500].map((value) => (
+              <div className="bet-adjust bet-increase">     
+                {[1, 10, 100, 1000].map((value) => (
                   <button key={value} onClick={() => adjustBet(value)}>
                     +{value}
                   </button>
                 ))}
+                <button onClick={() => setBet((prevBet) => prevBet * 2)}>Double</button>
               </div>
             </div>
 
