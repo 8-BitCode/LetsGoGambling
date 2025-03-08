@@ -4,7 +4,7 @@
     font-family: 'BIOSFont', sans-serif;
     color: white;
     position: relative;
-    overflow-x: hidden;
+    overflow: hidden;
   }
   
   .GS-TimeDisplay {

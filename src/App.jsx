@@ -5,7 +5,6 @@ import TitlePage from "./TitlePage";
 import TermsOfService from "./TermsOfService";
 import UserEntry from "./UserEntry";
 import GameSelection from "./GameSelection";
-import Stats from "./Stats"; // Import the Stats component
 import END from "./END";
 
 import "./CssFiles/App.css";

@@ -59,8 +59,8 @@ const GameSelection = () => {
   const [userDocId, setUserDocId] = useState(null);
   const [activeGames, setActiveGames] = useState([]);
   const [activePopups, setActivePopups] = useState([]);
-  const [gameToClose, setGameToClose] = useState(null);
   const [deletedIcons, setDeletedIcons] = useState([]);
+  const [isEndUnlocked, setIsEndUnlocked] = useState(false); // Track if END is unlocked
   const [games, setGames] = useState([
     { id: 1, name: 'Statistics', icon: '📈', route: '/GameSelection' },
     { id: 2, name: 'Black Jack', icon: '🃏', route: '/GameSelection' },
@@ -70,7 +70,7 @@ const GameSelection = () => {
     { id: 6, name: 'Locked', icon: '🔒', route: '/GameSelection' },
   ]);
   const [userSuggestions, setUserSuggestions] = useState([]);
-  const [selectedUserForStats, setSelectedUserForStats] = useState(null); // Track the selected user for Stats
+  const [selectedUserForStats, setSelectedUserForStats] = useState(null);
   const navigate = useNavigate();
   const easterEggRef = useRef(null);
   const iconRefs = useRef({});
@@ -129,9 +129,68 @@ const GameSelection = () => {
   };
 
   const handleGameDoubleClick = (game) => {
+    if (game.name === 'Unlocked' && !isEndUnlocked) {
+      alert('You must bin all icons first!');
+      return;
+    }
+
     if (!activeGames.includes(game.name)) {
       setActiveGames([...activeGames, game.name]);
-      navigate(game.route);
+      if (game.name === 'Unlocked') {
+        navigate('/END', { state: { fromUnlocked: true } }); // Pass state
+      } else {
+        navigate(game.route);
+      }
+    }
+  };
+
+  const handleDragStop = (event, game) => {
+    const iconRef = iconRefs.current[game.id];
+    if (!easterEggRef.current || !iconRef) return;
+
+    const iconRect = iconRef.getBoundingClientRect();
+    const easterEggRect = easterEggRef.current.getBoundingClientRect();
+
+    const isOverlapping =
+      iconRect.left < easterEggRect.right &&
+      iconRect.right > easterEggRect.left &&
+      iconRect.top < easterEggRect.bottom &&
+      iconRect.bottom > easterEggRect.top;
+
+    if (isOverlapping) {
+      console.log(`Icon ${game.name} deleted.`);
+      iconRef.style.display = 'none';
+      setDeletedIcons((prev) => {
+        const newDeletedIcons = [...prev, game.id];
+        console.log('Deleted Icons:', newDeletedIcons);
+
+        // Check if all icons (except "Locked") are deleted
+        const allIconsDeleted = games
+          .filter((game) => game.name !== 'Locked')
+          .every((game) => newDeletedIcons.includes(game.id));
+
+        console.log('All icons deleted?', allIconsDeleted);
+
+        if (allIconsDeleted) {
+          console.log('Unlocking END route...');
+          setIsEndUnlocked(true);
+          const updatedGames = games.map((game) => {
+            if (game.name === 'Locked') {
+              return {
+                ...game,
+                icon: '🔓',
+                name: 'Unlocked',
+                route: '/END',
+              };
+            }
+            return game;
+          });
+          setGames(updatedGames);
+          console.log('Games array updated:', updatedGames);
+        }
+
+        return newDeletedIcons;
+      });
     }
   };
 
@@ -159,97 +218,50 @@ const GameSelection = () => {
     closeLeavePopup(gameName);
   };
 
-  const handleDragStop = (event, game) => {
-    const iconRef = iconRefs.current[game.id];
-    if (!easterEggRef.current || !iconRef) return;
-
-    const iconRect = iconRef.getBoundingClientRect();
-    const easterEggRect = easterEggRef.current.getBoundingClientRect();
-
-    const isOverlapping =
-      iconRect.left < easterEggRect.right &&
-      iconRect.right > easterEggRect.left &&
-      iconRect.top < easterEggRect.bottom &&
-      iconRect.bottom > easterEggRect.top;
-
-    if (isOverlapping) {
-      // Hide the icon and mark it as deleted
-      iconRef.style.display = 'none';
-      setDeletedIcons((prev) => [...prev, game.id]);
-    }
-  };
-
-  useEffect(() => {
-    const allIconsDeleted = games
-      .filter((game) => game.name !== 'Locked')
-      .every((game) => deletedIcons.includes(game.id));
-
-    if (allIconsDeleted) {
-      const updatedGames = games.map((game) => {
-        if (game.name === 'Locked') {
-          return {
-            ...game,
-            icon: '🔓',
-            name: 'Unlocked',
-            route: '/END',
-          };
-        }
-        return game;
-      });
-
-      // Update the games array with the new "Unlocked" icon
-      setGames(updatedGames);
-    }
-  }, [deletedIcons]);
-
-  // Fetch usernames from Firestore based on input
   useEffect(() => {
     const fetchUsernames = async () => {
       if (taskInput.trim() === '') {
         setUserSuggestions([]);
         return;
       }
-  
+
       try {
         const playersRef = collection(db, 'Players');
         const querySnapshot = await getDocs(playersRef);
-  
-        // Filter usernames in JavaScript (case-insensitive)
+
         const suggestions = querySnapshot.docs
           .map((doc) => doc.data().username)
           .filter((username) =>
             username.toLowerCase().includes(taskInput.toLowerCase())
           );
-  
-        // Sort suggestions to prioritize usernames starting with the search term
+
         const sortedSuggestions = suggestions.sort((a, b) => {
           const aStartsWith = a.toLowerCase().startsWith(taskInput.toLowerCase());
           const bStartsWith = b.toLowerCase().startsWith(taskInput.toLowerCase());
-  
-          if (aStartsWith && !bStartsWith) return -1; // a comes first
-          if (!aStartsWith && bStartsWith) return 1; // b comes first
-          return 0; // no change in order
+
+          if (aStartsWith && !bStartsWith) return -1;
+          if (!aStartsWith && bStartsWith) return 1;
+          return 0;
         });
-  
+
         setUserSuggestions(sortedSuggestions);
       } catch (err) {
         console.error('Failed to fetch usernames:', err);
       }
     };
-  
-    // Debounce the input to avoid too many Firestore queries
+
     const debounceTimer = setTimeout(() => {
       fetchUsernames();
-    }, 300); // 300ms delay
-  
+    }, 300);
+
     return () => clearTimeout(debounceTimer);
   }, [taskInput]);
-  // Handle clicking on a suggested username
+
   const handleSuggestionClick = (username) => {
-    setTaskInput(username); // Update the input with the selected username
-    setUserSuggestions([]); // Clear the suggestions
-    setSelectedUserForStats(username); // Set the selected user for Stats
-    setActiveGames((prev) => [...prev, 'Statistics']); // Open the Stats window
+    setTaskInput(username);
+    setUserSuggestions([]);
+    setSelectedUserForStats(username);
+    setActiveGames((prev) => [...prev, 'Statistics']);
   };
 
   return (
@@ -293,7 +305,7 @@ const GameSelection = () => {
           <Stats
             closeGame={() => openLeavePopup('Statistics')}
             loggedInUser={username}
-            selectedUser={selectedUserForStats} // Pass the selected user to Stats
+            selectedUser={selectedUserForStats}
           />
         )}
         {activeGames.includes('Bank') && <Bank closeBank={() => openLeavePopup('Bank')} userId={userDocId} />}
