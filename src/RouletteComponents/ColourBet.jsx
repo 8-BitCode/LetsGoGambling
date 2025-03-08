@@ -3,7 +3,7 @@ import React from 'react'
 function ColourBet({onClick, colour}) {
 
  return(
-    <button onClick={onClick}>{colour}</button>
+    <button onClick={onClick}></button>
  )   
 };
 

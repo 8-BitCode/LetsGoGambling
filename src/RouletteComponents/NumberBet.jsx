@@ -3,7 +3,7 @@ import React from 'react'
 function NumberBet({onClick, number}) {
 
  return(
-    <button onClick={onClick}>{number}</button>
+    <button onClick={onClick}></button>
  )   
 };
 

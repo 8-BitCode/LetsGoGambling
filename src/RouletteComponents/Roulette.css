@@ -1,12 +1,75 @@
+.Roulette-Container {
+    font-family: 'PixelFont';
+}
+
+.Roulette-Container input {
+    font-family: 'PixelFont';
+    height: 30px;
+}
+
+.Roulette-Container img {
+    position: relative;
+    top: 440px;
+    width: 1150px;
+    height:260px;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+}
+
 .Roulette-Container button {
     border-radius: 25%; 
     height: 30px;
     width: 50px;
+    font-family: 'PixelFont';
+}
+
+#information-container {
+    display: grid;
+    margin-left: 90%;
+    grid-auto-rows: 1fr;
+    position: absolute;
+    top: 30%;
+    height: 40%;
+
+}
+
+#bets-list {
+    position: relative;
+    bottom: 600px;
+    pointer-events: none;
+}
+
+
+#deposit-container {
+    font-size: larger;
+    margin-left: 20px;
+    position: relative;
+    bottom: 200px;
+}
+
+/* inconsistent size with the submit button, this fixes it */
+#submit-deposit {
+    font-size: 25px;
+    font-weight: 100;
+    height: 35px;
+    width: 30px;
+    position: relative;
+    top: 4px;
+}
+
+#wheel {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    font-size: 100px;
+    pointer-events: none;
 }
 
 .chip {
-    width: 50px;
-    height: 50px;
     background-color: red;
     border-radius: 25px;
     text-align: center;
@@ -18,14 +81,31 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    top: 700px;
+    top: 430px;
+}
+
+#chip-container button {
+    width: 75px;
+    height: 75px;
+    font-size: larger;
 }
 
 #roulette-table {
     pointer-events: none;
     display: flex;
     position: relative;
-    top: 200px;
+    bottom: 100px;
+    left: 28px;
+    justify-content: center;
+}
+
+#roulette-table button {
+    background: none;
+    border: transparent, solid, 2px;
+}
+
+#roulette-table button:hover {
+    border: black, solid, 3px;
 }
 
 #roulette-table-grid {
@@ -39,14 +119,30 @@
     'five';
 }
 
+#buttons-container {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    top: 300px;
+}
+
+#buttons-container button {
+    width: 80px;
+    height: 50px;
+    font-size: large;
+}
+
 #zero-column {
     display: grid;
     grid-area: 'zero';
-    grid-template-rows: 150px;
+    grid-template-rows: 75px;
+    position: relative;
+    top: 10px;
+    right: 30px;
 }
 
 #zero-column button {
-    height: 100px;
+    height: 75px;
     pointer-events: all;
 }
 
@@ -62,7 +158,7 @@
     position: relative;
     display: grid;
     gap: 10px;
-    bottom: 50px;
+    bottom: 70px;
 }
 
 #row-three {
@@ -70,19 +166,19 @@
     position: relative;
     display: grid;
     gap: 10px;
-    bottom: 100px
+    bottom: 140px
 }
 
 #row-four { 
     grid-area: 'four';
     display: flex;
     position: relative;
-    bottom: 100px;
-    left: 100px;
+    bottom: 200px;
+    right: 15px
 }
 
 #row-four button {
-    width: 200px;
+    width: 320px;
     pointer-events: all;
 }
 
@@ -90,12 +186,12 @@
     grid-area: 'five';
     display: flex;
     position: relative;
-    bottom: 100px;
-    left: 100px
+    bottom: 190px; 
+    right: 15px
 }
 
 #row-five button {
-    width: 100px;
+    width: 160px;
     pointer-events: all;
 }
 
@@ -116,34 +212,28 @@
 
 .row-subdivision-two {
     position: relative;
-    bottom: 50px;
+    bottom: 60px;
     pointer-events: none;
 }
 
 .row-subdivision-two button {
-    height: 25px;
-}
-.numbers {
-    
-}
-
-.two-to-one {
-
+    height: 10px;
 }
 
 /* these are the horizontal double bets placed over subdivision one */
 .double-one {
     pointer-events: none;
     position: relative;
-    left: 50px;
+    left: 55px;
     bottom: 50px;
     display: flex;
-    gap: 50px;
+    gap: 64px;
 }
 
 .double-one button {
     pointer-events: all;
-    width: 30px;
+    width: 10px;
+    height: 40px
 }
 
 .double-two {
@@ -160,7 +250,7 @@
     gap: 60px;
     position: relative;
     left: 55px;
-    bottom: 25px;
+    bottom: 10px;
     pointer-events: none;
 }
 
@@ -171,12 +261,16 @@
 
 .columns-container {
     display: flex;
-    gap: 20px;
     position: relative;
-    left: -20px;
+    left: -30px;
 }
 
 .columns-container button {
-    width: 20px;
+    width: 40px;
     pointer-events: all;
+}
+
+.two-to-one {
+    position: relative;
+    left: 20px;
 }
