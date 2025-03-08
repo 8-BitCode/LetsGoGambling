@@ -27,15 +27,29 @@ const Roulette = ({ closeGame }) => {
     const [balance, setBalance] = useState(0);
     const [userDocId, setUserDocId] = useState(null);
     const [winningNumber, setWin] = useState(null);
+    const [isSpinning, setIsSpinning] = useState(false);
     const navigate = useNavigate();
     // main functions within the game
     const spinWheel = () => {
-        console.log(betsPlaced)
-        // number from 'wheel spin'
-        setWin(Math.floor(Math.random() * 38) - 1)  
-        setPrevious(betsPlaced)
-        setStake(undefined)      
-    }
+        if (isSpinning) return; // Prevent multiple spins at once
+        setIsSpinning(true); // Start spinning
+    
+        // Generate a random final result
+        const finalResult = Math.floor(Math.random() * 38) - 1;
+    
+        // Rapidly change the displayed number
+        const spinInterval = setInterval(() => {
+            setDisplay(Math.floor(Math.random() * 36)); // Random number between 0 and 36
+        }, 50); // Update every 100ms
+    
+        // Stop spinning after 3 seconds and set the final result
+        setTimeout(() => {
+            clearInterval(spinInterval); // Stop the spinning effect
+            setDisplay(finalResult); // Set the final result
+            setWin(finalResult); // Update the winning number
+            setIsSpinning(false); // Stop spinning
+        }, 1000); // Spin for 3 seconds
+    };
       // Fetch user money when authenticated using onSnapshot for real-time data
       useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -157,11 +171,7 @@ const Roulette = ({ closeGame }) => {
 
     const reBet = () => {
 
-        console.log(betsPlaced)
-        console.log(previousBets)
-
         if (betsPlaced.includes(previousBets) || betsPlaced == previousBets || previousBets.length == 0) {
-            console.log('hello')
             return
         }
         // if bets are already placed, this will remove the bet amount of those bets from the stake
@@ -171,7 +181,6 @@ const Roulette = ({ closeGame }) => {
                 addAmount += element[1]
             })
         }
-        console.log('passed through')
         setPlaced(previousBets)
 
         let sum = 0
@@ -182,7 +191,6 @@ const Roulette = ({ closeGame }) => {
             alert('not enough money in balance')
             return
         }
-        console.log(sum, addAmount);
         setBalance(balance - sum + addAmount);
         if (betsPlaced == undefined) {
             setStake(sum)
@@ -495,7 +503,7 @@ const Roulette = ({ closeGame }) => {
     <button onClick={() => reBet()}>Re-Bet</button>
     <button onClick={() => clearBet()}>Clear Bet</button>
     <button onClick={() => undoBet()}>Undo Bet</button>
-    <button onClick={() => spinWheel()}>Spin Wheel</button>
+    <button onClick={() => spinWheel()} disabled={isSpinning}>Spin Wheel</button>
 </div>
 
 
