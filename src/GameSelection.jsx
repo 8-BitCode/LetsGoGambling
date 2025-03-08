@@ -135,7 +135,7 @@ const GameSelection = () => {
     const gamesWithPopupChance = ['Black Jack', 'Slots', 'Roulette'];
   
     if (gamesWithPopupChance.includes(gameName)) {
-      const randomChance = Math.floor(Math.random() * 5) + 1; 
+      const randomChance = Math.floor(Math.random() * 8) + 1; 
       if (randomChance === 1) {
         setActivePopups((prev) => [...prev, gameName]);
       } else {
