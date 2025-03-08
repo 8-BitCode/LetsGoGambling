@@ -8,10 +8,13 @@ import OddEvenBet from './RouletteComponents/OddEvenBet';
 import QuadBet from './RouletteComponents/QuadBet';
 import ZeroBet from './RouletteComponents/ZeroBet';
 import BetListItem from './RouletteComponents/BetListItem'
-
+import Draggable from "react-draggable";
 //Helmet is used to give each sub page a title dynamically (just a little akram detail)
 import { Helmet } from 'react-helmet';
 import './RouletteComponents/Roulette.css'
+
+const randomX = Math.floor(Math.random() * (window.innerWidth - 1208));
+const randomY = Math.floor(Math.random() * (window.innerHeight - 698 - 40));
 
 
 const Roulette = () => {
@@ -148,31 +151,13 @@ const Roulette = () => {
     }
 
     const handleWin = (element) => {
-        alert('You Won ' + (element[1] * element[2]))
         console.log(balance)
         console.log(balance + (element[1] * element[2]))
         setBalance(balance + (element[1] * element[2]))
     }
 
-    const deposit = (amount) => {
-        
-        amount = Number.parseInt(amount);
-
-        if (isNaN(amount)) {
-            alert("Select an amount to deposit")
-            return;
-        }
-
-        if (balance === undefined) {
-            setBalance(amount)
-        }
-        else {
-            setBalance(balance + amount)
-        }
-    }
-
     // defining variables that get updated 
-    const [balance, setBalance] = useState(0);
+    const [balance, setBalance] = useState(1000);
     const [chipSelected, setChip] = useState(0);
     const [stakePlaced, setStake] = useState(0);
     const [betsPlaced, setPlaced] = useState([]);
@@ -347,124 +332,145 @@ const Roulette = () => {
                 <title>ROULETTE!!!!!</title>
             </Helmet>
 
-            <div id='information-container'>
-                <div>Selected Chip</div>
-                <div>{chipSelected}</div>
-                <div>Balance</div>
-                <div>{balance}</div>
-                <div>Bet Placed</div>
-                <div>{stakePlaced}</div>
-            </div>            
-
-            
-            <div class='image-container'><img src='roulettetable.png'></img></div>
-
-            <div id='wheel'>{displayWin}</div>
-
-            <div id='chip-container'>        
-                {chipValues.map(value => <button onClick={() => updateSelected(value)} id={value} key={value} className='chip'>{value}</button>)}
-            </div>
-
-
-            <div id='buttons-container'>
-                <button onClick={() => reBet()}>Re-Bet</button>
-                <button onClick={() => clearBet()}>Clear Bet</button>
-                <button onClick={() => undoBet()}>Undo Bet</button>
-                <button onClick={() => spinWheel()}>Spin Wheel</button>
-            </div>
-
-            <form id='deposit-container'>
-                <div>Deposit</div>
-                <input type='text' className='deposit-input'/>
-                <input id = 'submit-deposit' type='button' value='+' onClick={() => deposit(parseInt(document.querySelector('.deposit-input').value))}/>
-            </form>
-
-
-
-
-            <div id='roulette-table'>
-                <div id='zero-column'>
-                    {zeroTypes.map(item => <ZeroBet onClick={() => placeBet(chipSelected, item.type)} className='zero' type={item.type} key={item.type}/>)}
-                </div>
-
-            <div id='roulette-table-grid'>
-                <div id='row-one'>
-                    <div className='row-subdivision-one'>
-                        {rowOneNumbers.map(number => <NumberBet onClick={() => placeBet(chipSelected, number)} className='numbers' number={number} key={number}/>)}
-                        <div className='two-to-one'>{intervalBetsRowOne.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval[0])} twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}</div>
-                    </div>
-                        <div className='double-one'>{doubleBetRowOne.map(numbers => <DoubleBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
-                    <div className='row-subdivision-two'>
-                        <div className='double-two'>{doubleBetRowOnev2.map(numbers => <DoubleBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
-                        <div className='quad'>{quadBetsRowOne.map(numbers => <QuadBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
-                    </div>
-                </div>
-                
-                <div id='row-two'>
-                    <div className='row-subdivision-one'>
-                        {rowTwoNumbers.map(number => <NumberBet onClick={() => placeBet(chipSelected, number)} number={number} key={number}/>)}    
-                        <div className='two-to-one'>{intervalBetsRowTwo.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval[0])} twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}</div>
-                    </div>
-                        <div className='double-one'>{doubleBetRowTwo.map(numbers => <DoubleBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
-                    <div className='row-subdivision-two'>
-                        <div className='double-two'>{doubleBetRowTwov2.map(numbers => <DoubleBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
-                        <div className='quad'>{quadBetsRowTwo.map(numbers => <QuadBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
-                    </div>
-                </div>
-                <div id='row-three'>
-                    <div className='row-subdivision-one'>
-                        {rowThreeNumbers.map(number => <NumberBet onClick={() => placeBet(chipSelected, number)} number={number} key={number}/>)}
-                        <div className='two-to-one'>{intervalBetsRowThree.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval[0])} twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}</div>
-                    </div>
-                        <div className='double-one'>{doubleBetRowThree.map(numbers => <DoubleBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
-                    <div className='row-subdivision-two'>  
-                        <div className='columns-container'>{columnBets.map(numbers => <ColumnBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/> )}</div>
-                    </div>
-                </div>
-                <div id='row-four'>
-                    {intervalBetsRowFour.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval)} twoToOne={item.twoToOne} interval={item.interval} key={item.key}/>)}
-                </div>
-                <div id='row-five'>
-                    {oddEven.map(item => <OddEvenBet onClick={() => placeBet(chipSelected, item.type)} type={item.type} key={item.type}/>)}
-                    {colours.map(item => <ColourBet onClick={() => placeBet(chipSelected, item.colour)} colour={item.colour} key={item.colour}/>)}
-                    {intervalBetsRowFive.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval)} twoTwoOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
-                </div> 
-           
-            </div>
-            <div id="bets-list" style={{ marginLeft: "20px" }}>
+            <Draggable defaultPosition={{ x:15, y: 15 }}>
+                    <div className="AB-container">
+                        <div className="AB-window">
+                            <div className="AB-top-bar">
+                                <span className="AB-top-bar-title">C:\LGG\ActiveBets.txt</span>
+                                <div className="AB-top-bar-buttons">
+                                    <button className="AB-close-button">
+                                        X
+                                    </button>
+                                </div>
+                            </div>
+    
+                            <div className="AB-Bet">
+                            <div id="bets-list">
     <h3>Active Bets</h3>
     {betsPlaced.length > 0 ? (
-        <ul>
-            {betsPlaced.map((bet, index) => (
-                <li key={index}>
-                    Bet on: <strong>{Array.isArray(bet[0]) ? bet[0].join(", ") : bet[0]}</strong> 
-                    | Amount: <strong>${bet[1]}</strong> 
-                    | Potential Winnings: <strong>${bet[1] * bet[2]}</strong>
-                </li>
-            ))}
+        <ul className='bets-list-items'>
+            {betsPlaced.map((bet, index) => {
+                // Calculate potential winnings for each bet
+                const potentialWinnings = bet.betAmount * bet.multiplier;
+                return (
+                    <li key={index}>
+                        <BetListItem bet={bet} potentialWinnings={potentialWinnings} />
+                    </li>
+                );
+            })}
+                <div className="total-earnings">
+    </div>
         </ul>
+        
     ) : (
         <p>No bets placed</p>
     )}
 </div>
 
+                            </div>
+                    </div>
+                    </div>
+                </Draggable>
+                <Draggable defaultPosition={{ x: randomX, y: randomY }}>
+                    <div className="Rou-container">
+                        <div className="Rou-window">
+                            <div className="Rou-top-bar">
+                                <span className="Rou-top-bar-title">Roulette.exe</span>
+                                <div className="Rou-top-bar-buttons">
+                                    <button className="Rou-close-button">
+                                        X
+                                    </button>
+                                </div>
+                            </div>
+    
+                            <div className="Rou-Bet">
 
-            </div>
+<div id='wheel'>{displayWin}</div>
+<img src='./roulettetable.png'></img>
 
-            <div id="bets-list" style={{ marginLeft: "20px" }}>
-    <h3>Active Bets</h3>
-    {betsPlaced.length > 0 ? (
-        <ul class='bets=list-items'>
-            {betsPlaced.map((bet, index) => (
-                <li key={index}>
-                    <BetListItem bet={bet} />
-                </li>
-            ))}
-        </ul>
-        ) : (
-        <p>No bets placed</p>
-    )}
+<div id='roulette-table'>
+    <div id='zero-column'>
+        {zeroTypes.map(item => <ZeroBet onClick={() => placeBet(chipSelected, item.type)} className='zero' type={item.type} key={item.type}/>)}
     </div>
+
+    <div id='roulette-table-grid'>
+        <div id='row-one'>
+            <div className='row-subdivision-one'>
+                {rowOneNumbers.map(number => <NumberBet onClick={() => placeBet(chipSelected, number)} className='numbers' number={number} key={number}/>)}
+                <div className='two-to-one'>{intervalBetsRowOne.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval[0])} twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}</div>
+            </div>
+                <div className='double-one'>{doubleBetRowOne.map(numbers => <DoubleBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
+            <div className='row-subdivision-two'>
+                <div className='double-two'>{doubleBetRowOnev2.map(numbers => <DoubleBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
+                <div className='quad'>{quadBetsRowOne.map(numbers => <QuadBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
+            </div>
+        </div>
+        
+        <div id='row-two'>
+            <div className='row-subdivision-one'>
+                {rowTwoNumbers.map(number => <NumberBet onClick={() => placeBet(chipSelected, number)} number={number} key={number}/>)}    
+                <div className='two-to-one'>{intervalBetsRowTwo.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval[0])} twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}</div>
+            </div>
+                <div className='double-one'>{doubleBetRowTwo.map(numbers => <DoubleBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
+            <div className='row-subdivision-two'>
+                <div className='double-two'>{doubleBetRowTwov2.map(numbers => <DoubleBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
+                <div className='quad'>{quadBetsRowTwo.map(numbers => <QuadBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
+            </div>
+        </div>
+        <div id='row-three'>
+            <div className='row-subdivision-one'>
+                {rowThreeNumbers.map(number => <NumberBet onClick={() => placeBet(chipSelected, number)} number={number} key={number}/>)}
+                <div className='two-to-one'>{intervalBetsRowThree.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval[0])} twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}</div>
+            </div>
+                <div className='double-one'>{doubleBetRowThree.map(numbers => <DoubleBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
+            <div className='row-subdivision-two'>  
+                <div className='columns-container'>{columnBets.map(numbers => <ColumnBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/> )}</div>
+            </div>
+        </div>
+        <div id='row-four'>
+            {intervalBetsRowFour.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval)} twoToOne={item.twoToOne} interval={item.interval} key={item.key}/>)}
+        </div>
+        <div id='row-five'>
+            {oddEven.map(item => <OddEvenBet onClick={() => placeBet(chipSelected, item.type)} type={item.type} key={item.type}/>)}
+            {colours.map(item => <ColourBet onClick={() => placeBet(chipSelected, item.colour)} colour={item.colour} key={item.colour}/>)}
+            {intervalBetsRowFive.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval)} twoTwoOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
+        </div> 
+
+    </div>
+
+</div>
+<div id='information-container'>
+  <div className="info-item">
+    <div className="info-title">Selected Chip</div>
+    <div>{chipSelected}</div>
+  </div>
+  <div className="info-item">
+    <div className="info-title">Balance</div>
+    <div>{balance}</div>
+  </div>
+  <div className="info-item">
+    <div className="info-title">Total Bet Placed</div>
+    <div>{stakePlaced}</div>
+  </div>
+</div>
+<div id='Rou-buttons-container'>
+    <button onClick={() => reBet()}>Re-Bet</button>
+    <button onClick={() => clearBet()}>Clear Bet</button>
+    <button onClick={() => undoBet()}>Undo Bet</button>
+    <button onClick={() => spinWheel()}>Spin Wheel</button>
+</div>
+
+
+
+<div id='chip-container'>        
+    {chipValues.map(value => <button onClick={() => updateSelected(value)} id={value} key={value} className='chip'>{value}</button>)}
+</div>
+
+                        </div>
+                    </div>
+                    </div>
+                </Draggable>
+
 
         </div>
         </Fragment>

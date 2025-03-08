@@ -72,10 +72,10 @@ function BetListItem({bet}) {
             output = `Single - ${bet[0]}`
         }
         else if (bet[0] == 'single') {
-            output = `Single - 0`
+            output = `Single - 00`
         }
         else if (bet[0] == 'double') {
-            output = `Single - 00`
+            output = `Single - 0`
         }
         else {
             output = `${bet[0]}`
