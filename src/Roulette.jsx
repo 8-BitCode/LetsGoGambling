@@ -1,24 +1,33 @@
 import React, { useState, Fragment, useEffect } from 'react';
-import ColourBet from './RouletteComponents/ColourBet';
-import ColumnBet from './RouletteComponents/ColumnBet';
-import DoubleBet from './RouletteComponents/DoubleBet';
 import IntervalBet from './RouletteComponents/IntervalBet';
-import NumberBet from './RouletteComponents/NumberBet';
-import OddEvenBet from './RouletteComponents/OddEvenBet';
-import QuadBet from './RouletteComponents/QuadBet';
 import ZeroBet from './RouletteComponents/ZeroBet';
 import BetListItem from './RouletteComponents/BetListItem'
 import Draggable from "react-draggable";
 //Helmet is used to give each sub page a title dynamically (just a little akram detail)
 import { Helmet } from 'react-helmet';
 import './RouletteComponents/Roulette.css'
+import { useNavigate } from "react-router-dom";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import {
+    auth,
+    db,
+    collection,
+    query,
+    where,
+    onSnapshot,
+    updateDoc,
+    doc,
+} from "./firebase"; 
 
 const randomX = Math.floor(Math.random() * (window.innerWidth - 1208));
 const randomY = Math.floor(Math.random() * (window.innerHeight - 698 - 40));
 
 
 const Roulette = ({ closeGame }) => {
-
+    const [balance, setBalance] = useState(0);
+    const [userDocId, setUserDocId] = useState(null);
+    const [winningNumber, setWin] = useState(null);
+    const navigate = useNavigate();
     // main functions within the game
     const spinWheel = () => {
         console.log(betsPlaced)
@@ -27,70 +36,102 @@ const Roulette = ({ closeGame }) => {
         setPrevious(betsPlaced)
         setStake(undefined)      
     }
+      // Fetch user money when authenticated using onSnapshot for real-time data
+      useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+          if (user) {
+            fetchMoney(user.uid);
+          } else {
+            alert("User not authenticated");
+            navigate("/GameSelection");
+          }
+        });
+        return () => unsubscribe();
+      }, [navigate]);
 
+      const fetchMoney = (uid) => {
+        const playersRef = collection(db, "Players");
+        const q = query(playersRef, where("uid", "==", uid));
+    
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          if (!querySnapshot.empty) {
+            const userDoc = querySnapshot.docs[0];
+            setBalance(userDoc.data().money);
+            setUserDocId(userDoc.id);
+          } else {
+            alert("User data not found.");
+          }
+        });
+    
+        return () => unsubscribe();
+      };
+      const updateMoney = async (newMoney) => {
+        try {
+            if (userDocId) {
+                const userDocRef = doc(db, "Players", userDocId);
+                await updateDoc(userDocRef, { money: newMoney });
+                setBalance(newMoney); // Update local state
+            }
+        } catch (err) {
+            alert("Failed to update money: " + err.message);
+        }
+    };
     // check each bet for a win
     // each bet is checked for colour, even/ odd first 
     // then if it is a single 
     // this leaves the bet ids that are arrays left allowing to check if the winning bet is in th array
 
-    useEffect(() =>  {
-       if (winningNumber !== null) {
-        
-            // since the winning number is soon cleared
-            // this allows the number to still be displayed 
-            setDisplay(winningNumber)
-
+    useEffect(() => {
+        if (winningNumber !== null) {
+            setDisplay(winningNumber);
+    
+            let anyWin = false;
             betsPlaced.forEach(element => {
-                let id = element[0]
-                console.log(id)
-                // checking colour 
+                let id = element[0];
                 if (id == 'red' || id == 'black') {
-        
                     if (redNumbers.includes(winningNumber)) {
                         winningColour = 'red';
-                    } 
-                    else {
+                    } else {
                         winningColour = 'black';
                     }
-        
                     if (winningColour == id) {
-                        handleWin(element)
+                        handleWin(element);
+                        anyWin = true;
                     }
-                }
-        
-                // checking even or odd
-                else if (id == 'even' || id == 'odd') {
-                        
+                } else if (id == 'even' || id == 'odd') {
                     if (evenNumbers.includes(winningNumber)) {
                         winningEvenOdd = 'even';
+                    } else {
+                        winningEvenOdd = 'odd';
                     }
-                    else {
-                        winningEvenOdd = 'odd'; 
-                    }
-                        
                     if (winningEvenOdd == id) {
-                        console.log(winningEvenOdd, id)
-                        handleWin(element)
+                        handleWin(element);
+                        anyWin = true;
                     }
+                } else if (Number.isInteger(id)) {
+                    if (id == winningNumber) {
+                        handleWin(element);
+                        anyWin = true;
+                    }
+                } else if (id.includes(winningNumber)) {
+                    handleWin(element);
+                    anyWin = true;
                 }
-
-                else if (Number.isInteger(id)) {
-                    if (id == winningNumber)
-                        handleWin(element)
-                }
-
-                else if (id.includes(winningNumber)) {
-                    handleWin(element)
-                }
+            });
+    
+            // If no bets won, update the database with the current balance
+            if (!anyWin) {
+                updateMoney(balance);
             }
-        )
-        // prevents the function from being continually called 
-        if (betsPlaced.length > 0) {
-            setPlaced([])
-            setStake(0)
+    
+            // Clear bets and reset stake
+            if (betsPlaced.length > 0) {
+                setPlaced([]);
+                setStake(0);
+            }
+            setWin(null);
         }
-        setWin(null)
-    }})
+    }, [winningNumber]);
 
 
     
@@ -151,18 +192,15 @@ const Roulette = ({ closeGame }) => {
     }
 
     const handleWin = (element) => {
-        console.log(balance)
-        console.log(balance + (element[1] * element[2]))
         setBalance(balance + (element[1] * element[2]))
+        updateMoney(balance + (element[1] * element[2]))
     }
 
     // defining variables that get updated 
-    const [balance, setBalance] = useState(1000);
     const [chipSelected, setChip] = useState(0);
     const [stakePlaced, setStake] = useState(0);
     const [betsPlaced, setPlaced] = useState([]);
     const [previousBets, setPrevious] = useState([])
-    const [winningNumber, setWin] = useState(null);
     const [displayWin, setDisplay] = useState(Math.floor(Math.random() * 36));
 
     let multiplier = 0
@@ -396,43 +434,43 @@ const Roulette = ({ closeGame }) => {
     <div id='roulette-table-grid'>
         <div id='row-one'>
             <div className='row-subdivision-one'>
-                {rowOneNumbers.map(number => <NumberBet onClick={() => placeBet(chipSelected, number)} className='numbers' number={number} key={number}/>)}
+                {rowOneNumbers.map(number => <button onClick={() => placeBet(chipSelected, number)} className='numbers'/>)}
                 <div className='two-to-one'>{intervalBetsRowOne.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval[0])} twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}</div>
             </div>
-                <div className='double-one'>{doubleBetRowOne.map(numbers => <DoubleBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
+                <div className='double-one'>{doubleBetRowOne.map(numbers => <button onClick={() => placeBet(chipSelected, numbers)}/>)}</div>
             <div className='row-subdivision-two'>
-                <div className='double-two'>{doubleBetRowOnev2.map(numbers => <DoubleBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
-                <div className='quad'>{quadBetsRowOne.map(numbers => <QuadBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
+                <div className='double-two'>{doubleBetRowOnev2.map(numbers => <button onClick={() => placeBet(chipSelected, numbers)}/>)}</div>
+                <div className='quad'>{quadBetsRowOne.map(numbers => <button onClick={() => placeBet(chipSelected, numbers)}/>)}</div>
             </div>
         </div>
         
         <div id='row-two'>
             <div className='row-subdivision-one'>
-                {rowTwoNumbers.map(number => <NumberBet onClick={() => placeBet(chipSelected, number)} number={number} key={number}/>)}    
+                {rowTwoNumbers.map(number => <button onClick={() => placeBet(chipSelected, number)}/>)}    
                 <div className='two-to-one'>{intervalBetsRowTwo.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval[0])} twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}</div>
             </div>
-                <div className='double-one'>{doubleBetRowTwo.map(numbers => <DoubleBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
+                <div className='double-one'>{doubleBetRowTwo.map(numbers => <button onClick={() => placeBet(chipSelected, numbers)}/>)}</div>
             <div className='row-subdivision-two'>
-                <div className='double-two'>{doubleBetRowTwov2.map(numbers => <DoubleBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
-                <div className='quad'>{quadBetsRowTwo.map(numbers => <QuadBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
+                <div className='double-two'>{doubleBetRowTwov2.map(numbers => <button onClick={() => placeBet(chipSelected, numbers)}/>)}</div>
+                <div className='quad'>{quadBetsRowTwo.map(numbers => <button onClick={() => placeBet(chipSelected, numbers)}/>)}</div>
             </div>
         </div>
         <div id='row-three'>
             <div className='row-subdivision-one'>
-                {rowThreeNumbers.map(number => <NumberBet onClick={() => placeBet(chipSelected, number)} number={number} key={number}/>)}
+                {rowThreeNumbers.map(number => <button onClick={() => placeBet(chipSelected, number)}/>)}
                 <div className='two-to-one'>{intervalBetsRowThree.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval[0])} twoToOne={item.twoToOne} interval={item.interval} key={item.key} /> )}</div>
             </div>
-                <div className='double-one'>{doubleBetRowThree.map(numbers => <DoubleBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/>)}</div>
+                <div className='double-one'>{doubleBetRowThree.map(numbers => <button onClick={() => placeBet(chipSelected, numbers)}/>)}</div>
             <div className='row-subdivision-two'>  
-                <div className='columns-container'>{columnBets.map(numbers => <ColumnBet onClick={() => placeBet(chipSelected, numbers)} numbers={numbers} key={numbers}/> )}</div>
+                <div className='columns-container'>{columnBets.map(numbers => <button onClick={() => placeBet(chipSelected, numbers)}/> )}</div>
             </div>
         </div>
         <div id='row-four'>
             {intervalBetsRowFour.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval)} twoToOne={item.twoToOne} interval={item.interval} key={item.key}/>)}
         </div>
         <div id='row-five'>
-            {oddEven.map(item => <OddEvenBet onClick={() => placeBet(chipSelected, item.type)} type={item.type} key={item.type}/>)}
-            {colours.map(item => <ColourBet onClick={() => placeBet(chipSelected, item.colour)} colour={item.colour} key={item.colour}/>)}
+            {oddEven.map(item => <button onClick={() => placeBet(chipSelected, item.type)}/>)}
+            {colours.map(item => <button onClick={() => placeBet(chipSelected, item.colour)}/>)}
             {intervalBetsRowFive.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval)} twoTwoOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
         </div> 
 
