@@ -10,6 +10,7 @@ import Roulette from "./Roulette";
 import Stats from "./Stats";
 import TitlePage from "./TitlePage"
 import Bank from './Bank'
+import END from './END'
 
 import "./CssFiles/App.css";
 
@@ -44,11 +45,7 @@ export default () => {
           <Route path="/TermsOfService" element={<TermsOfService />} />
           <Route path="/UserEntry" element={<UserEntry />} />
           <Route path="/GameSelection" element={<GameSelection />} />
-          <Route path="/Blackjack" element={<Blackjack />} />
-          <Route path="/Slots" element={<Slots />} />
-          <Route path="/Roulette" element={<Roulette />} />
-          <Route path="/Stats" element={<Stats />} />
-          <Route path="/Bank" element={<Bank />} />
+          <Route path="/END" element={<END />} />
         </Routes>
       </BrowserRouter>
     </div>

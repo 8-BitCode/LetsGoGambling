@@ -69,7 +69,7 @@
     background-color: #c0c0c0;
     border: 2px outset #4f4f4f;
     font-weight: bold;
-    cursor: pointer;
+    font-family: PixelFont;
   }
   
   .bank-button:hover {

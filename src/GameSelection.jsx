@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './CssFiles/GameSelection.css';
 import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
@@ -11,12 +11,12 @@ import Slots from './Slots';
 import Stats from './Stats';
 import Bank from './Bank';
 import Blackjack from './Blackjack';
-import Roulette from './Roulette'
-import { doc, getDoc, setDoc, updateDoc, increment } from "firebase/firestore";
+import Roulette from './Roulette';
+import { doc, getDoc, setDoc, updateDoc, increment } from 'firebase/firestore';
 
 const MoneySlot = ({ amount }) => {
   const digits = amount.toString().split('');
-  
+
   return (
     <div className="money-slot-window" style={{ width: (digits.length + 1) * 50 + 'px' }}>
       <div className="title-bar">
@@ -58,21 +58,23 @@ const GameSelection = () => {
   const [taskInput, setTaskInput] = useState('');
   const [userDocId, setUserDocId] = useState(null);
   const [activeGames, setActiveGames] = useState([]);
-  const [activePopups, setActivePopups] = useState([]); // Track active popups
-  const [gameToClose, setGameToClose] = useState(null); // Track the game to be closed
-  const navigate = useNavigate();
-
-  const randomX = Math.floor(Math.random() * (window.innerWidth - 500));
-  const randomY = Math.floor(Math.random() * (window.innerHeight - 500 - 40)); // - 40 becuase of the button bar
-
-  const games = [
+  const [activePopups, setActivePopups] = useState([]);
+  const [gameToClose, setGameToClose] = useState(null);
+  const [deletedIcons, setDeletedIcons] = useState([]);
+  const [games, setGames] = useState([
     { id: 1, name: 'Statistics', icon: '📈', route: '/GameSelection' },
     { id: 2, name: 'Black Jack', icon: '🃏', route: '/GameSelection' },
     { id: 3, name: 'Roulette', icon: '🛞', route: '/GameSelection' },
     { id: 4, name: 'Slots', icon: '🎰', route: '/GameSelection' },
     { id: 5, name: 'Bank', icon: '🏦', route: '/GameSelection' },
     { id: 6, name: 'Locked', icon: '🔒', route: '/GameSelection' },
-  ];
+  ]);
+  const navigate = useNavigate();
+  const easterEggRef = useRef(null);
+  const iconRefs = useRef({});
+
+  const randomX = Math.floor(Math.random() * (window.innerWidth - 500));
+  const randomY = Math.floor(Math.random() * (window.innerHeight - 500 - 40));
 
   useEffect(() => {
     const updateClock = () => {
@@ -133,9 +135,9 @@ const GameSelection = () => {
 
   const openLeavePopup = (gameName) => {
     const gamesWithPopupChance = ['Black Jack', 'Slots', 'Roulette'];
-  
+
     if (gamesWithPopupChance.includes(gameName)) {
-      const randomChance = Math.floor(Math.random() * 8) + 1; 
+      const randomChance = Math.floor(Math.random() * 8) + 1;
       if (randomChance === 1) {
         setActivePopups((prev) => [...prev, gameName]);
       } else {
@@ -147,13 +149,56 @@ const GameSelection = () => {
   };
 
   const closeLeavePopup = (gameName) => {
-    setActivePopups(prev => prev.filter(game => game !== gameName));
+    setActivePopups((prev) => prev.filter((game) => game !== gameName));
   };
 
   const handleConfirmLeave = (gameName) => {
-    setActiveGames(activeGames.filter(game => game !== gameName));
+    setActiveGames(activeGames.filter((game) => game !== gameName));
     closeLeavePopup(gameName);
   };
+
+  const handleDragStop = (event, game) => {
+    const iconRef = iconRefs.current[game.id];
+    if (!easterEggRef.current || !iconRef) return;
+
+    const iconRect = iconRef.getBoundingClientRect();
+    const easterEggRect = easterEggRef.current.getBoundingClientRect();
+
+    const isOverlapping =
+      iconRect.left < easterEggRect.right &&
+      iconRect.right > easterEggRect.left &&
+      iconRect.top < easterEggRect.bottom &&
+      iconRect.bottom > easterEggRect.top;
+
+    if (isOverlapping) {
+      // Hide the icon and mark it as deleted
+      iconRef.style.display = 'none';
+      setDeletedIcons((prev) => [...prev, game.id]);
+    }
+  };
+
+  useEffect(() => {
+    const allIconsDeleted = games
+      .filter((game) => game.name !== 'Locked')
+      .every((game) => deletedIcons.includes(game.id));
+
+    if (allIconsDeleted) {
+      const updatedGames = games.map((game) => {
+        if (game.name === 'Locked') {
+          return {
+            ...game,
+            icon: '🔓',
+            name: 'Unlocked',
+            route: '/END',
+          };
+        }
+        return game;
+      });
+
+      // Update the games array with the new "Unlocked" icon
+      setGames(updatedGames);
+    }
+  }, [deletedIcons]);
 
   return (
     <div className="GS-Container">
@@ -177,8 +222,11 @@ const GameSelection = () => {
             className="GS-IconLink"
             onDoubleClick={() => handleGameDoubleClick(game)}
           >
-            <Draggable>
-              <div className="GS-Icon">
+            <Draggable onStop={(event) => handleDragStop(event, game)}>
+              <div
+                className="GS-Icon"
+                ref={(el) => (iconRefs.current[game.id] = el)}
+              >
                 <div className="GS-IconImage">{game.icon}</div>
                 <div className="GS-IconLabel">{game.name}</div>
               </div>
@@ -206,20 +254,28 @@ const GameSelection = () => {
         <div className="GS-TaskbarUsername">Hello, {username}</div>
       </div>
 
-      <div className="GS-EasterEgg">🗑️</div>
+      <div className="GS-EasterEgg" ref={easterEggRef}>
+        🗑️
+      </div>
 
       {activePopups.map((gameName) => (
         <Draggable key={gameName} defaultPosition={{ x: randomX, y: randomY }}>
           <div className="popup">
             <div className="popup-title-bar">
               <span className="popup-title">Are you sure?</span>
-              <button onClick={() => closeLeavePopup(gameName)} className="control-button close-button">X</button>
+              <button onClick={() => closeLeavePopup(gameName)} className="control-button close-button">
+                X
+              </button>
             </div>
             <div className="popup-content">
-              One more game! something tells me you'll get really lucky really soon
+              One more game! Something tells me you'll get really lucky really soon.
               <div className="popup-buttons">
-                <button onClick={() => closeLeavePopup(gameName)} className="popup-button">Yes</button>
-                <button onClick={() => closeLeavePopup(gameName)} className="popup-button">Yes</button>
+                <button onClick={() => closeLeavePopup(gameName)} className="popup-button">
+                  Yes
+                </button>
+                <button onClick={() => closeLeavePopup(gameName)} className="popup-button">
+                  Yes
+                </button>
               </div>
             </div>
           </div>
