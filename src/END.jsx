@@ -1,18 +1,33 @@
 import { Helmet } from 'react-helmet';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import pokerDogs from './Assets/PokerDawgs.png';
+import './CSSFiles/END.css'; // Import the CSS file for animations
+
 export default function END() {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const [isUnlocked, setIsUnlocked] = useState(false);
-  
-    useEffect(() => {
-      if (location.state?.fromUnlocked) {
-        setIsUnlocked(true);
-      } else {
-        navigate('/GameSelection');
-      }
-    }, [location, navigate]);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [isScrollingDone, setIsScrollingDone] = useState(false);
+
+  useEffect(() => {
+    if (location.state?.fromUnlocked) {
+      setIsUnlocked(true);
+    } else {
+      navigate('/GameSelection');
+    }
+  }, [location, navigate]);
+
+  useEffect(() => {
+    if (isUnlocked) {
+      const timer = setTimeout(() => {
+        setIsScrollingDone(true);
+      }, 65000); // 65 seconds
+
+      return () => clearTimeout(timer);
+    }
+  }, [isUnlocked]);
+
   const poem = `
     You stand here now, at the edge of the spinning,
     Where the air hums low, a song never winning.
@@ -94,67 +109,34 @@ export default function END() {
     You carry the lessons, the scars, the light,
     And the wheel becomes silence, lost in the night.
 
+    <span class="highlight">
     For the greatest reward was never the prize,
     But the truth in your heart, the spark in your eyes.
     The wheel fades behind, a memory, a ghost,
     And you, dear traveler, are what matters the most.
+    </span>
   `;
-
-  // Inline styles
-  const styles = {
-    endContainer: {
-      position: 'relative',
-      width: '100%',
-      height: '100vh',
-      backgroundColor: 'black',
-      color: '#00ff00', // Neon green text
-      overflow: 'hidden',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    scrollingText: {
-      position: 'absolute',
-      bottom: '0',
-      width: '80%',
-      textAlign: 'center',
-      whiteSpace: 'pre-wrap',
-      animation: 'scroll-up 120s linear',
-      fontFamily: 'PixelFont',
-    },
-    '@keyframes scroll-up': {
-      '0%': {
-        transform: 'translateY(100%)',
-      },
-      '100%': {
-        transform: 'translateY(-100%)',
-      },
-    },
-  };
-
-
   return (
     <>
       <Helmet>
         <title>The End</title>
       </Helmet>
       {isUnlocked ? (
-        <div style={styles.endContainer}>
-          <div style={styles.scrollingText}>
-            <pre style={{ fontFamily: 'PixelFont' }}>{poem}</pre>
+        <div className="end-container">
+          <div className="scrolling-text">
+            <pre
+              style={{ fontFamily: 'PixelFont' }}
+              dangerouslySetInnerHTML={{ __html: poem }}
+            />
           </div>
-          <style>
-            {`
-              @keyframes scroll-up {
-                0% {
-                  transform: translateY(100%);
-                }
-                100% {
-                  transform: translateY(-100%);
-                }
-              }
-            `}
-          </style>
+          <div className={`fade-in-container ${isScrollingDone ? 'visible' : ''}`}>
+            <img
+              src={pokerDogs}
+              alt="Fade-in Image"
+              className="fade-in-image"
+            />
+            <p className="fade-in-text">Let's Go Gambling</p>
+          </div>
         </div>
       ) : null}
     </>
