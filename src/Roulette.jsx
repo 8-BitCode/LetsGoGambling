@@ -17,7 +17,7 @@ const randomX = Math.floor(Math.random() * (window.innerWidth - 1208));
 const randomY = Math.floor(Math.random() * (window.innerHeight - 698 - 40));
 
 
-const Roulette = () => {
+const Roulette = ({ closeGame }) => {
 
     // main functions within the game
     const spinWheel = () => {
@@ -338,7 +338,7 @@ const Roulette = () => {
                             <div className="AB-top-bar">
                                 <span className="AB-top-bar-title">C:\LGG\ActiveBets.txt</span>
                                 <div className="AB-top-bar-buttons">
-                                    <button className="AB-close-button">
+                                    <button className="AB-close-button" onClick={closeGame}>
                                         X
                                     </button>
                                 </div>
@@ -377,7 +377,7 @@ const Roulette = () => {
                             <div className="Rou-top-bar">
                                 <span className="Rou-top-bar-title">Roulette.exe</span>
                                 <div className="Rou-top-bar-buttons">
-                                    <button className="Rou-close-button">
+                                    <button className="Rou-close-button" onClick={closeGame}>
                                         X
                                     </button>
                                 </div>

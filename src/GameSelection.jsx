@@ -11,6 +11,7 @@ import Slots from './Slots';
 import Stats from './Stats';
 import Bank from './Bank';
 import Blackjack from './Blackjack';
+import Roulette from './Roulette'
 import { doc, getDoc, setDoc, updateDoc, increment } from "firebase/firestore";
 
 const MoneySlot = ({ amount }) => {
@@ -67,7 +68,7 @@ const GameSelection = () => {
   const games = [
     { id: 1, name: 'Statistics', icon: '📈', route: '/GameSelection' },
     { id: 2, name: 'Black Jack', icon: '🃏', route: '/GameSelection' },
-    { id: 3, name: 'Roulette', icon: '🛞', route: '/Roulette' },
+    { id: 3, name: 'Roulette', icon: '🛞', route: '/GameSelection' },
     { id: 4, name: 'Slots', icon: '🎰', route: '/GameSelection' },
     { id: 5, name: 'Bank', icon: '🏦', route: '/GameSelection' },
     { id: 6, name: 'Locked', icon: '🔒', route: '/GameSelection' },
@@ -191,6 +192,7 @@ const GameSelection = () => {
         {activeGames.includes('Statistics') && <Stats closeGame={() => openLeavePopup('Statistics')} loggedInUser={username} />}
         {activeGames.includes('Bank') && <Bank closeBank={() => openLeavePopup('Bank')} userId={userDocId} />}
         {activeGames.includes('Black Jack') && <Blackjack closeGame={() => openLeavePopup('Black Jack')} />}
+        {activeGames.includes('Roulette') && <Roulette closeGame={() => openLeavePopup('Roulette')} />}
       </div>
 
       <div className="GS-Taskbar">
