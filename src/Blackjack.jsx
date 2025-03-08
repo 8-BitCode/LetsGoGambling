@@ -10,6 +10,7 @@ import {
     query,
     where,
     getDocs,
+    onSnapshot,
     updateDoc,
     doc,
 } from "./firebase";
@@ -59,23 +60,23 @@ const Blackjack = ({ closeGame }) => {
         return () => unsubscribe();
     }, [navigate]);
 
-    const fetchMoney = async (uid) => {
-        try {
-            const playersRef = collection(db, "Players");
-            const q = query(playersRef, where("uid", "==", uid));
-            const querySnapshot = await getDocs(q);
+  const fetchMoney = (uid) => {
+    const playersRef = collection(db, "Players");
+    const q = query(playersRef, where("uid", "==", uid));
 
-            if (!querySnapshot.empty) {
-                const userDoc = querySnapshot.docs[0];
-                setMoney(userDoc.data().money);
-                setUserDocId(userDoc.id); // Store document ID for future updates
-            } else {
-                alert("User data not found.");
-            }
-        } catch (err) {
-            alert("Failed to fetch money: " + err.message);
-        }
-    };
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        setMoney(userDoc.data().money);
+        setUserDocId(userDoc.id);
+      } else {
+        alert("User data not found.");
+      }
+    });
+
+    return () => unsubscribe();
+  };
+
 
     const updateMoney = async (newMoney) => {
         try {
