@@ -134,21 +134,24 @@ export default function SlotMachine({ closeGame }) {
       wins.push([0, 2], [1, 1], [2, 2]);
     }
 
-    // 3-IN-A-ROW BASIC MATCH
+    // MUST be greater than 0.78 tho!!!
+    let betProportion = 5
+
+    // 3-IN-A-ROW BASIC MATCH 1/6 chance
     if (winDetected && BasicWin === true) {
-      setCredits((prevCredits) => prevCredits + (bet * (wins.length - 1)));
+      setCredits((prevCredits) => prevCredits + Math.round(bet * (18/7*betProportion)) );
       setHighlighted(wins);
     }
 
-    // DIAGONAL MATCH
+    // DIAGONAL MATCH 1/18 chance
     if (winDetected && DiagonalWin === true) {
-      setCredits((prevCredits) => prevCredits + (bet * (wins.length / 1.5)));
+      setCredits((prevCredits) => prevCredits + Math.round(bet * (54/7*betProportion)));
       setHighlighted(wins);
     }
 
-    // CONSOLIDATION MATCH
+    // CONSOLIDATION MATCH 1/9 chance
     if (winDetected && ConsolidationWin === true) {
-      setCredits((prevCredits) => prevCredits + (bet * (wins.length / 2.5)));
+      setCredits((prevCredits) => prevCredits + Math.round(bet * (9/7)*betProportion));
       setHighlighted(wins);
     }
   };
