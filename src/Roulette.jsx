@@ -5,7 +5,7 @@ import BetListItem from './RouletteComponents/BetListItem'
 import Draggable from "react-draggable";
 //Helmet is used to give each sub page a title dynamically (just a little akram detail)
 import { Helmet } from 'react-helmet';
-import './RouletteComponents/Roulette.css'
+import './CssFiles/Roulette.css'
 import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
