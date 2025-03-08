@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import TitlePage from "./TitlePage";
 import TermsOfService from "./TermsOfService";
 import UserEntry from "./UserEntry";
 import GameSelection from "./GameSelection";
-import Blackjack from "./Blackjack";
-import Slots from "./Slots";
-import Roulette from "./Roulette";
-import Stats from "./Stats";
-import TitlePage from "./TitlePage"
-import Bank from './Bank'
-import END from './END'
+import Stats from "./Stats"; // Import the Stats component
+import END from "./END";
 
 import "./CssFiles/App.css";
 

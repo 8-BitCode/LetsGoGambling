@@ -69,6 +69,8 @@ const GameSelection = () => {
     { id: 5, name: 'Bank', icon: '🏦', route: '/GameSelection' },
     { id: 6, name: 'Locked', icon: '🔒', route: '/GameSelection' },
   ]);
+  const [userSuggestions, setUserSuggestions] = useState([]);
+  const [selectedUserForStats, setSelectedUserForStats] = useState(null); // Track the selected user for Stats
   const navigate = useNavigate();
   const easterEggRef = useRef(null);
   const iconRefs = useRef({});
@@ -200,6 +202,56 @@ const GameSelection = () => {
     }
   }, [deletedIcons]);
 
+  // Fetch usernames from Firestore based on input
+  useEffect(() => {
+    const fetchUsernames = async () => {
+      if (taskInput.trim() === '') {
+        setUserSuggestions([]);
+        return;
+      }
+  
+      try {
+        const playersRef = collection(db, 'Players');
+        const querySnapshot = await getDocs(playersRef);
+  
+        // Filter usernames in JavaScript (case-insensitive)
+        const suggestions = querySnapshot.docs
+          .map((doc) => doc.data().username)
+          .filter((username) =>
+            username.toLowerCase().includes(taskInput.toLowerCase())
+          );
+  
+        // Sort suggestions to prioritize usernames starting with the search term
+        const sortedSuggestions = suggestions.sort((a, b) => {
+          const aStartsWith = a.toLowerCase().startsWith(taskInput.toLowerCase());
+          const bStartsWith = b.toLowerCase().startsWith(taskInput.toLowerCase());
+  
+          if (aStartsWith && !bStartsWith) return -1; // a comes first
+          if (!aStartsWith && bStartsWith) return 1; // b comes first
+          return 0; // no change in order
+        });
+  
+        setUserSuggestions(sortedSuggestions);
+      } catch (err) {
+        console.error('Failed to fetch usernames:', err);
+      }
+    };
+  
+    // Debounce the input to avoid too many Firestore queries
+    const debounceTimer = setTimeout(() => {
+      fetchUsernames();
+    }, 300); // 300ms delay
+  
+    return () => clearTimeout(debounceTimer);
+  }, [taskInput]);
+  // Handle clicking on a suggested username
+  const handleSuggestionClick = (username) => {
+    setTaskInput(username); // Update the input with the selected username
+    setUserSuggestions([]); // Clear the suggestions
+    setSelectedUserForStats(username); // Set the selected user for Stats
+    setActiveGames((prev) => [...prev, 'Statistics']); // Open the Stats window
+  };
+
   return (
     <div className="GS-Container">
       <Helmet>
@@ -237,20 +289,41 @@ const GameSelection = () => {
 
       <div className="GS-ActiveGames">
         {activeGames.includes('Slots') && <Slots closeGame={() => openLeavePopup('Slots')} />}
-        {activeGames.includes('Statistics') && <Stats closeGame={() => openLeavePopup('Statistics')} loggedInUser={username} />}
+        {activeGames.includes('Statistics') && (
+          <Stats
+            closeGame={() => openLeavePopup('Statistics')}
+            loggedInUser={username}
+            selectedUser={selectedUserForStats} // Pass the selected user to Stats
+          />
+        )}
         {activeGames.includes('Bank') && <Bank closeBank={() => openLeavePopup('Bank')} userId={userDocId} />}
         {activeGames.includes('Black Jack') && <Blackjack closeGame={() => openLeavePopup('Black Jack')} />}
         {activeGames.includes('Roulette') && <Roulette closeGame={() => openLeavePopup('Roulette')} />}
       </div>
 
       <div className="GS-Taskbar">
-        <input
-          type="text"
-          className="GS-TaskbarInput"
-          placeholder="🔎|User Search 📈"
-          value={taskInput}
-          onChange={(e) => setTaskInput(e.target.value)}
-        />
+        <div className="GS-TaskbarInputContainer">
+          <input
+            type="text"
+            className="GS-TaskbarInput"
+            placeholder="🔎|User Search 📈"
+            value={taskInput}
+            onChange={(e) => setTaskInput(e.target.value)}
+          />
+          {userSuggestions.length > 0 && (
+            <div className="GS-UserSuggestions">
+              {userSuggestions.map((suggestion, index) => (
+                <div
+                  key={index}
+                  className="GS-SuggestionItem"
+                  onClick={() => handleSuggestionClick(suggestion)}
+                >
+                  {suggestion}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
         <div className="GS-TaskbarUsername">Hello, {username}</div>
       </div>
 

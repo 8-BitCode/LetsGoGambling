@@ -4,7 +4,6 @@
     font-family: 'BIOSFont', sans-serif;
     color: white;
     position: relative;
-    overflow-y: hidden;
     overflow-x: hidden;
   }
   
@@ -17,7 +16,6 @@
     -webkit-text-stroke: 5px black;
     paint-order: stroke fill;
     padding: 5px 10px;
-    border-radius: 5px;
     font-size: 1.5em;
   }
   
@@ -46,7 +44,6 @@
     margin-top: 5px;
     background-color: black;
     padding: 2px 6px;
-    border-radius: 4px;
   }
   
   .GS-MoneyDisplay {
@@ -55,7 +52,6 @@
     right: 20px;
     color: black;
     padding: 10px;
-    border-radius: 5px;
   }
   
   .GS-Taskbar {
@@ -102,12 +98,10 @@
     background-color: #C0C0C0;
     color: black;
     padding: 10px;
-    border-radius: 5px;
   }
   
   .GS-UsernameInput input {
     padding: 5px;
-    border-radius: 3px;
     border: 1px solid #808080;
   }
   
@@ -200,4 +194,65 @@
 }
 .popup{
   z-index: 9999;
+}
+/* Username suggestion items */
+.GS-SuggestionItem {
+  padding: 8px;
+  background-color: #c0c0c0; /* Gray background */
+  color: #000000; /* Black text */
+  margin: 1px; /* Add spacing between items */
+}
+
+/* Hover effect for suggestion items */
+.GS-SuggestionItem:hover {
+  background-color: #000080; /* Dark blue background on hover */
+  color: #ffffff; /* White text on hover */
+}
+
+/* Remove border for the last item */
+.GS-SuggestionItem:last-child {
+  border-bottom: none;
+}
+
+
+.GS-TaskbarInputContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.GS-TaskbarInput {
+  width: 200px; /* Adjust as needed */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Username suggestions container */
+.GS-UserSuggestions {
+  position: absolute;
+  background-color: #c0c0c0;
+  border: 4px outset #808080;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 9999;
+  font-family: PixelFont;
+  font-size:20px;
+  color: black;
+  padding: 4px;
+  bottom:100%;
+  left:0;
+  width:100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 0px;
+}
+
+.GS-SuggestionItem {
+  padding: 8px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.GS-SuggestionItem:hover {
+  background: #f0f0f0;
+  color: black;
 }
