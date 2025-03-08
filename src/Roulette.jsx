@@ -8,6 +8,7 @@ import { Helmet } from 'react-helmet';
 import './CssFiles/Roulette.css'
 import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import Table from'./Assets/roulettetable.png';
 import {
     auth,
     db,
@@ -432,7 +433,7 @@ const Roulette = ({ closeGame }) => {
                             <div className="Rou-Bet">
 
 <div id='wheel'>{displayWin}</div>
-<img src='./roulettetable.png'></img>
+<img src={Table}></img>
 
 <div id='roulette-table'>
     <div id='zero-column'>
