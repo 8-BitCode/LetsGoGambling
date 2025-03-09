@@ -1,26 +1,27 @@
 .Roulette-Container {
-    font-family: 'PixelFont';
+    font-family: 'PixelFont', sans-serif;
 }
 
 .Roulette-Container input {
-    font-family: 'PixelFont';
+    font-family: 'PixelFont', sans-serif;
     height: 30px;
 }
 
 .Roulette-Container img {
     position: absolute;
-    left:30px;
-    top:189px;
+    left: 30px;
+    top: 189px;
     width: 1150px;
-    height:260px;
+    height: 260px;
 }
-
 
 .Roulette-Container button {
     height: 30px;
     width: 50px;
-    font-family: 'PixelFont';
+    font-family: 'PixelFont', sans-serif;
     border: 3px outset #4f4f4f; /* Changed to outset border */
+    background-color: #c0c0c0; /* Ensure consistent background */
+    color: black; /* Ensure consistent text color */
 }
 
 #information-container {
@@ -30,18 +31,18 @@
     text-align: center; /* Center text */
     position: relative;
     top: -140px; /* Adjust this value to move it up */
-    font-size:30px;
-  }
+    font-size: 30px;
+}
 
-  .info-item {
+.info-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
+}
 
-  .info-title {
+.info-title {
     font-weight: bold;
-  }
+}
 
 #deposit-container {
     font-size: larger;
@@ -50,7 +51,7 @@
     bottom: 200px;
 }
 
-/* inconsistent size with the submit button, this fixes it */
+/* Inconsistent size with the submit button, this fixes it */
 #submit-deposit {
     font-size: 25px;
     font-weight: 100;
@@ -80,7 +81,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    top:-120px;
+    top: -120px;
 }
 
 #chip-container button {
@@ -90,45 +91,44 @@
     margin-left: 5px;
     margin-right: 5px;
 }
-#chip-container button:hover {
-    background-color:rgb(255, 136, 136)
-}
 
+#chip-container button:hover {
+    background-color: rgb(255, 136, 136);
+}
 
 #roulette-table {
     pointer-events: none;
     display: flex;
     position: relative;
     left: 28px;
-    top:32px;
+    top: 32px;
     justify-content: center;
 }
 
 #roulette-table button {
     background: none;
-    border: transparent, solid, 2px;
+    border: 2px solid transparent; /* Fix border syntax */
 }
 
 #roulette-table button:hover {
-    border: gold, solid, 3px;
+    border: 3px solid gold; /* Fix border syntax */
 }
 
 #roulette-table-grid {
     display: grid;
-    grid-area: 'grid';
     grid-template-areas:
-    'one'
-    'two'
-    'three'
-    'four'
-    'five';
+        'one'
+        'two'
+        'three'
+        'four'
+        'five';
 }
 
 #Rou-buttons-container {
     display: flex;
     justify-content: center;
     position: relative;
-    top:-130px;
+    top: -130px;
 }
 
 #Rou-buttons-container button {
@@ -138,13 +138,13 @@
     margin-left: 10px;
     margin-right: 10px;
 }
+
 #Rou-buttons-container button:hover {
     background-color: #9e9e9e;
 }
 
 #zero-column {
     display: grid;
-    grid-area: 'zero';
     grid-template-rows: 75px;
     position: relative;
     top: 10px;
@@ -157,14 +157,13 @@
 }
 
 #row-one {
-    grid-area: 'one';
+    grid-area: one;
     display: grid;
-    gap: 10px
-
+    gap: 10px;
 }
 
 #row-two {
-    grid-area: 'two';
+    grid-area: two;
     position: relative;
     display: grid;
     gap: 10px;
@@ -172,19 +171,19 @@
 }
 
 #row-three {
-    grid-area: 'three';
+    grid-area: three;
     position: relative;
     display: grid;
     gap: 10px;
-    bottom: 140px
+    bottom: 140px;
 }
 
-#row-four { 
-    grid-area: 'four';
+#row-four {
+    grid-area: four;
     display: flex;
     position: relative;
     bottom: 200px;
-    right: 15px
+    right: 15px;
 }
 
 #row-four button {
@@ -192,12 +191,12 @@
     pointer-events: all;
 }
 
-#row-five { 
-    grid-area: 'five';
+#row-five {
+    grid-area: five;
     display: flex;
     position: relative;
-    bottom: 190px; 
-    right: 15px
+    bottom: 190px;
+    right: 15px;
 }
 
 #row-five button {
@@ -205,14 +204,12 @@
     pointer-events: all;
 }
 
-/*  rows are split into two rows 
-    top row contains the numbers the horizontal double bets and 2 to 1 bets
-    bottom contains the rest of the vertical double bets and quad bets*/
-
+/* Rows are split into two rows 
+   Top row contains the numbers, horizontal double bets, and 2 to 1 bets
+   Bottom contains the rest of the vertical double bets and quad bets */
 .row-subdivision-one {
     display: flex;
     gap: 30px;
-
 }
 
 .row-subdivision-one button {
@@ -230,7 +227,7 @@
     height: 10px;
 }
 
-/* these are the horizontal double bets placed over subdivision one */
+/* These are the horizontal double bets placed over subdivision one */
 .double-one {
     pointer-events: none;
     position: relative;
@@ -243,7 +240,7 @@
 .double-one button {
     pointer-events: all;
     width: 10px;
-    height: 40px
+    height: 40px;
 }
 
 .double-two {
@@ -284,6 +281,7 @@
     position: relative;
     left: 20px;
 }
+
 .Rou-container {
     position: absolute;
     z-index: 500; /* Lower z-index to ensure it stays behind Bank */
@@ -292,9 +290,10 @@
     align-items: center;
     overflow: hidden; /* Prevent content from making it expand */
     color: black;
-  }
-  /* Blackjack window */
-  .Rou-window {
+}
+
+/* Roulette window */
+.Rou-window {
     width: 1200px;
     background-color: #c0c0c0;
     border: 4px outset #808080;
@@ -302,9 +301,9 @@
     flex-direction: column;
     height: 690px; /* Minimum height */
 }
-  
-  /* Top bar */
-  .Rou-top-bar {
+
+/* Top bar */
+.Rou-top-bar {
     background-color: #000080;
     color: white;
     padding: 8px;
@@ -312,41 +311,40 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 2px inset #808080; /* Changed border to inset for bottom */
-  }
-  
-  /* Top bar title */
-  .Rou-top-bar-title {
+}
+
+/* Top bar title */
+.Rou-top-bar-title {
     font-size: 12px;
-    font-family: BIOSFont;
-  }
-  
-  /* Top bar buttons */
-  .Rou-top-bar-buttons button {
+    font-family: 'BIOSFont', sans-serif;
+}
+
+/* Top bar buttons */
+.Rou-top-bar-buttons button {
     width: 20px;
     height: 20px;
     background-color: #c0c0c0;
     border: 1px outset #4f4f4f; /* Changed to outset border */
-  }
-  
-  .Rou-top-bar-buttons .Rou-close-button {
-    font-family: BIOSFont;
+}
+
+.Rou-top-bar-buttons .Rou-close-button {
+    font-family: 'BIOSFont', sans-serif;
     padding: 3px;
-    color:red;
-  }
+    color: red;
+}
 
-
-  .AB-container {
+.AB-container {
     position: absolute;
-    z-index: 500; /* Lower z-index to ensure it stays behind Bank */
+    z-index: 1000; /* Ensure it stays on top */
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden; /* Prevent content from making it expand */
     color: black;
-    z-index:1000
-  }
-  /* Blackjack window */
-  .AB-window {
+}
+
+/* Active Bets window */
+.AB-window {
     width: auto;
     background-color: #c0c0c0;
     border: 4px outset #808080;
@@ -354,9 +352,9 @@
     flex-direction: column;
     height: auto;
 }
-  
-  /* Top bar */
-  .AB-top-bar {
+
+/* Top bar */
+.AB-top-bar {
     background-color: #000080;
     color: white;
     padding: 8px;
@@ -364,38 +362,61 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 2px inset #808080; /* Changed border to inset for bottom */
-  }
-  
-  /* Top bar title */
-  .AB-top-bar-title {
+}
+
+/* Top bar title */
+.AB-top-bar-title {
     font-size: 12px;
-    font-family: BIOSFont;
-  }
-  
-  /* Top bar buttons */
-  .AB-top-bar-buttons button {
+    font-family: 'BIOSFont', sans-serif;
+}
+
+/* Top bar buttons */
+.AB-top-bar-buttons button {
     width: 20px;
     height: 20px;
     background-color: #c0c0c0;
     border: 1px outset #4f4f4f; /* Changed to outset border */
-  }
-  
-  .AB-top-bar-buttons .AB-close-button {
-    font-family: BIOSFont;
-    padding: 3px;
-    color:red;
-  }
-  #bets-list {
-   margin-right: 20px;
 }
-#bets-list  ul{
-    background-color:white;
+
+.AB-top-bar-buttons .AB-close-button {
+    font-family: 'BIOSFont', sans-serif;
+    padding: 3px;
+    color: red;
+}
+
+#bets-list {
+    margin-right: 20px;
+}
+
+#bets-list ul {
+    background-color: white;
     justify-content: center;
     margin-left: 20px;
     padding-bottom: 10px;
     padding-top: 10px;
     padding-right: 10px;
 }
-#bets-list  h3{
+
+#bets-list h3 {
     margin-left: 10px;
 }
+
+@-moz-document url-prefix() {
+    .Rou-window {
+        width: 1200px;
+        background-color: #c0c0c0;
+        border: 4px outset #808080;
+        display: flex;
+        flex-direction: column;
+        height: 715px; /* Minimum height */
+    }
+    #roulette-table {
+        pointer-events: none;
+        display: flex;
+        position: relative;
+        left: 28px;
+        top: 12px;
+        justify-content: center;
+    }
+    
+  }
