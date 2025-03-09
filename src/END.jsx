@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import pokerDogs from './Assets/PokerDawgs.png';
+import fadeInSound from './Assets/SoundEffects/cheer.wav'; // Import the sound file
 import './CSSFiles/END.css'; // Import the CSS file for animations
 
 export default function END() {
@@ -27,6 +28,13 @@ export default function END() {
       return () => clearTimeout(timer);
     }
   }, [isUnlocked]);
+
+  useEffect(() => {
+    if (isScrollingDone) {
+      const audio = new Audio(fadeInSound);
+      audio.play();
+    }
+  }, [isScrollingDone]);
 
   const poem = `
     You stand here now, at the edge of the spinning,

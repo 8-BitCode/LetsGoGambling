@@ -3,6 +3,7 @@ import Draggable from "react-draggable";
 import { Helmet } from "react-helmet";
 import { db, doc, getDoc, updateDoc } from "./firebase"; // Import the necessary functions
 import "./CssFiles/Bank.css";
+import Click from './Assets/SoundEffects/Click.wav';
 
 export default function Bank({ closeBank, userId }) {
   const [balance, setBalance] = useState(0);
@@ -12,6 +13,13 @@ export default function Bank({ closeBank, userId }) {
   // Generate a random position for the window
   const randomX = Math.floor(Math.random() * (window.innerWidth - 400));
   const randomY = Math.floor(Math.random() * (window.innerHeight - 275 - 40));
+
+  const playClickSound = () => {
+    const audio = new Audio(Click);
+    audio.play().catch((error) => {
+      console.error('Error playing sound:', error);
+    });
+  };
 
   // Fetch data from Firebase when the component mounts
   useEffect(() => {
@@ -29,6 +37,7 @@ export default function Bank({ closeBank, userId }) {
   }, [userId]);
 
   const handleTakeLoan = async () => {
+    playClickSound()
     if (amount > 0) {
       const newBalance = balance + amount;
       const newDebt = debt + amount; // Increase the debt by the loan amount
@@ -48,6 +57,7 @@ export default function Bank({ closeBank, userId }) {
   };
 
   const handleRepayLoan = async () => {
+    playClickSound()
     if (amount > 0 && amount <= balance && amount <= debt) {
       const newBalance = balance - amount;
       const newDebt = debt - amount; // Decrease the debt by the repayment amount

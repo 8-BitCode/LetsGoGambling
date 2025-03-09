@@ -3,19 +3,33 @@ import './CssFiles/TitlePage.css';
 import Draggable from 'react-draggable'; // The default
 import { useNavigate } from "react-router-dom";
 import { Helmet } from 'react-helmet';
+import Click from './Assets/SoundEffects/Click.wav';
 
 export default function Windows95App() {
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
+
   // Sound effect on button click
   const playClickSound = () => {
     setShowPopup(true);
+    const audio = new Audio(Click);
+    audio.play().catch((error) => {
+      console.error('Error playing sound:', error);
+    });
   };
 
   const closePopup = () => {
     setShowPopup(false);
+    const audio = new Audio(Click);
+    audio.play().catch((error) => {
+      console.error('Error playing sound:', error);
+    });
   };
   const Continue = () =>{
+    const audio = new Audio(Click);
+    audio.play().catch((error) => {
+      console.error('Error playing sound:', error);
+    });
     navigate('./TermsOfService')
   }
 

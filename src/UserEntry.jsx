@@ -6,6 +6,7 @@ import { Helmet } from "react-helmet";
 import { onAuthStateChanged } from "firebase/auth"; // Import the missing function
 import "./CssFiles/UserEntry.css"; // Import the external CSS file
 import TheCreature from "./Assets/PDTheCreature.png";
+import Click from './Assets/SoundEffects/Click.wav';
 
 const UserEntry = () => {
   const [user, setUser] = useState(null);
@@ -16,7 +17,13 @@ const UserEntry = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [dateTime, setDateTime] = useState("");
   const navigate = useNavigate();
-
+  
+  const playClickSound = () => {
+    const audio = new Audio(Click);
+    audio.play().catch((error) => {
+      console.error('Error playing sound:', error);
+    });
+  };
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date();
@@ -54,6 +61,7 @@ const UserEntry = () => {
   };
 
   const handleGoogleLogin = async () => {
+    playClickSound()
     try {
       const result = await signInWithPopup(auth, provider);
       alert("Google login successful!");
@@ -89,11 +97,13 @@ const UserEntry = () => {
   
 
   const handleGoToGameSelection = () => {
+    playClickSound()
     if (isUsernameSet) {
       navigate("/GameSelection", { state: { username, money: 1000 } }); // Pass username and money
     } else {
       alert("You need to set a username first!");
     }
+
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -119,7 +129,7 @@ const UserEntry = () => {
                   onChange={handleUsernameChange}
                   placeholder="Enter your username"
                 />
-                <button type="submit">-→</button>
+                <button type="submit" onClick={playClickSound}>-→</button>
               </form>
               {!usernameAvailable && <div className="error">Username is already taken. Please choose another one.</div>}
             </div>

@@ -13,7 +13,7 @@ import Bank from './Bank';
 import Blackjack from './Blackjack';
 import Roulette from './Roulette';
 import { doc, getDoc, setDoc, updateDoc, increment } from 'firebase/firestore';
-
+import Click from './Assets/SoundEffects/Click.wav';
 const MoneySlot = ({ amount }) => {
   const digits = amount.toString().split('');
 
@@ -78,6 +78,13 @@ const GameSelection = () => {
   const randomX = Math.floor(Math.random() * (window.innerWidth - 500));
   const randomY = Math.floor(Math.random() * (window.innerHeight - 500 - 40));
 
+  const playClickSound = () => {
+    const audio = new Audio(Click);
+    audio.play().catch((error) => {
+      console.error('Error playing sound:', error);
+    });
+  };
+
   useEffect(() => {
     const updateClock = () => {
       const now = new Date();
@@ -129,6 +136,7 @@ const GameSelection = () => {
   };
 
   const handleGameDoubleClick = (game) => {
+    playClickSound()
     if (game.name === 'Unlocked' && !isEndUnlocked) {
       alert('You must bin all icons first!');
       return;
@@ -196,7 +204,7 @@ const GameSelection = () => {
 
   const openLeavePopup = (gameName) => {
     const gamesWithPopupChance = ['Black Jack', 'Slots', 'Roulette'];
-
+    playClickSound()
     if (gamesWithPopupChance.includes(gameName)) {
       const randomChance = Math.floor(Math.random() * 8) + 1;
       if (randomChance === 1) {
@@ -210,6 +218,7 @@ const GameSelection = () => {
   };
 
   const closeLeavePopup = (gameName) => {
+    playClickSound()
     setActivePopups((prev) => prev.filter((game) => game !== gameName));
   };
 
