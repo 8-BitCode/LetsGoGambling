@@ -1,9 +1,9 @@
-import { Helmet } from 'react-helmet';
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import pokerDogs from './Assets/PokerDawgs.png';
-import fadeInSound from './Assets/SoundEffects/cheer.wav'; // Import the sound file
-import './CSSFiles/END.css'; // Import the CSS file for animations
+import { Helmet } from "react-helmet";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import pokerDogs from "./Assets/PokerDawgs.png";
+import fadeInSound from "./Assets/SoundEffects/cheer.wav"; // Import the sound file
+import "./CssFiles/END.css"; // Import the CSS file for animations
 
 export default function END() {
   const location = useLocation();
@@ -15,7 +15,7 @@ export default function END() {
     if (location.state?.fromUnlocked) {
       setIsUnlocked(true);
     } else {
-      navigate('/GameSelection');
+      navigate("/GameSelection");
     }
   }, [location, navigate]);
 
@@ -133,11 +133,13 @@ export default function END() {
         <div className="end-container">
           <div className="scrolling-text">
             <pre
-              style={{ fontFamily: 'PixelFont' }}
+              style={{ fontFamily: "PixelFont" }}
               dangerouslySetInnerHTML={{ __html: poem }}
             />
           </div>
-          <div className={`fade-in-container ${isScrollingDone ? 'visible' : ''}`}>
+          <div
+            className={`fade-in-container ${isScrollingDone ? "visible" : ""}`}
+          >
             <img
               src={pokerDogs}
               alt="Fade-in Image"
