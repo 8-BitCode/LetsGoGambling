@@ -1,5 +1,5 @@
 import React from 'react'
-
+/*
 function OddEvenBet({onClick, type}) {
 
  return(
@@ -8,3 +8,4 @@ function OddEvenBet({onClick, type}) {
 };
 
 export default OddEvenBet;
+*/

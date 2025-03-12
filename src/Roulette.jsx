@@ -4,7 +4,6 @@ import ColumnBet from './RouletteComponents/ColumnBet';
 import DoubleBet from './RouletteComponents/DoubleBet';
 import IntervalBet from './RouletteComponents/IntervalBet';
 import NumberBet from './RouletteComponents/NumberBet';
-import OddEvenBet from './RouletteComponents/OddEvenBet';
 import QuadBet from './RouletteComponents/QuadBet';
 import ZeroBet from './RouletteComponents/ZeroBet';
 import BetListItem from './RouletteComponents/BetListItem'
@@ -18,11 +17,47 @@ const Roulette = () => {
 
     // main functions within the game
     const spinWheel = () => {
-        console.log(betsPlaced)
-        // number from 'wheel spin'
-        setWin(Math.floor(Math.random() * 38) - 1)  
+        
+        // random number dictates how many times to increment through possible outcomes
+        let increment = Math.floor(Math.random() * 200 + 100);
+        
+        let win = incrementWheel(displayWin, increment)
+
+
+        setTimeout(0.1)
+
+        setWin(win)
         setPrevious(betsPlaced)
         setStake(undefined)      
+    }
+
+    const incrementWheel = (currentNum, increment) => {
+
+        let currentNumIndex = 0;
+
+        if (currentNum == 0) {
+            currentNumIndex = 0;
+        }
+        else if (currentNum == '00') {
+            currentNumIndex = 1;
+        }
+        else {
+            currentNumIndex = currentNum + 1;
+        }
+
+        if (currentNumIndex == 37) {
+            currentNumIndex = -1
+        }
+
+        currentNum = possibleOutcomes[currentNumIndex + 1]
+        increment --
+
+        if (increment > 0) {
+            incrementWheel(currentNum, increment)
+        }
+        else {
+            return currentNum;
+        }
     }
 
     // check each bet for a win
@@ -449,5 +484,12 @@ const Roulette = () => {
         </Fragment>
     );
 }
+
+function OddEvenBet({onClick, type}) {
+
+    return(
+       <button onClick={onClick}></button>
+    )   
+   };
 
 export default Roulette;
