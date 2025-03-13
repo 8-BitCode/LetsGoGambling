@@ -317,15 +317,20 @@ const Roulette = ({ closeGame }) => {
         {key: 'interval 6', twoToOne: false, interval: [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]}
     ];
 
-    const intervalBetsRowFive = [
-    {key: 'interval 7' , twoToOne: false, interval: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]},
-    {key: 'interval 8', twoToOne: false, interval: [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]},
+    const intervalBetsRowFive1 = [
+        {key: 'interval 7' , twoToOne: false, interval: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]}
     ];
 
-    const oddEven = [
-        {type: 'odd'},
-        {type: 'even'}
+    const intervalBetsRowFive2 = [
+        {key: 'interval 8', twoToOne: false, interval: [19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]},
     ];
+
+    const odd = [
+        {type: 'odd'},
+    ];
+    const even = [
+        {type: 'even'}
+    ]
 
     const colours = [
         {colour: 'red'},
@@ -478,10 +483,14 @@ const Roulette = ({ closeGame }) => {
             {intervalBetsRowFour.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval)} twoToOne={item.twoToOne} interval={item.interval} key={item.key}/>)}
         </div>
         <div id='row-five'>
-            {oddEven.map(item => <button onClick={() => placeBet(chipSelected, item.type)}/>)}
+            
+            {intervalBetsRowFive1.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval)} twoTwoOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
+            {even.map(item => <button onClick={() => placeBet(chipSelected, item.type)}/>)}
             {colours.map(item => <button onClick={() => placeBet(chipSelected, item.colour)}/>)}
-            {intervalBetsRowFive.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval)} twoTwoOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
+            {odd.map(item => <button onClick={() => placeBet(chipSelected, item.type)}/>)}
+            {intervalBetsRowFive2.map(item => <IntervalBet onClick={() => placeBet(chipSelected, item.interval)} twoTwoOne={item.twoToOne} interval={item.interval} key={item.key} /> )}
         </div> 
+
 
     </div>
 
