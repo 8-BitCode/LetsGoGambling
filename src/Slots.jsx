@@ -183,8 +183,16 @@ export default function SlotMachine({ closeGame, navigate }) {
     };
 
     const adjustBet = (amount) => {
-        setBet((prev) => Math.max(1, prev + amount));
+        if (amount === "halve") {
+            setBet((prev) => {
+                const newBet = prev / 2;
+                return Math.max(1, parseFloat(newBet.toFixed(1))); // Round to 1 decimal place
+            });
+        } else {
+            setBet((prev) => Math.max(1, prev + amount));
+        }
     };
+    
 
     const isHighlighted = (row, col) => {
         return highlighted.some((pos) => pos[0] === row && pos[1] === col);
@@ -222,9 +230,7 @@ export default function SlotMachine({ closeGame, navigate }) {
                                         -{value}
                                     </button>
                                 ))}
-                                <button onClick={() => setBet((prevBet) => prevBet / 2)}>
-                                    Halve
-                                </button>
+                                <button onClick={() => adjustBet("halve")}>Halve</button>
                             </div>
 
                             <div className="slot-reels">
