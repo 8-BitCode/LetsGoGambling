@@ -272,6 +272,10 @@ const GameSelection = () => {
     setSelectedUserForStats(username);
     setActiveGames((prev) => [...prev, 'Statistics']);
   };
+  function GoBack(){
+    playClickSound()
+    navigate("/UserEntry")
+  }
 
   return (
     <div className="GS-Container">
@@ -331,6 +335,7 @@ const GameSelection = () => {
             value={taskInput}
             onChange={(e) => setTaskInput(e.target.value)}
           />
+          <button className='GoBack' onClick={GoBack}>Go Back To Login</button>
           {userSuggestions.length > 0 && (
             <div className="GS-UserSuggestions">
               {userSuggestions.map((suggestion, index) => (
