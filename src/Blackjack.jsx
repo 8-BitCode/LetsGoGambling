@@ -298,7 +298,7 @@ const Blackjack = ({ closeGame }) => {
                 <div className="Blackjack-container" style={{ width: "600px" }}>
                     <div className="Blackjack-window">
                         <div className="top-bar">
-                            <span className="top-bar-title">SlotMachine95.exe</span>
+                            <span className="top-bar-title">BLACKJACK95.exe</span>
                             <div className="top-bar-buttons">
                                 <button className="close-button" onClick={closeGame}>
                                     X
