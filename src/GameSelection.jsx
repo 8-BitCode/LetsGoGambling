@@ -7,6 +7,7 @@ import Draggable from 'react-draggable';
 import { auth, db, collection, query, where, getDocs, onSnapshot } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import Creature from './Assets/PDTheCreature.png';
+import Messages from './Messages';
 import Slots from './Slots';
 import Stats from './Stats';
 import Bank from './Bank';
@@ -62,6 +63,7 @@ const GameSelection = () => {
   const [deletedIcons, setDeletedIcons] = useState([]);
   const [isEndUnlocked, setIsEndUnlocked] = useState(false); // Track if END is unlocked
   const [games, setGames] = useState([
+    { id: 0, name: 'Messages', icon: '💬', route: '/GameSelection' },
     { id: 1, name: 'Statistics', icon: '📈', route: '/GameSelection' },
     { id: 2, name: 'Black Jack', icon: '🃏', route: '/GameSelection' },
     { id: 3, name: 'Roulette', icon: '🛞', route: '/GameSelection' },
@@ -310,6 +312,7 @@ const GameSelection = () => {
 
       <div className="GS-ActiveGames">
         {activeGames.includes('Slots') && <Slots closeGame={() => openLeavePopup('Slots')} />}
+        {activeGames.includes('Messages') && <Messages closeGame={() => openLeavePopup('Messages')} />}
         {activeGames.includes('Statistics') && (
           <Stats
             closeGame={() => openLeavePopup('Statistics')}

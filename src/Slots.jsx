@@ -20,9 +20,9 @@ export default function SlotMachine({ closeGame, navigate }) {
     const randomX = Math.floor(Math.random() * (window.innerWidth - 600));
     const randomY = Math.floor(Math.random() * (window.innerHeight - 490 - 40));
     const [reels, setReels] = useState([
-        ["🎵", "7", "🍀"],
-        ["💎", "7", "🔔"],
-        ["🐎", "7", "💎"],
+        ["?", "?", "?"],
+        ["?", "?", "?"],
+        ["?", "?", "?"],
     ]);
     const [credits, setCredits] = useState(0);
     const [bet, setBet] = useState(0);
@@ -195,10 +195,10 @@ export default function SlotMachine({ closeGame, navigate }) {
             <div className="slot-machine-container">
                 <div className="slot-machine-window">
                     <div className="top-bar">
-                        <span className="top-bar-title">SlotMachine95.exe</span>
+                        <span className="top-bar-title">SlotMachineexe</span>
                         <div className="top-bar-buttons">
                             <button className="close-button" onClick={closeGame}>
-                                X
+                        X
                             </button>
                         </div>
                     </div>
