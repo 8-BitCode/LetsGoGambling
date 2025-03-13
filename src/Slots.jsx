@@ -195,7 +195,7 @@ export default function SlotMachine({ closeGame, navigate }) {
             <div className="slot-machine-container">
                 <div className="slot-machine-window">
                     <div className="top-bar">
-                        <span className="top-bar-title">SlotMachineexe</span>
+                        <span className="top-bar-title">SlotMachine95.exe</span>
                         <div className="top-bar-buttons">
                             <button className="close-button" onClick={closeGame}>
                         X
