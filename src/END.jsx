@@ -47,7 +47,7 @@ up my mind? . . .
       const poemHeight = poemRef.current.scrollHeight;
       const screenHeight = window.innerHeight;
       const scrollDistance = poemHeight + screenHeight; // Total scroll distance
-      const scrollSpeed = 300; // Reduced scroll speed (pixels per second)
+      const scrollSpeed = 30; // Reduced scroll speed (pixels per second)
       const duration = scrollDistance / scrollSpeed; // Duration in seconds
   
       // Set the animation duration dynamically
