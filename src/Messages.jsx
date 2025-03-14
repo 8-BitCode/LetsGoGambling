@@ -4,9 +4,8 @@ import { Helmet } from "react-helmet";
 import Draggable from "react-draggable";
 import Click from './Assets/SoundEffects/Click.wav';
 
-const Messages = ({ closeGame }) => {
+const Messages = ({ closeGame, Level, onNewMail }) => {
     const [activeButton, setActiveButton] = useState("LGGCorp");
-    const [Level, setLevel] = useState(4); // Initialize Level state
     const [message, setMessage] = useState(""); // Start with an empty message
 
     const randomX = Math.floor(Math.random() * (window.innerWidth - 600));
@@ -24,6 +23,15 @@ const Messages = ({ closeGame }) => {
       console.error('Error playing sound:', error);
     });
   };
+
+  useEffect(() => {
+    const newMailTimer = setTimeout(() => {
+      onNewMail(); // Notify parent component about new mail
+    }, 3000); // Simulate new mail after 3 seconds
+
+    return () => clearTimeout(newMailTimer);
+  }, [onNewMail]);
+
     const handleButtonClick = (buttonName) => {
         let newMessage = "";
         playClickSound()

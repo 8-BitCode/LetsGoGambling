@@ -6,9 +6,9 @@ import Draggable from "react-draggable";
 //Helmet is used to give each sub page a title dynamically (just a little akram detail)
 import { Helmet } from 'react-helmet';
 import './CssFiles/Roulette.css'
-import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Table from'./Assets/roulettetable.png';
+import { useNavigate } from 'react-router-dom';
 import {
     auth,
     db,
@@ -24,7 +24,12 @@ const randomX = Math.floor(Math.random() * (window.innerWidth - 1208));
 const randomY = Math.floor(Math.random() * (window.innerHeight - 698 - 40));
 
 
-const Roulette = ({ closeGame }) => {
+const Roulette = ({ closeGame, Level, setLevel, setHasNewMail }) => {
+    //CODE FOR ADDING TO 1 LEVEL
+    // setLevel((prevLevel) => prevLevel + 1);
+
+
+
     const [balance, setBalance] = useState(0);
     const [userDocId, setUserDocId] = useState(null);
     const [winningNumber, setWin] = useState(null);

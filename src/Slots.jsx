@@ -14,7 +14,12 @@ import "./CssFiles/Slots.css";
 
 const symbols = ["7", "🎵", "🍀", "🔔", "💎", "🐎"];
 
-export default function SlotMachine({ closeGame, navigate }) {
+export default function SlotMachine({ closeGame, navigate, Level, setLevel, setHasNewMail }) {
+    //CODE FOR ADDING TO 1 LEVEL
+    // setLevel((prevLevel) => prevLevel + 1);
+
+
+
     const auth = getAuth();
     const db = getFirestore();
     const randomX = Math.floor(Math.random() * (window.innerWidth - 600));

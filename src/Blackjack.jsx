@@ -15,7 +15,10 @@ import {
 } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
-const Blackjack = ({ closeGame }) => {
+const Blackjack = ({ closeGame, Level, setLevel, setHasNewMail }) => {
+    //CODE FOR ADDING TO 1 LEVEL
+    // setLevel((prevLevel) => prevLevel + 1);
+
     const navigate = useNavigate();
     const [money, setMoney] = useState(1000);
     const [bet, setBet] = useState(0);
@@ -190,6 +193,8 @@ const Blackjack = ({ closeGame }) => {
 
     // Stand Function
     const stand = () => {
+
+
         if (gameOver) return;
         let newDeck = [...deck];
         let newDealerHand = [...dealerHand];
