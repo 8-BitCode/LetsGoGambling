@@ -109,22 +109,27 @@ const GameSelection = () => {
     return () => unsubscribe();
   }, [navigate]);
 
+  const [debt, setDebt] = useState(0);
   const fetchUserData = async (uid) => {
     try {
       const playersRef = collection(db, 'Players');
       const q = query(playersRef, where('uid', '==', uid));
       const querySnapshot = await getDocs(q);
-
+  
       if (!querySnapshot.empty) {
         const userDoc = querySnapshot.docs[0];
         setMoney(userDoc.data().money);
         setUsername(userDoc.data().username);
         setUserDocId(userDoc.id);
-
+  
         const userDocRef = doc(db, 'Players', userDoc.id);
         onSnapshot(userDocRef, (docSnap) => {
           if (docSnap.exists()) {
             setMoney(docSnap.data().money);
+            // Fetch debt if it exists
+            if (docSnap.data().debt) {
+              setDebt(docSnap.data().debt);
+            }
           }
         });
       } else {
@@ -134,6 +139,27 @@ const GameSelection = () => {
       alert('Failed to fetch user data: ' + err.message);
     }
   };
+  useEffect(() => {
+    const calculateInterest = async () => {
+      if (debt > 0 && userDocId) {
+        const interest = debt * 0.01; // 1% interest
+        const newDebt = debt + interest;
+  
+        try {
+          const userDocRef = doc(db, 'Players', userDocId);
+          await updateDoc(userDocRef, {
+            debt: newDebt,
+          });
+          setDebt(newDebt);
+        } catch (err) {
+          console.error('Failed to update debt:', err);
+        }
+      }
+    };
+  
+    const interval = setInterval(calculateInterest, 60000); // 1 minute
+    return () => clearInterval(interval);
+  }, [debt, userDocId]);
 
   const handleGameDoubleClick = (game) => {
     playClickSound()
