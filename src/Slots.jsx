@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Draggable from "react-draggable";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
 import {
     getFirestore,
     doc,
@@ -14,12 +15,11 @@ import "./CssFiles/Slots.css";
 
 const symbols = ["7", "🎵", "🍀", "🔔", "💎", "🐎"];
 
-export default function SlotMachine({ closeGame, navigate, Level, setLevel, setHasNewMail }) {
+export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail }) {
     //CODE FOR ADDING TO 1 LEVEL
     // setLevel((prevLevel) => prevLevel + 1);
 
-
-
+    const navigate = useNavigate();
     const auth = getAuth();
     const db = getFirestore();
     const randomX = Math.floor(Math.random() * (window.innerWidth - 600));
