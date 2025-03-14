@@ -15,7 +15,7 @@ import Blackjack from './Blackjack';
 import Roulette from './Roulette';
 import { doc, getDoc, setDoc, updateDoc, increment } from 'firebase/firestore';
 import Click from './Assets/SoundEffects/Click.wav';
-
+import EmailSound from './Assets/SoundEffects/EmailSound.wav'
 const MoneySlot = ({ amount }) => {
   const digits = amount.toString().split('');
 
@@ -89,14 +89,20 @@ const GameSelection = () => {
       console.error('Error playing sound:', error);
     });
   };
+
   useEffect(() => {
     // Define level milestones that trigger new mail
-    const newMailLevels = [1, 2, 3, 4]; // Example milestones
+    const newMailLevels = [1, 2, 3, 4];
+    const audio = new Audio(EmailSound);
 
     if (newMailLevels.includes(Level)) {
-      setHasNewMail(true); // Trigger new mail notification
+      setHasNewMail(true);
+      audio.play().catch((error) => {
+        console.error('Error playing sound:', error);
+      });
     }
-  }, [Level]); // Run this effect whenever Level change
+  }, [Level]); 
+
   useEffect(() => {
     const updateClock = () => {
       const now = new Date();
@@ -341,18 +347,18 @@ const GameSelection = () => {
   }
 
   // Update the Messages icon based on hasNewMail
-  useEffect(() => {
-    const updatedGames = games.map((game) => {
-      if (game.name === 'Messages') {
-        return {
-          ...game,
-          icon: hasNewMail ? '📬' : '📭', // Change icon based on hasNewMail
-        };
-      }
-      return game;
-    });
-    setGames(updatedGames);
-  }, [hasNewMail]);
+useEffect(() => {
+  const updatedGames = games.map((game) => {
+    if (game.name === 'Messages') {
+      return {
+        ...game,
+        icon: hasNewMail ? '📬' : '📭', // Change icon based on hasNewMail
+      };
+    }
+    return game;
+  });
+  setGames(updatedGames);
+}, [hasNewMail]);
 
   return (
     <div className="GS-Container">
@@ -394,6 +400,7 @@ const GameSelection = () => {
     <Slots
         closeGame={() => openLeavePopup('Slots')}
         Level={Level}
+        setLevel={setLevel}
     />
 )}
         {activeGames.includes('Messages') && (

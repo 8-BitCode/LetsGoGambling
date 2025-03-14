@@ -68,7 +68,6 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
 
     const spin = () => {
         if (spinning || credits < bet) return;
-
         // Check if the bet is zero
         if (bet === 0) {
             alert("Please place a bet to start the game.");
