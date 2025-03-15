@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Draggable from "react-draggable";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
 import {
     getFirestore,
     doc,
@@ -14,15 +15,19 @@ import "./CssFiles/Slots.css";
 
 const symbols = ["7", "🎵", "🍀", "🔔", "💎", "🐎"];
 
-export default function SlotMachine({ closeGame, navigate }) {
+export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail }) {
+    //CODE FOR ADDING TO 1 LEVEL
+    // setLevel((prevLevel) => prevLevel + 1);
+
+    const navigate = useNavigate();
     const auth = getAuth();
     const db = getFirestore();
     const randomX = Math.floor(Math.random() * (window.innerWidth - 600));
     const randomY = Math.floor(Math.random() * (window.innerHeight - 490 - 40));
     const [reels, setReels] = useState([
-        ["🎵", "7", "🍀"],
-        ["💎", "7", "🔔"],
-        ["🐎", "7", "💎"],
+        ["?", "?", "?"],
+        ["?", "?", "?"],
+        ["?", "?", "?"],
     ]);
     const [credits, setCredits] = useState(0);
     const [bet, setBet] = useState(0);
@@ -63,7 +68,6 @@ export default function SlotMachine({ closeGame, navigate }) {
 
     const spin = () => {
         if (spinning || credits < bet) return;
-
         // Check if the bet is zero
         if (bet === 0) {
             alert("Please place a bet to start the game.");
@@ -183,16 +187,8 @@ export default function SlotMachine({ closeGame, navigate }) {
     };
 
     const adjustBet = (amount) => {
-        if (amount === "halve") {
-            setBet((prev) => {
-                const newBet = prev / 2;
-                return Math.max(1, parseFloat(newBet.toFixed(1))); // Round to 1 decimal place
-            });
-        } else {
-            setBet((prev) => Math.max(1, prev + amount));
-        }
+        setBet((prev) => Math.max(1, prev + amount));
     };
-    
 
     const isHighlighted = (row, col) => {
         return highlighted.some((pos) => pos[0] === row && pos[1] === col);
@@ -206,7 +202,7 @@ export default function SlotMachine({ closeGame, navigate }) {
                         <span className="top-bar-title">SlotMachine95.exe</span>
                         <div className="top-bar-buttons">
                             <button className="close-button" onClick={closeGame}>
-                                X
+                        X
                             </button>
                         </div>
                     </div>
@@ -230,7 +226,9 @@ export default function SlotMachine({ closeGame, navigate }) {
                                         -{value}
                                     </button>
                                 ))}
-                                <button onClick={() => adjustBet("halve")}>Halve</button>
+                                <button onClick={() => setBet((prevBet) => prevBet / 2)}>
+                                    Halve
+                                </button>
                             </div>
 
                             <div className="slot-reels">
