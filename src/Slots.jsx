@@ -106,6 +106,35 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
 
         return () => unsubscribe();
     };
+//CODE BELOW ACTIVATES VOICE FOR SLOTTO
+    // const [isVoiceEnabled, setIsVoiceEnabled] = useState(true); // Toggle for Slotto's voice
+    // const speakText = (text) => {
+    //     if (!isVoiceEnabled) return; // Don't speak if voice is disabled
+    
+    //     const utterance = new SpeechSynthesisUtterance(text);
+    
+    //     // Randomize pitch and rate for a creepy effect
+    //     utterance.pitch = Math.random() * 10; // Pitch between 0 and 2 (default is 1)
+    //     utterance.rate = 0.8 + Math.random() * 0.4; // Rate between 0.8 and 1.2 (default is 1)
+    //     utterance.volume = 1; // Full volume
+    
+    //     // Optional: Set a specific voice if available
+    //     const voices = window.speechSynthesis.getVoices();
+    //     const slottoVoice = voices.find((voice) => voice.name.includes("Microsoft David")); // Example: Use a specific voice
+    //     if (slottoVoice) {
+    //         utterance.voice = slottoVoice;
+    //     }
+    
+    //     // Add a slight delay before speaking for added creepiness
+    //     setTimeout(() => {
+    //         window.speechSynthesis.speak(utterance);
+    //     }, 500); // 500ms delay
+    // };
+
+    // useEffect(() => {
+    //     speakText(SlottoText);
+    // }, [SlottoText]);
+
 
     const spin = () => {
         if (spinning || credits < bet) return;
