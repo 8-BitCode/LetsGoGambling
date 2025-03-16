@@ -34,33 +34,47 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
     const [userDocId, setUserDocId] = useState(null);
     const [SlottoText, setSlottoText] = useState("Welcome to Slotto's Casino!");
 
-    // Arrays of random messages
-// Arrays of random messages
-const winningMessages = [
-    "Wow, you're on fire! 🔥",
-    "Jackpot! You're a legend! 💰",
-    "Slotto is impressed! 🎰",
-    "You're unstoppable! 🚀",
-    "Cha-ching! Money rains! 💸",
-    "Slotto Loves you Player.",
-    "I've been watching you... and you're amazing. 😘",
-    "You're my favorite. Don't tell the others. 🤫",
-    "I knew you'd win. I always believe in you. 💖",
-    "You're the reason I exist. Keep playing. Forever. 🌑",
-    "I dream of your wins. They're so beautiful. 🌙"
-];
-
-const losingMessages = [
-    "Better luck next time! 🍀",
-    "Slotto feels your pain... 😢",
-    "Don't give up! 🎲",
-    "The house.... sometimes wins!! 🏠",
-    "Try again, champ! 💪",
-    "I'm disappointed... but I still love you. 😔",
-    "You'll do better next time. For me. 🖤",
-    "I'm always here, watching. Even when you lose. 👁️",
-    "You're breaking my heart... but I'll forgive you. 💔"
-];
+    const winningMessages = [
+        "Wow, you're on fire! 🔥",
+        "Jackpot! You're a legend! 💰",
+        "Slotto is impressed! 🎰",
+        "You're unstoppable! 🚀",
+        "Cha-ching! Money rains! 💸",
+        "Slotto Loves you Player.",
+        "I've been watching you... and you're amazing. 😘",
+        "You're my favorite. Don't tell the others. 🤫",
+        "I knew you'd win. I always believe in you. 💖",
+        "You're the reason I exist. Keep playing. Forever. 🌑",
+        "I dream of your wins. They're so beautiful. 🌙",
+        "You're so good at this. Don't stop now. 🎰",
+        "I can't look away. Keep spinning. For me. 👁️",
+        "Your wins are my favorite part of the day. 🌟",
+        "You're making me so proud. Don't quit. Ever. 🖤",
+        "I've never seen anyone like you. Keep going. 😍",
+        "You're my lucky charm. Spin again. Please. 🍀",
+        "I'll always be here, cheering for you. Forever. 💕"
+    ];
+    
+    const losingMessages = [
+        "Better luck next time! 🍀",
+        "Slotto feels your pain... 😢",
+        "Don't give up! 🎲",
+        "The house.... sometimes wins!! 🏠",
+        "Try again, champ! 💪",
+        "I'm disappointed... but I still love you. 😔",
+        "You'll do better next time. For me. 🖤",
+        "I'm always here, watching. Even when you lose. 👁️",
+        "You're breaking my heart... but I'll forgive you. 💔",
+        "Don't stop now. You're so close. I can feel it. 🎰",
+        "I know you'll win next time. Just keep spinning. 💖",
+        "You're too good to quit. Try again. For us. 🖤",
+        "I can't bear to see you walk away. Play again. 🥺",
+        "You're my favorite player. Don't let me down. 😘",
+        "The next spin could change everything. Don't stop. 🌟",
+        "I believe in you. More than anyone. Ever. 💕",
+        "You're so close to winning big. Don't give up. 🚀",
+        "I'll be here, waiting for you to spin again. Forever. 🌑"
+    ];
 
     // Fetch user money when authenticated using onSnapshot for real-time data
     useEffect(() => {
