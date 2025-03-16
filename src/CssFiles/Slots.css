@@ -180,6 +180,7 @@ body {
   height: 200px;
   position: absolute;
   top:10px;
+  left:220px;
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
