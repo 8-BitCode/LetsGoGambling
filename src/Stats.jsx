@@ -18,6 +18,7 @@ export default function Stats({ closeGame, loggedInUser, selectedUser }) {
           name: data.username,
           cash: `$${data.money}`, // Assuming "money" represents the cash
           debt: `$${data.debt}`, // Assuming "debt" represents the debt
+          level: `${data.level}`, // Assuming "debt" represents the debt
         };
       });
       setPlayers(playerData);
@@ -51,6 +52,7 @@ export default function Stats({ closeGame, loggedInUser, selectedUser }) {
                 <th>
                   <s>debt</s> anti cash.
                 </th>
+                <th>LEVEL</th>
               </tr>
             </thead>
             <tbody>
@@ -69,6 +71,7 @@ export default function Stats({ closeGame, loggedInUser, selectedUser }) {
                   <td>{player.name}</td>
                   <td style={{ color: "green" }}>{player.cash}</td>
                   <td style={{ color: "rgba(0, 0, 0, 0.5)" }}>{player.debt}</td>
+                  <td>{player.level}</td>
                 </tr>
               ))}
             </tbody>
