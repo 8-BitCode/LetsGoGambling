@@ -28,7 +28,7 @@
     transform: translateY(0); /* Start at the bottom (below the screen) */
   }
   100% {
-    transform: translateY(-270%); /* Scroll up completely off the screen */
+    transform: translateY(-280%); /* Scroll up completely off the screen */
   }
 }
 

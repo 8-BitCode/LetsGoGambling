@@ -14,8 +14,7 @@ export default function END() {
   const [showFadeIn, setShowFadeIn] = useState(false); // New state for fade-in delay
   const poemRef = useRef(null); // Ref to track the poem's height
 
-  const poem = `Excerpt from The Gambler by Fyodor Dostoevsky:
-
+  const poem = `
 "Yes, my nature is my weak point. I have only to remember what
 happened to me some months ago at Roulettenberg, before my final ruin. What
 a notable instance that was of my capacity for resolution! On the occasion in
