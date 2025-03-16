@@ -24,10 +24,13 @@ const randomX = Math.floor(Math.random() * (window.innerWidth - 1208));
 const randomY = Math.floor(Math.random() * (window.innerHeight - 698 - 40));
 
 
-const Roulette = ({ closeGame, Level, setLevel, setHasNewMail }) => {
+const Roulette = ({ closeGame, setLevel, updateLevelInFirestore }) => {
     //CODE FOR ADDING TO 1 LEVEL
-    // setLevel((prevLevel) => prevLevel + 1);
-
+    // setLevel((prevLevel) => {
+    //     const newLevel = prevLevel + 1;
+    //     updateLevelInFirestore(newLevel); // Update Level in Firestore
+    //     return newLevel;
+    //   });
 
 
     const [balance, setBalance] = useState(0);

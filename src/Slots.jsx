@@ -15,9 +15,13 @@ import "./CssFiles/Slots.css";
 
 const symbols = ["7", "🎵", "🍀", "🔔", "💎", "🐎"];
 
-export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail }) {
+export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestore }) {
     //CODE FOR ADDING TO 1 LEVEL
-    // setLevel((prevLevel) => prevLevel + 1);
+    // setLevel((prevLevel) => {
+    //     const newLevel = prevLevel + 1;
+    //     updateLevelInFirestore(newLevel); // Update Level in Firestore
+    //     return newLevel;
+    //   });
 
     const navigate = useNavigate();
     const auth = getAuth();
@@ -73,7 +77,6 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
             alert("Please place a bet to start the game.");
             return;
         }
-
         setSpinning(true);
         const newCredits = credits - bet; // Deduct the bet from the user's credits
         setCredits(newCredits); // Update the local state with the new credits

@@ -74,7 +74,7 @@ const GameSelection = () => {
   ]);
   const [userSuggestions, setUserSuggestions] = useState([]);
   const [selectedUserForStats, setSelectedUserForStats] = useState(null);
-  const [Level, setLevel] = useState(1); // Add Level state
+  const [Level, setLevel] = useState(0); // Add Level state
   const [hasNewMail, setHasNewMail] = useState(false); // Track new mail state
   const navigate = useNavigate();
   const easterEggRef = useRef(null);
@@ -133,18 +133,20 @@ const GameSelection = () => {
       const playersRef = collection(db, 'Players');
       const q = query(playersRef, where('uid', '==', uid));
       const querySnapshot = await getDocs(q);
-
+  
       if (!querySnapshot.empty) {
         const userDoc = querySnapshot.docs[0];
-        setMoney(userDoc.data().money);
-        setUsername(userDoc.data().username);
+        const userData = userDoc.data();
+        setMoney(userData.money);
+        setUsername(userData.username);
         setUserDocId(userDoc.id);
-
+        setLevel(userData.level || 1); // Initialize Level from Firestore (default to 1 if not present)
+  
         const userDocRef = doc(db, 'Players', userDoc.id);
         onSnapshot(userDocRef, (docSnap) => {
           if (docSnap.exists()) {
             setMoney(docSnap.data().money);
-            // Fetch debt if it exists
+            setLevel(docSnap.data().level || 1); // Update Level from Firestore
             if (docSnap.data().debt) {
               setDebt(docSnap.data().debt);
             }
@@ -155,6 +157,17 @@ const GameSelection = () => {
       }
     } catch (err) {
       alert('Failed to fetch user data: ' + err.message);
+    }
+  };
+
+  const updateLevelInFirestore = async (newLevel) => {
+    try {
+      if (userDocId) {
+        const userDocRef = doc(db, 'Players', userDocId);
+        await updateDoc(userDocRef, { level: newLevel }); // Update Level in Firestore
+      }
+    } catch (err) {
+      console.error('Failed to update level:', err);
     }
   };
 
@@ -179,14 +192,6 @@ const GameSelection = () => {
     const interval = setInterval(calculateInterest, 60000); // 1 minute
     return () => clearInterval(interval);
   }, [debt, userDocId]);
-
-  // Update hasNewMail when Level changes
-  useEffect(() => {
-    // Check if Level has increased enough to show a new message
-    if (Level > 4) { // Adjust this condition based on your logic
-      setHasNewMail(true);
-    }
-  }, [Level]);
 
   const handleGameDoubleClick = (game) => {
     playClickSound();
@@ -401,6 +406,7 @@ useEffect(() => {
         closeGame={() => openLeavePopup('Slots')}
         Level={Level}
         setLevel={setLevel}
+        updateLevelInFirestore={updateLevelInFirestore}
     />
 )}
         {activeGames.includes('Messages') && (
@@ -417,8 +423,8 @@ useEffect(() => {
           />
         )}
         {activeGames.includes('Bank') && <Bank closeBank={() => openLeavePopup('Bank')} userId={userDocId} />}
-        {activeGames.includes('Black Jack') && <Blackjack closeGame={() => openLeavePopup('Black Jack')} Level={Level} setLevel={setLevel}/>}
-        {activeGames.includes('Roulette') && <Roulette closeGame={() => openLeavePopup('Roulette')} Level={Level} setLevel={setLevel}/>}
+        {activeGames.includes('Black Jack') && <Blackjack closeGame={() => openLeavePopup('Black Jack')} Level={Level} setLevel={setLevel} updateLevelInFirestore={updateLevelInFirestore}/>}
+        {activeGames.includes('Roulette') && <Roulette closeGame={() => openLeavePopup('Roulette')} Level={Level} setLevel={setLevel} updateLevelInFirestore={updateLevelInFirestore}/>}
       </div>
 
       <div className="GS-Taskbar">

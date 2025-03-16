@@ -15,9 +15,13 @@ import {
 } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
-const Blackjack = ({ closeGame, Level, setLevel, setHasNewMail }) => {
+const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
     //CODE FOR ADDING TO 1 LEVEL
-    // setLevel((prevLevel) => prevLevel + 1);
+    // setLevel((prevLevel) => {
+    //     const newLevel = prevLevel + 1;
+    //     updateLevelInFirestore(newLevel); // Update Level in Firestore
+    //     return newLevel;
+    //   });
 
     const navigate = useNavigate();
     const [money, setMoney] = useState(1000);
