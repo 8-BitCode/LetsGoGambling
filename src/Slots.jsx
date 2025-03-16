@@ -33,6 +33,7 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
     const [highlighted, setHighlighted] = useState([]);
     const [userDocId, setUserDocId] = useState(null);
     const [SlottoText, setSlottoText] = useState("Welcome to Slotto's Casino!");
+    const [userEmail, setUserEmail] = useState(""); // State to store the user's email
 
     const winningMessages = [
         "Wow, you're on fire! 🔥",
@@ -52,7 +53,9 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
         "You're making me so proud. Don't quit. Ever. 🖤",
         "I've never seen anyone like you. Keep going. 😍",
         "You're my lucky charm. Spin again. Please. 🍀",
-        "I'll always be here, cheering for you. Forever. 💕"
+        "I'll always be here, cheering for you. Forever. 💕",
+        "You’re playing with fire... and I’m the one holding the match. 🔥",
+        `I know everything about you, ${userEmail}. You can't escape. 🌑` // Creepy message with email
     ];
     
     const losingMessages = [
@@ -73,13 +76,15 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
         "The next spin could change everything. Don't stop. 🌟",
         "I believe in you. More than anyone. Ever. 💕",
         "You're so close to winning big. Don't give up. 🚀",
-        "I'll be here, waiting for you to spin again. Forever. 🌑"
+        "I'll be here, waiting for you to spin again. Forever. 🌑",
+        `I know who you are, ${userEmail}` // Creepy message with email
     ];
 
-    // Fetch user money when authenticated using onSnapshot for real-time data
+    // Fetch user money and email when authenticated
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
+                setUserEmail(user.email); // Set the user's email
                 fetchMoney(user.uid);
             } else {
                 alert("User not authenticated");
@@ -107,34 +112,43 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
         return () => unsubscribe();
     };
 //CODE BELOW ACTIVATES VOICE FOR SLOTTO
-    // const [isVoiceEnabled, setIsVoiceEnabled] = useState(true); // Toggle for Slotto's voice
-    // const speakText = (text) => {
-    //     if (!isVoiceEnabled) return; // Don't speak if voice is disabled
+//------------------------------------------------------------------------
+    const [isVoiceEnabled, setIsVoiceEnabled] = useState(true); // Toggle for Slotto's voice
+    const speakText = (text) => {
+        if (!isVoiceEnabled) return; // Don't speak if voice is disabled
     
-    //     const utterance = new SpeechSynthesisUtterance(text);
+        // Remove all emojis and other non-text characters
+        const filteredText = text.replace(
+            /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2B50}\u{2B55}]/gu,
+            ""
+        ).trim();
     
-    //     // Randomize pitch and rate for a creepy effect
-    //     utterance.pitch = Math.random() * 10; // Pitch between 0 and 2 (default is 1)
-    //     utterance.rate = 0.8 + Math.random() * 0.4; // Rate between 0.8 and 1.2 (default is 1)
-    //     utterance.volume = 1; // Full volume
+        if (!filteredText) return; // Don't speak if the text is empty after removing emojis
     
-    //     // Optional: Set a specific voice if available
-    //     const voices = window.speechSynthesis.getVoices();
-    //     const slottoVoice = voices.find((voice) => voice.name.includes("Microsoft David")); // Example: Use a specific voice
-    //     if (slottoVoice) {
-    //         utterance.voice = slottoVoice;
-    //     }
+        const utterance = new SpeechSynthesisUtterance(filteredText);
     
-    //     // Add a slight delay before speaking for added creepiness
-    //     setTimeout(() => {
-    //         window.speechSynthesis.speak(utterance);
-    //     }, 500); // 500ms delay
-    // };
+        // Randomize pitch and rate for a creepy effect
+        utterance.pitch = Math.random() * 100; // Pitch between 0 and 2 (default is 1)
+        utterance.rate = 0.8 + Math.random() * 0.4; // Rate between 0.8 and 1.2 (default is 1)
+        utterance.volume = 1; // Full volume
+    
+        // Optional: Set a specific voice if available
+        const voices = window.speechSynthesis.getVoices();
+        const slottoVoice = voices.find((voice) => voice.name.includes("Microsoft David")); // Example: Use a specific voice
+        if (slottoVoice) {
+            utterance.voice = slottoVoice;
+        }
+    
+        // Add a slight delay before speaking for added creepiness
+        setTimeout(() => {
+            window.speechSynthesis.speak(utterance);
+        }, 500); // 500ms delay
+    };
 
-    // useEffect(() => {
-    //     speakText(SlottoText);
-    // }, [SlottoText]);
-
+    useEffect(() => {
+        speakText(SlottoText);
+    }, [SlottoText]);
+//------------------------------------------------------------------------
 
     const spin = () => {
         if (spinning || credits < bet) return;
