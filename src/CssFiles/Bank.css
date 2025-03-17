@@ -7,6 +7,18 @@
     z-index: 600;
     height: 275px;
   }
+  @-moz-document url-prefix() {
+    .bank-window {
+      width: 400px;
+      background-color: #c0c0c0;
+      border: 4px outset #808080;
+      font-family: PixelFont;
+      position: absolute;
+      z-index: 600;
+      height: 290px;
+    }
+    
+  }
   
   .top-bar {
     background-color: #000080;

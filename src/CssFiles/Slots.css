@@ -11,6 +11,17 @@
   flex-direction: column;
   height: 490px;
 }
+@-moz-document url-prefix() {
+  .slot-machine-window {
+    width: 600px;
+    background-color: #c0c0c0;
+    border: 4px outset #808080; /* Changed border to outset */
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+  }
+  
+}
 
 .top-bar {
   background-color: #000080;
