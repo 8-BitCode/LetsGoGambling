@@ -141,8 +141,10 @@ const Roulette = ({ closeGame }) => {
     
             // Clear bets and reset stake
             if (betsPlaced.length > 0) {
+                setPrevious(betsPlaced)
                 setPlaced([]);
                 setStake(0);
+
             }
             setWin(null);
         }
