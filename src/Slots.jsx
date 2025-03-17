@@ -54,7 +54,7 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
         "I've never seen anyone like you. Keep going. 😍",
         "You're my lucky charm. Spin again. Please. 🍀",
         "I'll always be here, cheering for you. Forever. 💕",
-        "You’re playing with fire... and I’m the one holding the match. 🔥",
+        "You're playing with fire... and I'm the one holding the match. 🔥",
         `I know everything about you, ${userEmail}. You can't escape. 🌑` // Creepy message with email
     ];
     
@@ -182,13 +182,36 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
         }, spinDuration);
     };
 
+    const [usedWinningMessages, setUsedWinningMessages] = useState([]);
+    const [usedLosingMessages, setUsedLosingMessages] = useState([]);
+    
+    const getNextMessage = (messages, usedMessages, setUsedMessages) => {
+        if (usedMessages.length === messages.length) {
+            // Reset if all messages have been used
+            setUsedMessages([]);
+        }
+    
+        // Find the next message that hasn't been used recently
+        const availableMessages = messages.filter(
+            (message) => !usedMessages.includes(message)
+        );
+    
+        const nextMessage =
+            availableMessages[Math.floor(Math.random() * availableMessages.length)];
+    
+        // Update the used messages list
+        setUsedMessages([...usedMessages, nextMessage]);
+    
+        return nextMessage;
+    };
+    
     const checkWins = (grid, updatedCredits) => {
         let wins = [];
         let winDetected = false;
         let BasicWin = false;
         let DiagonalWin = false;
         let ConsolidationWin = false;
-
+    
         // Check horizontal wins (basic wins)
         grid.forEach((row, rowIndex) => {
             if (row.every((symbol) => symbol === row[0])) {
@@ -197,7 +220,7 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
                 wins.push(...row.map((_, colIndex) => [rowIndex, colIndex]));
             }
         });
-
+    
         // Check vertical wins (basic wins)
         for (let col = 0; col < 3; col++) {
             const column = [grid[0][col], grid[1][col], grid[2][col]];
@@ -207,7 +230,7 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
                 wins.push(...column.map((_, rowIndex) => [rowIndex, col]));
             }
         }
-
+    
         // Check diagonal wins
         if (grid[0][0] === grid[1][1] && grid[1][1] === grid[2][2]) {
             winDetected = true;
@@ -219,20 +242,20 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
             DiagonalWin = true;
             wins.push([0, 2], [1, 1], [2, 0]);
         }
-
+    
         // Check consolidation wins
         if (grid[0][0] === grid[1][1] && grid[1][1] === grid[0][2]) {
             winDetected = true;
             ConsolidationWin = true;
             wins.push([0, 0], [1, 1], [0, 2]);
         }
-
+    
         if (grid[2][0] === grid[1][1] && grid[1][1] === grid[2][2]) {
             winDetected = true;
             ConsolidationWin = true;
             wins.push([2, 0], [1, 1], [2, 2]);
         }
-
+    
         // Update credits based on the type of win
         let winAmount = 0;
         let betProportion = 1;
@@ -247,20 +270,28 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
                 winAmount = Math.round(bet * (9 / 7) * betProportion);
             }
         }
-
+    
         const totalCredits = updatedCredits + winAmount;
         setCredits(totalCredits);
         setHighlighted(wins);
-
+    
         // Update SlottoText based on win or loss
         if (winDetected) {
-            const randomMessage = winningMessages[Math.floor(Math.random() * winningMessages.length)];
-            setSlottoText(randomMessage);
+            const nextMessage = getNextMessage(
+                winningMessages,
+                usedWinningMessages,
+                setUsedWinningMessages
+            );
+            setSlottoText(nextMessage);
         } else {
-            const randomMessage = losingMessages[Math.floor(Math.random() * losingMessages.length)];
-            setSlottoText(randomMessage);
+            const nextMessage = getNextMessage(
+                losingMessages,
+                usedLosingMessages,
+                setUsedLosingMessages
+            );
+            setSlottoText(nextMessage);
         }
-
+    
         // After updating local state, update the user's credits in Firestore
         updateMoney(totalCredits);
     };
