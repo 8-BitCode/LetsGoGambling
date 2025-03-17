@@ -32,6 +32,12 @@ const Roulette = ({ closeGame }) => {
     const navigate = useNavigate();
     // main functions within the game
     const spinWheel = () => {
+        
+        if (betsPlaced.length == 0) {
+            alert("Place a bet before spinning")
+            return; // prevent wheel spin if no bets placed
+        }
+
         if (isSpinning) return; // Prevent multiple spins at once
         setIsSpinning(true); // Start spinning
     
@@ -43,13 +49,14 @@ const Roulette = ({ closeGame }) => {
             setDisplay(Math.floor(Math.random() * 36)); // Random number between 0 and 36
         }, 50); // Update every 100ms
     
+        let spinTime = Math.floor((Math.random() + 1) * 1000)
         // Stop spinning after 3 seconds and set the final result
         setTimeout(() => {
             clearInterval(spinInterval); // Stop the spinning effect
             setDisplay(finalResult); // Set the final result
             setWin(finalResult); // Update the winning number
             setIsSpinning(false); // Stop spinning
-        }, 1000); // Spin for 3 seconds
+        }, spinTime); // Spin for 3 seconds
     };
       // Fetch user money when authenticated using onSnapshot for real-time data
       useEffect(() => {
@@ -97,9 +104,18 @@ const Roulette = ({ closeGame }) => {
     // this leaves the bet ids that are arrays left allowing to check if the winning bet is in th array
 
     useEffect(() => {
+
         if (winningNumber !== null) {
-            setDisplay(winningNumber);
-    
+
+            if (winningNumber == -1) {
+                setDisplay('00'); // since double 0 is stored as -1 
+            }
+            else{
+                setDisplay(winningNumber);
+        
+            }
+        }
+
             let anyWin = false;
             betsPlaced.forEach(element => {
                 let id = element[0];
@@ -147,8 +163,7 @@ const Roulette = ({ closeGame }) => {
 
             }
             setWin(null);
-        }
-    }, [winningNumber]);
+            }, [winningNumber]);
 
 
     
