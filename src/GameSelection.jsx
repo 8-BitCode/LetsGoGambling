@@ -14,6 +14,7 @@ import Blackjack from './Blackjack';
 import Roulette from './Roulette';
 import { doc, getDoc, setDoc, updateDoc, increment } from 'firebase/firestore';
 import Click from './Assets/SoundEffects/Click.wav';
+import JAZZ from './Assets/SoundEffects/JAZZ.wav'
 const MoneySlot = ({ amount }) => {
   const digits = amount.toString().split('');
 
@@ -61,6 +62,8 @@ const GameSelection = () => {
   const [activePopups, setActivePopups] = useState([]);
   const [deletedIcons, setDeletedIcons] = useState([]);
   const [isEndUnlocked, setIsEndUnlocked] = useState(false); // Track if END is unlocked
+  const [isPlaying, setIsPlaying] = useState(true); // Track audio state
+  const audioRef = useRef(null); // Ref for the audio element
   const [games, setGames] = useState([
     { id: 1, name: 'Statistics', icon: '📈', route: '/GameSelection' },
     { id: 2, name: 'Black Jack', icon: '🃏', route: '/GameSelection' },
@@ -69,6 +72,17 @@ const GameSelection = () => {
     { id: 5, name: 'Bank', icon: '🏦', route: '/GameSelection' },
     { id: 6, name: 'Locked', icon: '🔒', route: '/GameSelection' },
   ]);
+
+  const toggleAudio = () => {
+    if (audioRef.current.paused) {
+      audioRef.current.play();
+      setIsPlaying(true);
+    } else {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
   const [userSuggestions, setUserSuggestions] = useState([]);
   const [selectedUserForStats, setSelectedUserForStats] = useState(null);
   const navigate = useNavigate();
@@ -311,7 +325,7 @@ const GameSelection = () => {
       <img className="PDImage" src={Creature} alt="cur" />
 
       <div className="GS-TimeDisplay">{currentTime}</div>
-
+      <audio ref={audioRef} src={JAZZ} loop autoPlay />
       <Draggable>
         <div className="GS-MoneyDisplay">
           <MoneySlot amount={money} />
@@ -376,6 +390,11 @@ const GameSelection = () => {
             </div>
           )}
         </div>
+                  <div className="audio-controls">
+  <div className="volume-icon" onClick={toggleAudio}>
+    {isPlaying ? '🔊' : '🔇'}
+  </div>
+</div>
         <div className="GS-TaskbarUsername">Hello, {username}</div>
       </div>
 

@@ -15,6 +15,7 @@ export default function END() {
   const poemRef = useRef(null); // Ref to track the poem's height
 
   const poem = `
+  fyodor dostoevsky, The Gambler:
 "Yes, my nature is my weak point. I have only to remember what
 happened to me some months ago at Roulettenberg, before my final ruin. What
 a notable instance that was of my capacity for resolution! On the occasion in
@@ -30,6 +31,7 @@ gulden in my pocket! That is a fact, and it shows what a last remaining gulden
 can do. . . . But what if my heart had failed me, or I had shrunk from making
 up my mind? . . .
 <span class="highlight">No: tomorrow all shall be ended!"</span>
+
 `;
 
   useEffect(() => {
