@@ -91,9 +91,10 @@ const UserEntry = () => {
         username: username,
         money: 1000, // Initial money set to 1000
         debt: 0,     // Initialize debt as 0
+        level: 1
       });
       setIsUsernameSet(true);
-      navigate("/GameSelection", { state: { username, money: 1000, debt: 0 } });  // Pass username, money, and debt
+      navigate("/GameSelection", { state: { username, money: 1000, debt: 0, level: 1 } });  // Pass username, money, and debt
     } else {
       setUsernameAvailable(false);
     }
@@ -102,7 +103,7 @@ const UserEntry = () => {
   const handleGoToGameSelection = () => {
     playClickSound();
     if (isUsernameSet) {
-      navigate("/GameSelection", { state: { username, money: 1000 } }); // Pass username and money
+      navigate("/GameSelection", { state: { username, debt: 0, money: 1000, level: 1 } }); // Pass username and money
     } else {
       alert("You need to set a username first!");
     }
