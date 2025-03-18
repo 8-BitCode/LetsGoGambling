@@ -356,7 +356,7 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
                                             -{value}
                                         </button>
                                     ))}
-                                    <button onClick={() => setBet((prevBet) => prevBet / 2)}>
+                                    <button onClick={() => setBet((prevBet) => Math.max(1, (prevBet / 2).toFixed(2)))}>
                                         Halve
                                     </button>
                                 </div>
