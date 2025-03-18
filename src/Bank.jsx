@@ -89,7 +89,7 @@ export default function Bank({ closeBank, userId }) {
           </div>
         </div>
         <div className="bank-content">
-          <div className="balance-display">Balance: ${balance}</div>
+          <div className="balance-display">Shambux: ${balance}</div>
           <div className="balance-display">Debt: ${debt}</div> {/* Display the debt */}
           <input
             type="number"

@@ -338,7 +338,7 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
                         </div>
 
                         <div className="slot-machine-content">
-                            <div className="credits">Gambucks: {credits}</div>
+                            <div className="credits">Shambux: {credits}</div>
 
                             <label className="bet">Bet Amount: </label>
                             <input

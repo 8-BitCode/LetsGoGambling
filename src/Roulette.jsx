@@ -518,8 +518,8 @@ const Roulette = ({ closeGame }) => {
     <div>{chipSelected}</div>
   </div>
   <div className="info-item">
-    <div className="info-title">Balance</div>
-    <div>{balance}</div>
+    <div className="info-title">Shambux:</div>
+    <div>${balance}</div>
   </div>
   <div className="info-item">
     <div className="info-title">Total Bet Placed</div>

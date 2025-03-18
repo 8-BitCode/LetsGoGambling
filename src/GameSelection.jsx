@@ -21,7 +21,7 @@ const MoneySlot = ({ amount }) => {
   return (
     <div className="money-slot-window" style={{ width: (digits.length + 1) * 50 + 'px' }}>
       <div className="title-bar">
-        <span className="title-text">Money</span>
+        <span className="title-text">Shambux 🍀</span>
         <div className="window-buttons">
           <div className="window-btn minimize"></div>
           <div className="window-btn close"></div>
