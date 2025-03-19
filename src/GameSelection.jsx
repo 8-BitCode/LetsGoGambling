@@ -92,7 +92,7 @@ const GameSelection = () => {
 
   useEffect(() => {
     // Define level milestones that trigger new mail
-    const newMailLevels = [0, 0, 0, 2, 15, 24, 25, 25, 34, 41, 42, 50, 52, 52, 60, 66, 70, 72, 80, 83, 95, 96, 100, 101, 107, 118, 129, 130, 140, 149, 160, 165, 190, 191, 210];
+    const newMailLevels = [0, 2, 15, 24, 25, 34, 41, 42, 50, 52, 60, 66, 70, 72, 80, 83, 95, 96, 100, 101, 107, 118, 129, 130, 140, 149, 160, 165, 190, 191, 210];
     const audio = new Audio(EmailSound);
 
     if (newMailLevels.includes(Level)) {
