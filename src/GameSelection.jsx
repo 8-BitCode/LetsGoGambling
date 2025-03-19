@@ -234,17 +234,6 @@ const GameSelection = () => {
   }, [updateLevelInFirestore]);
   // DEBUG TESTING BUTTON!
 
-  const updateLevelInFirestore = async (newLevel) => {
-    try {
-      if (userDocId) {
-        const userDocRef = doc(db, 'Players', userDocId);
-        await updateDoc(userDocRef, { level: newLevel }); // Update Level in Firestore
-      }
-    } catch (err) {
-      console.error('Failed to update level:', err);
-    }
-  };
-
   useEffect(() => {
     const calculateInterest = async () => {
       if (debt > 0 && userDocId) {
