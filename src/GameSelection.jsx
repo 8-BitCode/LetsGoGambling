@@ -7,6 +7,7 @@ import Draggable from 'react-draggable';
 import { auth, db, collection, query, where, getDocs, onSnapshot } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import Creature from './Assets/PDTheCreature.png';
+import Messages from './Messages'; // Import the Messages component
 import Slots from './Slots';
 import Stats from './Stats';
 import Bank from './Bank';
@@ -14,7 +15,7 @@ import Blackjack from './Blackjack';
 import Roulette from './Roulette';
 import { doc, getDoc, setDoc, updateDoc, increment } from 'firebase/firestore';
 import Click from './Assets/SoundEffects/Click.wav';
-import JAZZ from './Assets/SoundEffects/JAZZ.wav'
+import EmailSound from './Assets/SoundEffects/YouGotMail.wav'
 const MoneySlot = ({ amount }) => {
   const digits = amount.toString().split('');
 
@@ -65,6 +66,7 @@ const GameSelection = () => {
   const [isPlaying, setIsPlaying] = useState(true); // Track audio state
   const audioRef = useRef(null); // Ref for the audio element
   const [games, setGames] = useState([
+    { id: 0, name: 'Messages', icon: '📭', route: '/GameSelection' }, // Add Messages to the games list
     { id: 1, name: 'Statistics', icon: '📈', route: '/GameSelection' },
     { id: 2, name: 'Black Jack', icon: '🃏', route: '/GameSelection' },
     { id: 3, name: 'Roulette', icon: '🛞', route: '/GameSelection' },
@@ -85,6 +87,8 @@ const GameSelection = () => {
 
   const [userSuggestions, setUserSuggestions] = useState([]);
   const [selectedUserForStats, setSelectedUserForStats] = useState(null);
+  const [Level, setLevel] = useState(0); // Add Level state
+  const [hasNewMail, setHasNewMail] = useState(false); // Track new mail state
   const navigate = useNavigate();
   const easterEggRef = useRef(null);
   const iconRefs = useRef({});
@@ -98,6 +102,19 @@ const GameSelection = () => {
       console.error('Error playing sound:', error);
     });
   };
+
+  useEffect(() => {
+    // Define level milestones that trigger new mail
+    const newMailLevels = [0, 0, 0, 2, 15, 24, 25, 25, 34, 41, 42, 50, 52, 52, 60, 66, 70, 72, 80, 83, 95, 96, 100, 101, 107, 118, 129, 130, 140, 149, 160, 165, 190, 191, 210];
+    const audio = new Audio(EmailSound);
+
+    if (newMailLevels.includes(Level)) {
+      setHasNewMail(true);
+      audio.play().catch((error) => {
+        console.error('Error playing sound:', error);
+      });
+    }
+  }, [Level]); 
 
   useEffect(() => {
     const updateClock = () => {
@@ -132,15 +149,18 @@ const GameSelection = () => {
   
       if (!querySnapshot.empty) {
         const userDoc = querySnapshot.docs[0];
-        setMoney(userDoc.data().money);
-        setUsername(userDoc.data().username);
+        const userData = userDoc.data();
+        setMoney(userData.money);
+        setUsername(userData.username);
         setUserDocId(userDoc.id);
+        setLevel(userData.level || 1); // Initialize Level from Firestore (default to 1 if not present)
   
         const userDocRef = doc(db, 'Players', userDoc.id);
         onSnapshot(userDocRef, (docSnap) => {
           if (docSnap.exists()) {
             setMoney(docSnap.data().money);
             // Fetch debt if it exists
+            setLevel(docSnap.data().level || 1); // Update Level from Firestore
             if (docSnap.data().debt) {
               setDebt(docSnap.data().debt);
             }
@@ -175,8 +195,82 @@ const GameSelection = () => {
     return () => clearInterval(interval);
   }, [debt, userDocId]);
 
+  const updateLevelInFirestore = async (newLevel) => {
+    try {
+      if (userDocId) {
+        const userDocRef = doc(db, 'Players', userDocId);
+        await updateDoc(userDocRef, { level: newLevel }); // Update Level in Firestore
+      }
+    } catch (err) {
+      console.error('Failed to update level:', err);
+    }
+  };
+
+  useEffect(() => {
+    const calculateInterest = async () => {
+      if (debt > 0 && userDocId) {
+        const interest = debt * 0.01; // 1% interest
+        const newDebt = debt + interest;
+
+        try {
+          const userDocRef = doc(db, 'Players', userDocId);
+          await updateDoc(userDocRef, {
+            debt: newDebt,
+          });
+          setDebt(newDebt);
+        } catch (err) {
+          console.error('Failed to update debt:', err);
+        }
+      }
+    };
+    
+
+        
+
+    const interval = setInterval(calculateInterest, 60000); // 1 minute
+    return () => clearInterval(interval);
+  }, [debt, userDocId]);
+
+  // DEBUG TESTING BUTTON!
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === '9') {
+        setLevel(prevLevel => {
+          const newLevel = prevLevel + 1;
+          updateLevelInFirestore(newLevel);
+          return newLevel;
+        });
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [updateLevelInFirestore]);
+  // DEBUG TESTING BUTTON!
+
+  useEffect(() => {
+    const calculateInterest = async () => {
+      if (debt > 0 && userDocId) {
+        const interest = debt * 0.01; // 1% interest
+        const newDebt = debt + interest;
+
+        try {
+          const userDocRef = doc(db, 'Players', userDocId);
+          await updateDoc(userDocRef, {
+            debt: newDebt,
+          });
+          setDebt(newDebt);
+        } catch (err) {
+          console.error('Failed to update debt:', err);
+        }
+      }
+    };
+
+    const interval = setInterval(calculateInterest, 60000); // 1 minute
+    return () => clearInterval(interval);
+  }, [debt, userDocId]);
+
   const handleGameDoubleClick = (game) => {
-    playClickSound()
+    playClickSound();
     if (game.name === 'Unlocked' && !isEndUnlocked) {
       alert('You must bin all icons first!');
       return;
@@ -189,6 +283,21 @@ const GameSelection = () => {
       } else {
         navigate(game.route);
       }
+    }
+
+    // Reset the Messages icon to closed mailbox when opened
+    if (game.name === 'Messages') {
+      setHasNewMail(false); // Reset new mail state
+      const updatedGames = games.map((g) => {
+        if (g.name === 'Messages') {
+          return {
+            ...g,
+            icon: '📭', // Reset icon to closed mailbox
+          };
+        }
+        return g;
+      });
+      setGames(updatedGames);
     }
   };
 
@@ -244,11 +353,11 @@ const GameSelection = () => {
 
   const openLeavePopup = (gameName) => {
     const gamesWithPopupChance = ['Black Jack', 'Slots', 'Roulette'];
-    playClickSound()
+    playClickSound();
     if (gamesWithPopupChance.includes(gameName)) {
       const randomChance = Math.floor(Math.random() * 8) + 1;
       if (randomChance === 1) {
-        setActivePopups((prev) => [...prev, gameName]);
+        setActivePopups([...activePopups, gameName]);
       } else {
         setActiveGames((prev) => prev.filter((game) => game !== gameName));
       }
@@ -258,7 +367,7 @@ const GameSelection = () => {
   };
 
   const closeLeavePopup = (gameName) => {
-    playClickSound()
+    playClickSound();
     setActivePopups((prev) => prev.filter((game) => game !== gameName));
   };
 
@@ -317,6 +426,44 @@ const GameSelection = () => {
     navigate("/UserEntry")
   }
 
+  // function GoBack() {
+  //   playClickSound();
+  //   navigate('/UserEntry');
+  // }
+
+  // Update the Messages icon based on hasNewMail
+useEffect(() => {
+  const updatedGames = games.map((game) => {
+    if (game.name === 'Messages') {
+      return {
+        ...game,
+        icon: hasNewMail ? '📬' : '📭', // Change icon based on hasNewMail
+      };
+    }
+    return game;
+  });
+  setGames(updatedGames);
+}, [hasNewMail]);
+
+  function GoBack() {
+    playClickSound();
+    navigate('/UserEntry');
+  }
+
+  // Update the Messages icon based on hasNewMail
+useEffect(() => {
+  const updatedGames = games.map((game) => {
+    if (game.name === 'Messages') {
+      return {
+        ...game,
+        icon: hasNewMail ? '📬' : '📭', // Change icon based on hasNewMail
+      };
+    }
+    return game;
+  });
+  setGames(updatedGames);
+}, [hasNewMail]);
+
   return (
     <div className="GS-Container">
       <Helmet>
@@ -353,7 +500,23 @@ const GameSelection = () => {
       </div>
 
       <div className="GS-ActiveGames">
-        {activeGames.includes('Slots') && <Slots closeGame={() => openLeavePopup('Slots')} />}
+      {activeGames.includes('Slots') && (
+    <Slots
+        closeGame={() => openLeavePopup('Slots')}
+        Level={Level}
+        setLevel={setLevel}
+        updateLevelInFirestore={updateLevelInFirestore}
+    />
+)}
+        {activeGames.includes('Messages') && (
+          <Messages
+            closeGame={() => openLeavePopup('Messages')}
+            Level={Level}
+            onNewMail={(hasNewMail) => setHasNewMail(hasNewMail)}
+            username={username} 
+            money={money}       
+          />
+        )}
         {activeGames.includes('Statistics') && (
           <Stats
             closeGame={() => openLeavePopup('Statistics')}
@@ -362,8 +525,9 @@ const GameSelection = () => {
           />
         )}
         {activeGames.includes('Bank') && <Bank closeBank={() => openLeavePopup('Bank')} userId={userDocId} />}
-        {activeGames.includes('Black Jack') && <Blackjack closeGame={() => openLeavePopup('Black Jack')} />}
-        {activeGames.includes('Roulette') && <Roulette closeGame={() => openLeavePopup('Roulette')} />}
+        {activeGames.includes('Black Jack') && <Blackjack closeGame={() => openLeavePopup('Black Jack')} Level={Level} setLevel={setLevel} updateLevelInFirestore={updateLevelInFirestore}/>}
+        {activeGames.includes('Roulette') && <Roulette closeGame={() => openLeavePopup('Roulette')} Level={Level} setLevel={setLevel} updateLevelInFirestore={updateLevelInFirestore}/>}
+        {/* {activeGames.includes('Slots') && <Slots closeGame={() => openLeavePopup('Slots')} Level={Level} setLevel={setLevel} updateLevelInFirestore={updateLevelInFirestore}/>} */}
       </div>
 
       <div className="GS-Taskbar">
@@ -375,7 +539,9 @@ const GameSelection = () => {
             value={taskInput}
             onChange={(e) => setTaskInput(e.target.value)}
           />
-          <button className='GoBack' onClick={GoBack}>Go Back To Login</button>
+          <button className="GoBack" onClick={GoBack}>
+            Go Back To Login
+          </button>
           {userSuggestions.length > 0 && (
             <div className="GS-UserSuggestions">
               {userSuggestions.map((suggestion, index) => (

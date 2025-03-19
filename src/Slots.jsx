@@ -16,7 +16,7 @@ import Alien from './Assets/DitherAlien.png';
 
 const symbols = ["7", "🎵", "🍀", "🔔", "💎", "🐎"];
 
-export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail }) {
+export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestore }) {
     const navigate = useNavigate();
     const auth = getAuth();
     const db = getFirestore();
@@ -54,8 +54,8 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
         "I've never seen anyone like you. Keep going. 😍",
         "You're my lucky charm. Spin again. Please. 🍀",
         "I'll always be here, cheering for you. Forever. 💕",
-        "You're playing with fire... and I'm the one holding the match. 🔥",
-        `I know everything about you, ${userEmail}. You can't escape. 🌑` // Creepy message with email
+        "You’re playing with fire... and I’m the one holding the match. 🔥",
+        `I know everything about you, ${userEmail}. You can't escape. 🌑`
     ];
     
     const losingMessages = [
@@ -77,7 +77,7 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
         "I believe in you. More than anyone. Ever. 💕",
         "You're so close to winning big. Don't give up. 🚀",
         "I'll be here, waiting for you to spin again. Forever. 🌑",
-        `I know who you are, ${userEmail}` // Creepy message with email
+        `I know who you are, ${userEmail}`
     ];
 
     // Fetch user money and email when authenticated
@@ -111,35 +111,34 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
 
         return () => unsubscribe();
     };
-//CODE BELOW ACTIVATES VOICE FOR SLOTTO
-//------------------------------------------------------------------------
-    const [isVoiceEnabled, setIsVoiceEnabled] = useState(true); // Toggle for Slotto's voice
+
+    // Toggle for Slotto's voice
+    const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
+
     const speakText = (text) => {
         if (!isVoiceEnabled) return; // Don't speak if voice is disabled
-    
-        // Remove all emojis and other non-text characters
+
+        // Remove emojis and other non-text characters
         const filteredText = text.replace(
             /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2B50}\u{2B55}]/gu,
             ""
         ).trim();
-    
-        if (!filteredText) return; // Don't speak if the text is empty after removing emojis
-    
+
+        if (!filteredText) return;
+
         const utterance = new SpeechSynthesisUtterance(filteredText);
-    
         // Randomize pitch and rate for a creepy effect
-        utterance.pitch = Math.random() * 100; // Pitch between 0 and 2 (default is 1)
-        utterance.rate = 0.8 + Math.random() * 0.4; // Rate between 0.8 and 1.2 (default is 1)
-        utterance.volume = 1; // Full volume
-    
-        // Optional: Set a specific voice if available
+        utterance.pitch = Math.random() * 100;
+        utterance.rate = 0.8 + Math.random() * 0.4;
+        utterance.volume = 1;
+
+        // Optional: choose a specific voice
         const voices = window.speechSynthesis.getVoices();
-        const slottoVoice = voices.find((voice) => voice.name.includes("Microsoft David")); // Example: Use a specific voice
+        const slottoVoice = voices.find((voice) => voice.name.includes("Microsoft David"));
         if (slottoVoice) {
             utterance.voice = slottoVoice;
         }
-    
-        // Add a slight delay before speaking for added creepiness
+
         setTimeout(() => {
             window.speechSynthesis.speak(utterance);
         }, 500); // 500ms delay
@@ -148,15 +147,21 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
     useEffect(() => {
         speakText(SlottoText);
     }, [SlottoText]);
-//------------------------------------------------------------------------
 
     const spin = () => {
         if (spinning || credits < bet) return;
+
+        setLevel((prevLevel) => {
+            const newLevel = prevLevel + 1;
+            updateLevelInFirestore(newLevel); // Update Level in Firestore
+            return newLevel;
+        });
+
+
         if (bet === 0) {
             alert("Please place a bet to start the game.");
             return;
         }
-
         setSpinning(true);
         const newCredits = credits - bet;
         setCredits(newCredits);
@@ -166,15 +171,15 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
         let interval = setInterval(() => {
             setReels((prevReels) =>
                 prevReels.map((row) =>
-                    row.map(() => symbols[Math.floor(Math.random() * symbols.length)]),
-                ),
+                    row.map(() => symbols[Math.floor(Math.random() * symbols.length)])
+                )
             );
         }, 100);
 
         setTimeout(() => {
             clearInterval(interval);
             const newReels = reels.map((row) =>
-                row.map(() => symbols[Math.floor(Math.random() * symbols.length)]),
+                row.map(() => symbols[Math.floor(Math.random() * symbols.length)])
             );
             setReels(newReels);
             setSpinning(false);
@@ -211,8 +216,8 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
         let BasicWin = false;
         let DiagonalWin = false;
         let ConsolidationWin = false;
-    
-        // Check horizontal wins (basic wins)
+
+        // Check horizontal (basic)
         grid.forEach((row, rowIndex) => {
             if (row.every((symbol) => symbol === row[0])) {
                 winDetected = true;
@@ -220,8 +225,8 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
                 wins.push(...row.map((_, colIndex) => [rowIndex, colIndex]));
             }
         });
-    
-        // Check vertical wins (basic wins)
+
+        // Check vertical (basic)
         for (let col = 0; col < 3; col++) {
             const column = [grid[0][col], grid[1][col], grid[2][col]];
             if (column.every((symbol) => symbol === column[0])) {
@@ -230,8 +235,8 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
                 wins.push(...column.map((_, rowIndex) => [rowIndex, col]));
             }
         }
-    
-        // Check diagonal wins
+
+        // Check diagonal
         if (grid[0][0] === grid[1][1] && grid[1][1] === grid[2][2]) {
             winDetected = true;
             DiagonalWin = true;
@@ -242,21 +247,18 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
             DiagonalWin = true;
             wins.push([0, 2], [1, 1], [2, 0]);
         }
-    
-        // Check consolidation wins
+
+        // Check consolidation
         if (grid[0][0] === grid[1][1] && grid[1][1] === grid[0][2]) {
             winDetected = true;
             ConsolidationWin = true;
             wins.push([0, 0], [1, 1], [0, 2]);
         }
-    
         if (grid[2][0] === grid[1][1] && grid[1][1] === grid[2][2]) {
             winDetected = true;
             ConsolidationWin = true;
             wins.push([2, 0], [1, 1], [2, 2]);
         }
-    
-        // Update credits based on the type of win
         let winAmount = 0;
         let betProportion = 1;
         if (winDetected) {
@@ -274,8 +276,8 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
         const totalCredits = updatedCredits + winAmount;
         setCredits(totalCredits);
         setHighlighted(wins);
-    
-        // Update SlottoText based on win or loss
+
+        // Win or loss message
         if (winDetected) {
             const nextMessage = getNextMessage(
                 winningMessages,
@@ -291,12 +293,9 @@ export default function SlotMachine({ closeGame, Level, setLevel, setHasNewMail 
             );
             setSlottoText(nextMessage);
         }
-    
-        // After updating local state, update the user's credits in Firestore
         updateMoney(totalCredits);
     };
 
-    // Update money in Firestore
     const updateMoney = async (newMoney) => {
         try {
             if (userDocId) {
