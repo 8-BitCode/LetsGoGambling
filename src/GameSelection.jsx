@@ -106,7 +106,7 @@ const GameSelection = () => {
 
   useEffect(() => {
     // Define level milestones that trigger new mail
-    const newMailLevels = [0, 0, 0, 2, 15, 24, 25, 25, 34, 41, 42, 50, 52, 52, 60, 66, 70, 72, 80, 83, 95, 96, 100, 101, 107, 118, 129, 130, 140, 149, 160, 165, 190, 191, 210];
+    const newMailLevels = [1, 2, 15, 24, 25, 34, 41, 42, 50, 52, 60, 66, 70, 72, 80, 83, 95, 96, 100, 101, 107, 118, 129, 130, 140, 149, 160, 165, 190, 191, 210];
     const audio = new Audio(EmailSound);
 
     if (newMailLevels.includes(Level)) {
@@ -286,21 +286,19 @@ const GameSelection = () => {
       }
     }
 
-    // Reset the Messages icon to closed mailbox when opened
-    if (game.name === 'Messages') {
-      setHasNewMail(false); // Reset new mail state
-      const updatedGames = games.map((g) => {
-        if (g.name === 'Messages') {
-          return {
-            ...g,
-            icon: '📭', // Reset icon to closed mailbox
-          };
-        }
-        return g;
-      });
-      setGames(updatedGames);
-    }
   };
+  useEffect(() => {
+    const updatedGames = games.map((game) => {
+      if (game.name === 'Messages') {
+        return {
+          ...game,
+          icon: hasNewMail ? '📬' : '📭', // Change icon based on hasNewMail
+        };
+      }
+      return game;
+    });
+    setGames(updatedGames);
+  }, [hasNewMail]);
 
   const handleDragStop = (event, game) => {
     const iconRef = iconRefs.current[game.id];
@@ -464,6 +462,9 @@ useEffect(() => {
   });
   setGames(updatedGames);
 }, [hasNewMail]);
+const onNewMail = (hasNewMail) => {
+  setHasNewMail(hasNewMail);
+};
 
   return (
     <div className="GS-Container">
@@ -513,9 +514,10 @@ useEffect(() => {
           <Messages
             closeGame={() => openLeavePopup('Messages')}
             Level={Level}
-            onNewMail={(hasNewMail) => setHasNewMail(hasNewMail)}
+            onNewMail={onNewMail}
             username={username} 
-            money={money}       
+            money={money}      
+            hasNewMail={hasNewMail} 
           />
         )}
         {activeGames.includes('Statistics') && (
