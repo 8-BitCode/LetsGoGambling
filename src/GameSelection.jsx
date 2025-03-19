@@ -66,6 +66,7 @@ const GameSelection = () => {
   const [isEndUnlocked, setIsEndUnlocked] = useState(false); // Track if END is unlocked
   const [isPlaying, setIsPlaying] = useState(true); // Track audio state
   const audioRef = useRef(null); // Ref for the audio element
+  const [volume, setVolume] = useState(0.1);
   const [games, setGames] = useState([
     { id: 0, name: 'Messages', icon: '📭', route: '/GameSelection' }, // Add Messages to the games list
     { id: 1, name: 'Statistics', icon: '📈', route: '/GameSelection' },
@@ -563,6 +564,19 @@ const onNewMail = (hasNewMail) => {
   <div className="volume-icon" onClick={toggleAudio}>
     {isPlaying ? '🔊' : '🔇'}
   </div>
+  <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={(e) => {
+              const newVolume = parseFloat(e.target.value);
+              setVolume(newVolume);
+              audioRef.current.volume = newVolume; // Update audio volume
+            }}
+            className="volume-slider"
+          />
 </div>
         <div className="GS-TaskbarUsername">Hello, {username}</div>
       </div>
