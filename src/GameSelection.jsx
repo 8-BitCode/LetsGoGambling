@@ -460,7 +460,8 @@ useEffect(() => {
             Level={Level}
             onNewMail={(hasNewMail) => setHasNewMail(hasNewMail)}
             username={username} 
-            money={money}       
+            money={money}
+            updateLevel={updateLevelInFirestore}      
           />
         )}
         {activeGames.includes('Statistics') && (

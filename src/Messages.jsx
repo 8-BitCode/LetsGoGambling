@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import Draggable from "react-draggable";
 import Click from './Assets/SoundEffects/Click.wav';
 
-const Messages = ({ closeGame, Level, onNewMail, username, money }) => {
+const Messages = ({ closeGame, Level, onNewMail, username, money, updateLevel }) => {
     const [activeButton, setActiveButton] = useState("HomePage");
     const [message, setMessage] = useState("");
     const [unreadMessages, setUnreadMessages] = useState({
@@ -41,9 +41,9 @@ const Messages = ({ closeGame, Level, onNewMail, username, money }) => {
     useEffect(() => {
         // Define message level thresholds for each character
         const messageLevels = {
-            LGGCorp: [0, 2, 25, 42, 52, 70, 95],
+            LGGCorp: [0, 2, 20, 32, 45, 52, 70, 95],
             Mum: [0, 24, 41, 52, 66, 80, 100, 101, 130, 210],
-            "steve-o": [0, 15, 25, 34, 50, 60, 72, 83, 96, 107, 118, 129, 140, 149, 160, 165, 190, 191]
+            "steve-o": [0, 15, 21, 25, 34, 50, 60, 72, 83, 96, 107, 118, 129, 140, 149, 160, 165, 190, 191]
         };
 
         // Get already read messages from localStorage
@@ -87,6 +87,11 @@ const Messages = ({ closeGame, Level, onNewMail, username, money }) => {
             return; // getWelcomeMessage will update via useEffect
         }
 
+        // If clicking LGGCorp and level is exactly 20, update level to 21 automatically.
+        if (buttonName === "LGGCorp" && Level === 20) {
+            updateLevel(21);
+        }
+
         let newMessage = "";
         // Process contact messages as before
         if (buttonName === "LGGCorp") {
@@ -99,48 +104,59 @@ const Messages = ({ closeGame, Level, onNewMail, username, money }) => {
                 "<span style='color:lime;'>ROULETTE: CHOOSE YOUR CHIP SIZE AND BET ON COLOUR, PARITY, OR NUMBER. THE LOWER THE CHANCE OF MATCHING, THE HIGHER THE PAY OUT!</span><br/><br/>" +
                 "<span style='color:blue;'>BLACKJACK: TRY TO GET AS CLOSE TO 21 AS POSSIBLE, IF YOUR OPPONENT IS CLOSER THEN THEY TAKE HOME THE CASH! IF NOT, DOUBLE YOUR EARNING BABY!</span><br/><br/>" +
                 "<span style='color:red;'>SLOTS: PRESS THE SPIN BUTTON AND HOPE FOR THE BEST! JUST DON'T LET SLOTTO'S TAUNTS GET TO YA!</span><br/><br/>" +
-                "SIMPLE AREN'T THEY? BUT YOU SEE, EVEN IN SIMPLICITY LIES ENDLESS POSSIBILITY! <br/> I HOPE YOU MANAGE TO HAVE FUN WITH THEM." + generateSeparator() + newMessage;
+                "SIMPLE, NO? BUT YOU SEE, EVEN IN SIMPLICITY LIES ENDLESS POSSIBILITY! <br/> I HOPE YOU MANAGE TO HAVE FUN WITH THEM." + generateSeparator() + newMessage;
             }
-            if (Level >= 25) {
-                newMessage = "WELL WELL WELL<br/><br/>HOW IS MY FAVOURITE " + username + " DOING?<br/><br/>I SEE YOU HAVE PROCURED QUITE A HEALTHY BIT OF CAPITAL!<br/>A WHOLE " + money + " SHAMBUX?!<br/><br/>HOW PROMISING, YOU KNOW THAT IS JUST HOW MUCH I HAD WHEN I FIRST STARTED RUNNING BUSINESS…<br/>NOT!! I WAS BORN RICH<br/><br/>HAHA, IVORY TOWER MOCKING ASIDE. CIRCUMSTANCES LIKE THIS CAN ALWAYS BE CHANGED. I THINK YOU ARE JUST A FEW BETS AWAY FROM A BIG BREAK! KEEP AT IT FRIEND, FORTURE IS ON ITS WAY!" + generateSeparator() + newMessage;
+            if (Level >= 20) {
+                newMessage = "OOOOOH YOU WANT TO GAMBLE<br/><br/>OOOOOOOOH SUBLIMINAL MESSAGING<br/><br/>OOOOOH YOU DID NOT READ THIS" + generateSeparator() + newMessage;
             }
-            if (Level >= 42) {
+
+            if (Level >= 32) {
+                newMessage = "WELL WELL WELL<br/><br/>I SEE YOU HAVE BEGUN TO PROCURE QUITE A HEALTHY BIT OF CAPITAL!<br/>A WHOLE " + money + " SHAMBUX?!<br/><br/>HOW PROMISING, YOU KNOW THAT IS JUST HOW MUCH I HAD WHEN I FIRST STARTED RUNNING BUSINESS…<br/>NOT!! I WAS BORN RICH<br/><br/> AHEM<br/> STILL, YOUR PACE IS QUITE EXTRAORDINARY... KEEP AT IT." + generateSeparator() + newMessage;
+            }
+
+            if (Level >= 45) {
+                newMessage = "W-W-W-WO HAHA WOW USER!<br/><br/>YOU JUST KEEP GOING!<br/><br/>GAMBLING LIKE THIS.... . . . . .. . IT HAS NOT BEEN SEEN SINCE..?<br/>!<br/>NOT SINCE THE LEGENDARY WAGER WAR OF ’89 !!1!!!! !<br/><br/>YOU MIGHT JUST HAVE WHAT IT TAKES TO..." + generateSeparator() + newMessage;
+            }
+
+            if (Level >= 52) {
+                newMessage = "YOUR DEDICATION<br/>YOUR AMBITION<br/>YOUR PASSION FOR THE CRAFT!!<br/><br/>DEAR USER, YOU REMIND ME OF A YOUNGER ME!<br/><br/>THAT IS WHY I AM SELECTING YOU, AND ONLY YOU DEFINITELY NOT EVERY OTHER USER AS WELL AS THE SOLE PROPRIETOR OF THIS MISSION!<br/><br/>YOU HAVE SEEN THE LOCKED APP INCLUDED WITH YOUR “Let’s Go Gambling! Starter Collection 1995” RIGHT?! YOU SEE... IT HAS NEVER BEEN OPENED BEFORE. IT NEEDS A SIMPLY UNHEARD OF LEVEL OF GAMBLING ABILITY. I BELIEVE YOU HOLD THAT POWER.<br/><br/>UNLOCK THE LOCK! ONLY THEN WILL YOU UNDERSTAND THE TRUE MEANING OF GAMBLING!" + generateSeparator() + newMessage;
+            }
+
+            if (Level >= 65) {
                 newMessage = "SAY GOOD BUDDY…<br/><br/>YOU’RE A LOYAL FELLOW AREN’T YOU… <br/><br/>YOU TRUST ME… DON’T YOU?" + generateSeparator() + newMessage;
             }
-            if (Level >= 52) {
-                newMessage = "THEN JOIN OUR EXCLUSIVE LGG LOYALTY REWARDS PROGRAM!<br/><br/>GAMBLE FOR 1000 DAYS STRAIGHT, AND WE’LL PERSONALLY INTRODUCE YOU TO A THERAPIST!<br/><br/>…<br/>WE’LL MAIL YOU THE DETAILS." + generateSeparator() + newMessage;
-            }
             if (Level >= 70) {
-                newMessage = "OOOOOH KEEP GAMBLING<br/><br/>OOOOOOOOH SUBLIMINAL MESSAGING<br/><br/>OOOOOH YOU DID NOT READ THIS MESSAGE" + generateSeparator() + newMessage;
-            }
-            if (Level >= 95) {
-                newMessage = "W-W-W-WO HAHA WOW!<br/><br/>I SIMPLY MUST CONGRATULATE YOU ! !<br/><br/>GAMBLING LIKE THAT.... . . . . .. . IT HAS NOT BEEN SEEN SINCE..?<br/>!<br/>NOT SINCE THE LEGENDARY WAGER WAR OF ’89 !!1!!!! !<br/><br/>YOU MIGHT JUST BE ABLE TO REACH...<br/>(should… should I tell them? No, no you cannot! The user isn’t ready yet. They’ve only just started their gambling jour- QUIET INNER VOICES!! I’M TRYING TO THINK!!!) <br/><br/>EH, NO POINT IN KEEPING IT SECRET, YOU HAVE SEEN THE LOCKED APP INCLUDED WITH YOUR “Let’s Go Gambling! Starter Collection 95” RIGHT?!<br/>YOU SEE... IT HAS NEVER BEEN OPENED BEFORE, BUT I HAVE A FEELING ABOUT YOU I’VE NEVER FELT ABOUT ANY OTHER [USER_NAME] !<br/><br/>PROCURE THE CAPITAL DEAR CONFIDANTE, UNLOCK THE LOCK, AND REPORT BACK TO ME!" + generateSeparator() + newMessage;
+                newMessage = "THEN JOIN OUR EXCLUSIVE LGG LOYALTY REWARDS PROGRAM!<br/><br/>GAMBLE FOR 1000 DAYS STRAIGHT, AND WE’LL PERSONALLY INTRODUCE YOU TO A THERAPIST!<br/><br/>…<br/>WE’LL MAIL YOU THE DETAILS." + generateSeparator() + newMessage;
             }
         } else if (buttonName === "Mum") {
             if (Level >= 0) {
                 newMessage = "Hey [REAL_NAME], I hope you are feeling as lovely as I believe you to be :). <br/>How has the job search been going? Any offers just yet? Please keep me updated I hate when you don’t tell me things!! <br/><br/>...<br/>Your father's just told me the position as an associate in his company is still open, but please, for my sake, don't take it! Spend more time with him and you might become just as insufferable, ahahaha! <br/><br/>Please visit soon, Love Mum <3." + generateSeparator() + newMessage;
             }
             if (Level >= 24) {
-                newMessage = "I noticed you have not answered my phone calls >:( <br/>Were this under normal circumstances, I would be very angry with you. However, ahaha I have received an anonymous tip that suddenly changes everything!<br/>Oh my sweet little child, you should have told me!! You’re becoming just like your father was when he was your age!<br/><br/>I remember early on when he and I first got together, I was a bit apprehensive about his more… volatile line of income. But it was hard to worry when he would come home each night with two times more than the last!<br/><br/>Now he’s happy to give you both advice, but of course, in our time we didn’t have any of this fancy internet piddle and pob. So, I wouldn’t be surprised if you two already know more than him! Good luck you two!" + generateSeparator() + newMessage;
+                newMessage = "<b> I noticed you have not answered my phone calls >:( </b> <br/><br/>Were this under normal circumstances, I would be very angry with you. However, ahaha I have received an anonymous tip that suddenly changes everything!<br/><br/>Oh my sweet little child, you should have told me!! You’re becoming just like your father was when he was your age!<br/><br/>When he and I first got together, I was a bit apprehensive about his more… volatile line of income. But it was hard to argue when he would come home each night with two times more than the last!<br/><br/>I'm so proud of you <3  Good luck ;)" + generateSeparator() + newMessage;
             }
-            if (Level >= 41) {
-                newMessage = "Oh sweetie!! You must come quick!<br/><br/>Your father is about to start his solo reenactment of “Les Misérables”, he’s even decided to write a custom extended edition of your favourite part!<br/>Oh – and i’ve baked you some delicious chelsea buns. Also... your favourite." + generateSeparator() + newMessage;
-            }
-            if (Level >= 52) {
-                newMessage = "I miss you so much, please visit soon." + generateSeparator() + newMessage;
+            if (Level >= 50) {
+                newMessage = "Hello my sweet little crab cake! Do you remember my old friend Layla? She bought a cute drawing from you once, and then you and Steven spent months hounding her with your homemade arts and crafts, trying to get her to buy more. Ahaha, she ended up spending so much at our house that she had to stop coming over!<br/><br/> Anyway, her son, Zain, fancies himself a bit of an internet investor. Keeps going on about some kind of 'dot-com balloon' and how it's never going to burst. Very confident. <br/><br/> Naturally, he was quite intrigued when I mentioned your <span style='color:blue;'><b>internet business!</b></span> <br/><br/> So, I have invited them both over for tea and biscuits tonight. If you and your business partner happen to be free, this could be a golden opportunity to continue your long-standing tradition of selling things to this poor family." + generateSeparator() + newMessage;
             }
             if (Level >= 66) {
-                newMessage = "I just got off the phone with Steven. I asked him for the name of your internet website so I could show some support from a distance!<br/><br/>He stammered, started to get quiet, I asked him if he was alright and he said he just needed to take a second to remember. After which I began to hear the distinct sound of keyboard pitter patter.<br/><br/>After a few empty seconds, he simply responded with “Littlewoods”.<br/><br/>Littlewoods retailer?! You two expect me to believe you’ve been chosen by John Moores himself to continue his business from beyond the grave?!<br/><br/>Oh dear, I must leave the scolding for later. I need to go restrain your father, he’s frothing like a mad dog because I mentioned John Moores again." + generateSeparator() + newMessage;
+                newMessage = "I baked you some delicious chelsea buns, your favourite! But if you want some, you are going to have to visit." + generateSeparator() + newMessage; 
             }
             if (Level >= 80) {
+                newMessage = "Oh sweetie!! You must come quick!<br/><br/>Your father is about to start his solo reenactment of 'The Card'!<br/><br/> He’s been practicing all week. There are props. There are costume changes. Worst of all, I think he expects audience participation. He handed me a script and said, ‘You’ll know when to come in.’ I will not. <br/><br/>Please come save me! If you let me suffer through this alone, I will never forgive you!!" + generateSeparator() + newMessage;
+            } 
+            if (Level >= 90) {
+                newMessage = "I miss you so much, please visit soon." + generateSeparator() + newMessage;
+            }
+            if (Level >= 110) {
+                newMessage = "I just got off the phone with Steven. I asked him for the name of your internet website so I could show some support from a distance!<br/><br/>He stammered, started to get quiet, I asked him if he was alright and he said he just needed to take a second to remember. After which I began to hear the distinct sound of keyboard pitter patter.<br/><br/>After a few empty seconds, he simply responded with “Littlewoods”.<br/><br/>Littlewoods retailer?! You two expect me to believe you’ve been chosen by John Moores himself to continue his business from beyond the grave?!<br/><br/>Oh dear, I must leave the scolding for later. I need to go restrain your father, he’s frothing like a mad dog because I mentioned John Moores again." + generateSeparator() + newMessage;
+            }
+            if (Level >= 120) {
                 newMessage = "I have been standing outside your front door knocking for the past hour. <br/><br/>I could hear your ringtone playing from the inside as I phoned you. And what sounded like the audio of a computer game. <br/><br/>I still do not know what you two have gotten yourselves into, but please do not leave me in the dark like this. If it’s something you feel like you need to do, then I will try to support you. But please, this secrtiveness is killing me. <br/><br/>By the way, I should apologise for the scratches on the door. I brought your father along with me." + generateSeparator() + newMessage;
             }
-            if (Level >= 100) {
+            if (Level >= 140) {
                 newMessage = "I cannot sleep.<br/><br/>Every time I close my eyes, all I can see is you. And then I get excited thinking you’ve come home, but you’re never here." + generateSeparator() + newMessage;
             }
-            if (Level >= 101) {
-                newMessage = "Also because your father has been having those theatrical dreams again. He keeps breaking into song while we’re in bed. And then for some reason John Moores keeps showing up at the end and it gets very violent, very fast.<br/>It is entertaining, but I am exhausted." + generateSeparator() + newMessage;
-            }
+
             if (Level >= 130) {
                 newMessage = "I’ve contacted everyone I can. The university, who tell me you haven’t been attending class. Your landlord, who tells me you have at least managed to pay rent on time. And most interestingly... your bank.<br/><br/>The bank tells me that your finances over the last few weeks have been extremely erratic. Rapid rise and falls, transfers and withdrawals, loans and paybacks even within the same day. They’ve had to call you dozens of times just to be sure you have not been defrauded. But funnily enough, you always manage to answer.<br/><br/>So then, do you just enjoy torturing your poor mother?<br/><br/>Regardless, this all paints me a clear enough picture. You are safe. Ensuring that has always been my priority.<br/><br/>Whatever financial nonsense you have gotten yourself involved in, I do not want to hear of any part of it. But the moment you come to your senses and realise that there are more important things.<br/>You can always come home. We won’t need to talk about it. And your chelsea buns will still be in the freezer, ready to be dethawed.<br/>Until then, goodbye. Please take care of yourself." + generateSeparator() + newMessage;
             }
@@ -154,8 +170,13 @@ const Messages = ({ closeGame, Level, onNewMail, username, money }) => {
             if (Level >= 15) {
                 newMessage = "dude-ski.<br/>I gotta give a cyber round of applause to the developers of these three games.<br/><br/>blackjack. roulette. slots.<br/>they’re so enjoyable, i don’t even feel the time passing me by!<br/>you know it feels like it’s only been a few minutes since we started, but it’s actually been over 6 hours<br/><br/>guess that’s just what happens when you’re having fun! " + generateSeparator() + newMessage;
             }
+
+            if (Level >= 21) {
+                newMessage = "anyone else just get the sudden urge to gamble" + generateSeparator() + newMessage;
+            }
+
             if (Level >= 25) {
-                newMessage = "so i may have just told your mum we’re becoming t-shirt salesmen" + generateSeparator() + newMessage;
+                newMessage = "so i may have just told your mum we’re opening up an internet business" + generateSeparator() + newMessage;
             }
             if (Level >= 34) {
                 newMessage = "hola mi querido amig-o!<br/><br/>welcome to THE DUDE REPORT!!!<br/>IF YOU’LL PLEEEEASE LOOK AT THESE GRAPHS:<br/>[DESCRIPTIVE TEXT: A DRAWING OF A HASTILY DRAWN LINE QUICKLY TICKING UP, A VERTICAL LINE SEPERATES CURRENT EARNINGS FROM EXPECTED FUTURE EARNINGS]<br/><br/>LOOK AT THIS!! THE EARNINGS JUST KEEP GOING UP AND UP, I’VE NEVER HAD THIS MUCH MONEY IN MY LIFE! AND TO THINK, WE ALMOST SETTLED ON BECOMING CLEANERS LIKE A COUPLE OF LOSERS!!<br/><br/>AWESOMENESS DOESN’T END THERE, USING THOSE FINANCIAL SKILLS YOUR DAD TAUGHT ME, I’VE ESTIMATED THAT I SHOULD BE A TRILLIONAIRE IN JUST 3 SHORT WEEKS!!!!<br/><br/>oh wow... it’s just sinking in<br/>if this all works out... i might finally be able to afford a sandwich from the pret near university of manchester<br/><br/>ah who am I kidding, no one can afford that" + generateSeparator() + newMessage;
@@ -169,6 +190,11 @@ const Messages = ({ closeGame, Level, onNewMail, username, money }) => {
             if (Level >= 72) {
                 newMessage = "things have been kinda tense between me and hailey the past couple days<br/><br/>i think she’s starting to realise i was lying, it’s really worrying me<br/><br/>think i’m gonna try to buy something to butter her up... and then tell her the truth. if she sees how much money i’m making, she won’t be mad." + generateSeparator() + newMessage;
             }
+
+            if (Level >= 80) {
+                newMessage = "" + generateSeparator() + newMessage;
+            }
+
             if (Level >= 83) {
                 newMessage = "i’ve been at the skate park all day today, trying to think of what to get hailey, but all that’s on my mind is how pissed i am at slotto for beating me last spin<br/><br/>can’t even pop any wheelies dude<br/>slotto’s ruined me<br/><br/>think i’m just gonna go home now, i won’t feel better until i get that money back and wipe that smug look off his face" + generateSeparator() + newMessage;
             }
@@ -271,7 +297,7 @@ const Messages = ({ closeGame, Level, onNewMail, username, money }) => {
                                     className={`${activeButton === "steve-o" ? "active" : ""} ${unreadMessages["steve-o"] ? "unread" : ""}`}
                                     onClick={() => handleButtonClick("steve-o")}
                                 >
-                                    steve-o
+                                        steve-o
                                 </button>
                             </div>
                             <div
