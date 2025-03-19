@@ -4,18 +4,17 @@ import { Helmet } from "react-helmet";
 import Draggable from "react-draggable";
 import Click from './Assets/SoundEffects/Click.wav';
 
-const Messages = ({ closeGame, Level, onNewMail, username, money }) => {
-    const [activeButton, setActiveButton] = useState("HomePage");
-    const [message, setMessage] = useState("");
-    const [unreadMessages, setUnreadMessages] = useState({
-        LGGCorp: false,
-        Mum: false,
-        "steve-o": false
-    });
-
+const Messages = ({ closeGame, Level, onNewMail, username, money,hasNewMail }) => {
+    const [activeButton, setActiveButton] = useState(null);
+    const [message, setMessage] = useState(hasNewMail ? "You got mail" : "No new mail");
+    const [newMailFor, setNewMailFor] = useState([]); // Tracks which people have new mail
     const randomX = Math.floor(Math.random() * (window.innerWidth - 600));
     const randomY = Math.floor(Math.random() * (window.innerHeight - 583 - 40));
-
+    const messageLevels = {
+        LGGCorp: [1, 2, 25, 42, 52, 70, 95],
+        Mum: [1, 24, 41, 52, 66, 80, 100, 101, 130, 210],
+        "steve-o": [1, 15, 25, 34, 50, 60, 72, 83, 96, 107, 118, 129, 140, 149, 160, 165, 190, 191]
+    };
     // Function to generate a separator that matches the width of the box
     const generateSeparator = () => {
         const separatorLength = 51; // Approximate number of characters that fit in one line
@@ -28,69 +27,29 @@ const Messages = ({ closeGame, Level, onNewMail, username, money }) => {
             console.error('Error playing sound:', error);
         });
     };
-
     useEffect(() => {
-        const newMailTimer = setTimeout(() => {
-            onNewMail(); // Notify parent component about new mail
-        }, 3000); // Simulate new mail after 3 seconds
-
-        return () => clearTimeout(newMailTimer);
-    }, [onNewMail]);
-
-    // Only set messages as unread if they haven't been read before
-    useEffect(() => {
-        // Define message level thresholds for each character
-        const messageLevels = {
-            LGGCorp: [0, 2, 25, 42, 52, 70, 95],
-            Mum: [0, 24, 41, 52, 66, 80, 100, 101, 130, 210],
-            "steve-o": [0, 15, 25, 34, 50, 60, 72, 83, 96, 107, 118, 129, 140, 149, 160, 165, 190, 191]
-        };
-
-        // Get already read messages from localStorage
-        const readMessages = JSON.parse(localStorage.getItem('readMessages') || '{}');
-
-        // Check for each character if they should have a new message
-        Object.entries(messageLevels).forEach(([character, levels]) => {
-            if (levels.includes(Level) && !readMessages[`${character}_${Level}`]) {
-                setUnreadMessages(prev => ({
-                    ...prev,
-                    [character]: true
-                }));
+        if (hasNewMail) {
+            const peopleWithNewMail = [];
+            for (const [person, levels] of Object.entries(messageLevels)) {
+                if (levels.includes(Level)) {
+                    peopleWithNewMail.push(person); // Add person to the array
+                }
             }
-        });
-    }, [Level]);
-
-    // Function to check if there are any unread messages
-    const hasUnreadMessages = () => {
-        return Object.values(unreadMessages).some(value => value);
-    };
-
-    // Compute the welcome text dynamically
-    const getWelcomeMessage = () => {
-        return hasUnreadMessages()
-            ? "<br/><br/><div style='text-align: center; font-size: 24px;'>You've Got Mail!<br/><br/>Click on a sender to read their message.</div>"
-            : "<br/><br/><div style='text-align: center; font-size: 24px;'>No New Messages!</div>";
-    };
-
-    // When activeButton or unreadMessages change and HomePage is active, update message
-    useEffect(() => {
-        if (activeButton === "HomePage") {
-            setMessage(getWelcomeMessage());
+            setNewMailFor(peopleWithNewMail); // Set the array of people with new mail
         }
-    }, [activeButton, unreadMessages]);
-
-    const handleButtonClick = (buttonName) => {
-        playClickSound();
-        if (buttonName === activeButton) return;
-        if (buttonName === "HomePage") {
-            setActiveButton("HomePage");
-            return; // getWelcomeMessage will update via useEffect
-        }
-
+    }, [hasNewMail, Level]);
+    const generateMessageForContact = (buttonName) => {
         let newMessage = "";
+        // Add message generation logic here (as in your original code)
+        return newMessage;
+    };
+    const handleButtonClick = (buttonName) => {
+        if (buttonName === activeButton) return;
+        playClickSound();
+        let newMessage = generateMessageForContact(buttonName);
         // Process contact messages as before
         if (buttonName === "LGGCorp") {
-            if (Level >= 0) {
+            if (Level >= 1) {
                 newMessage = "W-W-W-W WEEEEELCOME! NEW USER TO LETS GO GAMBLING ! !<br /><br />I... YOUR FRIEND. GAMBLE_CEO WILL ACCOMPANY YOU ON YOUR JOURNEY.<br /><br />DO NOT LISTEN TO THE DISSENTERS MY DEAR FRIEND.<br />GAMBLING IS A FORCE FOR GOOD!<br /><br />A SIMPLE ENJOYABLE PASTIME, AS THEY SAY ADDICTION IS ALWAYS OVERBLOWN! <br/><br/> WELL CHUM, WHENEVER YOU'RE READY... JUST OPEN UP THE APPS AND START PLAYING ! !" + generateSeparator() + newMessage;
             }
 
@@ -117,7 +76,7 @@ const Messages = ({ closeGame, Level, onNewMail, username, money }) => {
                 newMessage = "W-W-W-WO HAHA WOW!<br/><br/>I SIMPLY MUST CONGRATULATE YOU ! !<br/><br/>GAMBLING LIKE THAT.... . . . . .. . IT HAS NOT BEEN SEEN SINCE..?<br/>!<br/>NOT SINCE THE LEGENDARY WAGER WAR OF ’89 !!1!!!! !<br/><br/>YOU MIGHT JUST BE ABLE TO REACH...<br/>(should… should I tell them? No, no you cannot! The user isn’t ready yet. They’ve only just started their gambling jour- QUIET INNER VOICES!! I’M TRYING TO THINK!!!) <br/><br/>EH, NO POINT IN KEEPING IT SECRET, YOU HAVE SEEN THE LOCKED APP INCLUDED WITH YOUR “Let’s Go Gambling! Starter Collection 95” RIGHT?!<br/>YOU SEE... IT HAS NEVER BEEN OPENED BEFORE, BUT I HAVE A FEELING ABOUT YOU I’VE NEVER FELT ABOUT ANY OTHER [USER_NAME] !<br/><br/>PROCURE THE CAPITAL DEAR CONFIDANTE, UNLOCK THE LOCK, AND REPORT BACK TO ME!" + generateSeparator() + newMessage;
             }
         } else if (buttonName === "Mum") {
-            if (Level >= 0) {
+            if (Level >= 1) {
                 newMessage = "Hey [REAL_NAME], I hope you are feeling as lovely as I believe you to be :). <br/>How has the job search been going? Any offers just yet? Please keep me updated I hate when you don’t tell me things!! <br/><br/>...<br/>Your father's just told me the position as an associate in his company is still open, but please, for my sake, don't take it! Spend more time with him and you might become just as insufferable, ahahaha! <br/><br/>Please visit soon, Love Mum <3." + generateSeparator() + newMessage;
             }
             if (Level >= 24) {
@@ -148,8 +107,8 @@ const Messages = ({ closeGame, Level, onNewMail, username, money }) => {
                 newMessage = "Hello. <br/><br/> I just wanted to update you on what has been going on recently. <br/><br/>Steven has been staying at our home the last several days. He has had quite a difficult month.<br/>I caught the poor boy in the library, crying with two suitcases behind him, clicking on a digital slot machine every few seconds. It turns out, he’d been evicted, and had been sleeping outside in the cold for days! <br/><br/>I brought him back home, wrapped him up in a nice warm blanket, and gave him some tea and chelsea buns. Within minutes, he started telling me everything, from the beginning. What the both of you have been up to.<br/><br/>How can you be so stupid?! You’ve thrown your entire life away over GAMBLING? NO WONDER YOU DID NOT WANT TO TELL ME, THAT IS PATHETIC!!!<br/><br/>Haven’t you always heard! THE HOUSE. ALWAYS. WINS!! You are being manipulated, and it seems to me like you just do not care. <br/>Surely you know the dangers of gambling by now?! It can cause low self-esteem, stress, anxiety and depression. Not only that, but it can cause the brain to release large amounts of dopamine, which is effectively a signal to your brain saying “ignore the consequences, this is pleasurable I am going to do it again!”. The exact same kind of reasoning that gets people addicted to DRUGS!! OR DO NOT TELL ME YOU HAVE STARTED DOING THOSE THINGS TOO!<br/>How much longer do you think it is going to be until you have “had enough”. 10 thousand [CURRENCY_NAME]s, 100 thousand [CURRENCY_NAME]s, what about a million billion [CURRENCY_NAME]s?<br/>The answer is never isn’t it. Because human greed is insatiable. And when it comes to games of change, failure is mathematically inevitable.<br/>You do not just need take my word for it, look at your poor friend Steven. Do you also want to end up in the cold, spinning a slot machine until your eyes turn red? Letting random numbers control your quality of life? Or do you want to be known for the multitudes of skills I know you possess. I know you have always doubted it, but you are so much more than what you hold yourself back to be.<br/><br/>...<br/>Honestly, I was hoping it was money laundering or something at least cool. This is just stupid. I can’t believe my child is stupid.<br/><br/>Anyway, Steven has been getting better. He keeps talking about being responsible, and has helping out with the cleaning. He wants to find proper stable employment and stop relying on short term gains, like gambling and being paid to pop wheelies in the skate park." + generateSeparator() + newMessage;
             }
         } else if (buttonName === "steve-o") {
-            if (Level >= 0) {
-                newMessage = "yooooo dude!!! <br/> iiii just won 20 whole [CURRENCY_NAME_PENDING] <br/>I told you that job nonsense was a waste of time, we're gonna be rich!<br/>" + generateSeparator() + newMessage;
+            if (Level >= 1) {
+                newMessage = "yooooo dude!!! <br/> iiii just won 20 whole SHAMBUX <br/>I told you that job nonsense was a waste of time, we're gonna be rich!<br/>" + generateSeparator() + newMessage;
             }
             if (Level >= 15) {
                 newMessage = "dude-ski.<br/>I gotta give a cyber round of applause to the developers of these three games.<br/><br/>blackjack. roulette. slots.<br/>they’re so enjoyable, i don’t even feel the time passing me by!<br/>you know it feels like it’s only been a few minutes since we started, but it’s actually been over 6 hours<br/><br/>guess that’s just what happens when you’re having fun! " + generateSeparator() + newMessage;
@@ -203,36 +162,22 @@ const Messages = ({ closeGame, Level, onNewMail, username, money }) => {
                 newMessage = "actually, i don’t even know why i’m still messaging you. you’ve been ignoring me the past month.<br/><br/>well, I guess it’s just...<br/>every time I’ve check, you’ve always been online on LGG: switching between slots, blackjack, roulette, taking strategic loans, paying off interest. you’re the most dedicated gambler I’ve ever seen (though whether that’s a good thing is up to you).<br/>it’s why... I find it curious that the only time I’ve ever seen you go offline, is the moment right after I send you a message." + generateSeparator() + newMessage;
             }
         }
-
-        // Mark message as read when clicking on a contact
-        if (buttonName !== "HomePage") {
-            setUnreadMessages(prev => {
-                const updated = {
-                    ...prev,
-                    [buttonName]: false
-                };
-
-                // Save to localStorage that this message has been read
-                const readMessages = JSON.parse(localStorage.getItem('readMessages') || '{}');
-                readMessages[`${buttonName}_${Level}`] = true;
-                localStorage.setItem('readMessages', JSON.stringify(readMessages));
-
-                // If all messages are read, notify parent
-                if (!Object.values(updated).some(val => val)) {
-                    onNewMail(false);
-                }
-                return updated;
-            });
-        }
-
+        // Update the message display
         setMessage(newMessage);
         setActiveButton(buttonName);
-    };
 
-    // Set initial message on mount
-    useEffect(() => {
-        handleButtonClick("HomePage");
-    }, []);
+        // Mark the contact's messages as read
+        setNewMailFor((prev) => {
+            const updatedNewMailFor = prev.filter((person) => person !== buttonName);
+
+            // Notify parent only if all messages are read
+            if (updatedNewMailFor.length === 0) {
+                onNewMail(false); // Notify parent that all messages are read
+            }
+
+            return updatedNewMailFor;
+        });
+    };
 
     return (
         <>
@@ -252,27 +197,27 @@ const Messages = ({ closeGame, Level, onNewMail, username, money }) => {
                         </div>
                         <div style={{ display: "flex" }}>
                             <div className="Messages-sidebar" style={{ width: "100px", backgroundColor: "#A9A9A9", padding: "1px" }}>
-                                <button
-                                    id="messages_seperation"
-                                    className={`${activeButton === "LGGCorp" ? "active" : ""} ${unreadMessages.LGGCorp ? "unread" : ""}`}
-                                    onClick={() => handleButtonClick("LGGCorp")}
-                                >
-                                    LGGCorp
-                                </button>
-                                <button
-                                    id="messages_seperation"
-                                    className={`${activeButton === "Mum" ? "active" : ""} ${unreadMessages.Mum ? "unread" : ""}`}
-                                    onClick={() => handleButtonClick("Mum")}
-                                >
-                                    Mum
-                                </button>
-                                <button
-                                    id="messages_seperation"
-                                    className={`${activeButton === "steve-o" ? "active" : ""} ${unreadMessages["steve-o"] ? "unread" : ""}`}
-                                    onClick={() => handleButtonClick("steve-o")}
-                                >
-                                    steve-o
-                                </button>
+                            <button
+    id="messages_seperation"
+    className={`${activeButton === "LGGCorp" ? "active" : ""} ${newMailFor.includes("LGGCorp") ? "new-mail" : ""}`}
+    onClick={() => handleButtonClick("LGGCorp")}
+>
+    LGGCorp
+</button>
+<button
+    id="messages_seperation"
+    className={`${activeButton === "Mum" ? "active" : ""} ${newMailFor.includes("Mum") ? "new-mail" : ""}`}
+    onClick={() => handleButtonClick("Mum")}
+>
+    Mum
+</button>
+<button
+    id="messages_seperation"
+    className={`${activeButton === "steve-o" ? "active" : ""} ${newMailFor.includes("steve-o") ? "new-mail" : ""}`}
+    onClick={() => handleButtonClick("steve-o")}
+>
+    steve-o
+</button>
                             </div>
                             <div
                                 className="Messages-content"
