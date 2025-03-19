@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './CssFiles/TermsOfService.css';
 import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
-
+import DitherEffect from './Effect';
 const TermsOfServicePage = () => {
     const [isFading, setIsFading] = useState(false);
     const navigate = useNavigate();
@@ -66,6 +66,7 @@ const TermsOfServicePage = () => {
 
     return (
         <>
+        <DitherEffect>
             <Helmet>
                 <title>Terms Of Service</title>
             </Helmet>
@@ -93,6 +94,7 @@ const TermsOfServicePage = () => {
                     </div>
                 )}
             </div>
+            </DitherEffect>
         </>
     );
 };

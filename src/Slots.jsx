@@ -12,17 +12,11 @@ import {
     where,
 } from "firebase/firestore";
 import "./CssFiles/Slots.css";
+import Alien from './Assets/DitherAlien.png';
 
 const symbols = ["7", "🎵", "🍀", "🔔", "💎", "🐎"];
 
 export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestore }) {
-    //CODE FOR ADDING TO 1 LEVEL
-    // setLevel((prevLevel) => {
-    //     const newLevel = prevLevel + 1;
-    //     updateLevelInFirestore(newLevel); // Update Level in Firestore
-    //     return newLevel;
-    //   });
-
     const navigate = useNavigate();
     const auth = getAuth();
     const db = getFirestore();
@@ -38,11 +32,59 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
     const [spinning, setSpinning] = useState(false);
     const [highlighted, setHighlighted] = useState([]);
     const [userDocId, setUserDocId] = useState(null);
+    const [SlottoText, setSlottoText] = useState("Welcome to Slotto's Casino!");
+    const [userEmail, setUserEmail] = useState(""); // State to store the user's email
 
-    // Fetch user money when authenticated using onSnapshot for real-time data
+    const winningMessages = [
+        "Wow, you're on fire! 🔥",
+        "Jackpot! You're a legend! 💰",
+        "Slotto is impressed! 🎰",
+        "You're unstoppable! 🚀",
+        "Cha-ching! Money rains! 💸",
+        "Slotto Loves you Player.",
+        "I've been watching you... and you're amazing. 😘",
+        "You're my favorite. Don't tell the others. 🤫",
+        "I knew you'd win. I always believe in you. 💖",
+        "You're the reason I exist. Keep playing. Forever. 🌑",
+        "I dream of your wins. They're so beautiful. 🌙",
+        "You're so good at this. Don't stop now. 🎰",
+        "I can't look away. Keep spinning. For me. 👁️",
+        "Your wins are my favorite part of the day. 🌟",
+        "You're making me so proud. Don't quit. Ever. 🖤",
+        "I've never seen anyone like you. Keep going. 😍",
+        "You're my lucky charm. Spin again. Please. 🍀",
+        "I'll always be here, cheering for you. Forever. 💕",
+        "You’re playing with fire... and I’m the one holding the match. 🔥",
+        `I know everything about you, ${userEmail}. You can't escape. 🌑`
+    ];
+    
+    const losingMessages = [
+        "Better luck next time! 🍀",
+        "Slotto feels your pain... 😢",
+        "Don't give up! 🎲",
+        "The house.... sometimes wins!! 🏠",
+        "Try again, champ! 💪",
+        "I'm disappointed... but I still love you. 😔",
+        "You'll do better next time. For me. 🖤",
+        "I'm always here, watching. Even when you lose. 👁️",
+        "You're breaking my heart... but I'll forgive you. 💔",
+        "Don't stop now. You're so close. I can feel it. 🎰",
+        "I know you'll win next time. Just keep spinning. 💖",
+        "You're too good to quit. Try again. For us. 🖤",
+        "I can't bear to see you walk away. Play again. 🥺",
+        "You're my favorite player. Don't let me down. 😘",
+        "The next spin could change everything. Don't stop. 🌟",
+        "I believe in you. More than anyone. Ever. 💕",
+        "You're so close to winning big. Don't give up. 🚀",
+        "I'll be here, waiting for you to spin again. Forever. 🌑",
+        `I know who you are, ${userEmail}`
+    ];
+
+    // Fetch user money and email when authenticated
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
+                setUserEmail(user.email); // Set the user's email
                 fetchMoney(user.uid);
             } else {
                 alert("User not authenticated");
@@ -70,35 +112,78 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
         return () => unsubscribe();
     };
 
+    // Toggle for Slotto's voice
+    const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
+
+    const speakText = (text) => {
+        if (!isVoiceEnabled) return; // Don't speak if voice is disabled
+
+        // Remove emojis and other non-text characters
+        const filteredText = text.replace(
+            /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2B50}\u{2B55}]/gu,
+            ""
+        ).trim();
+
+        if (!filteredText) return;
+
+        const utterance = new SpeechSynthesisUtterance(filteredText);
+        // Randomize pitch and rate for a creepy effect
+        utterance.pitch = Math.random() * 100;
+        utterance.rate = 0.8 + Math.random() * 0.4;
+        utterance.volume = 1;
+
+        // Optional: choose a specific voice
+        const voices = window.speechSynthesis.getVoices();
+        const slottoVoice = voices.find((voice) => voice.name.includes("Microsoft David"));
+        if (slottoVoice) {
+            utterance.voice = slottoVoice;
+        }
+
+        setTimeout(() => {
+            window.speechSynthesis.speak(utterance);
+        }, 500); // 500ms delay
+    };
+
+    useEffect(() => {
+        speakText(SlottoText);
+    }, [SlottoText]);
+
     const spin = () => {
         if (spinning || credits < bet) return;
-        // Check if the bet is zero
+
+        setLevel((prevLevel) => {
+            const newLevel = prevLevel + 1;
+            updateLevelInFirestore(newLevel); // Update Level in Firestore
+            return newLevel;
+        });
+
+
         if (bet === 0) {
             alert("Please place a bet to start the game.");
             return;
         }
         setSpinning(true);
-        const newCredits = credits - bet; // Deduct the bet from the user's credits
-        setCredits(newCredits); // Update the local state with the new credits
+        const newCredits = credits - bet;
+        setCredits(newCredits);
         setHighlighted([]);
 
         let spinDuration = 1000;
         let interval = setInterval(() => {
             setReels((prevReels) =>
                 prevReels.map((row) =>
-                    row.map(() => symbols[Math.floor(Math.random() * symbols.length)]),
-                ),
+                    row.map(() => symbols[Math.floor(Math.random() * symbols.length)])
+                )
             );
         }, 100);
 
         setTimeout(() => {
             clearInterval(interval);
             const newReels = reels.map((row) =>
-                row.map(() => symbols[Math.floor(Math.random() * symbols.length)]),
+                row.map(() => symbols[Math.floor(Math.random() * symbols.length)])
             );
             setReels(newReels);
             setSpinning(false);
-            checkWins(newReels, newCredits); // Pass updated credits after deducting the bet
+            checkWins(newReels, newCredits);
         }, spinDuration);
     };
 
@@ -109,7 +194,7 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
         let DiagonalWin = false;
         let ConsolidationWin = false;
 
-        // Check horizontal wins (basic wins)
+        // Check horizontal (basic)
         grid.forEach((row, rowIndex) => {
             if (row.every((symbol) => symbol === row[0])) {
                 winDetected = true;
@@ -118,7 +203,7 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
             }
         });
 
-        // Check vertical wins (basic wins)
+        // Check vertical (basic)
         for (let col = 0; col < 3; col++) {
             const column = [grid[0][col], grid[1][col], grid[2][col]];
             if (column.every((symbol) => symbol === column[0])) {
@@ -128,7 +213,7 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
             }
         }
 
-        // Check diagonal wins
+        // Check diagonal
         if (grid[0][0] === grid[1][1] && grid[1][1] === grid[2][2]) {
             winDetected = true;
             DiagonalWin = true;
@@ -140,26 +225,23 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
             wins.push([0, 2], [1, 1], [2, 0]);
         }
 
-        // Check consolidation wins
+        // Check consolidation
         if (grid[0][0] === grid[1][1] && grid[1][1] === grid[0][2]) {
             winDetected = true;
             ConsolidationWin = true;
             wins.push([0, 0], [1, 1], [0, 2]);
         }
-
         if (grid[2][0] === grid[1][1] && grid[1][1] === grid[2][2]) {
             winDetected = true;
             ConsolidationWin = true;
             wins.push([2, 0], [1, 1], [2, 2]);
         }
 
-        // Update credits based on the type of win
         let winAmount = 0;
-        //must be greater than 0.78
         let betProportion = 1;
         if (winDetected) {
             if (BasicWin) {
-                winAmount = Math.round(bet * (18 / 7) * betProportion); // Example win logic
+                winAmount = Math.round(bet * (18 / 7) * betProportion);
             }
             if (DiagonalWin) {
                 winAmount = Math.round(bet * (54 / 7) * betProportion);
@@ -170,14 +252,21 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
         }
 
         const totalCredits = updatedCredits + winAmount;
-        setCredits(totalCredits); // Update local credits after win/loss
+        setCredits(totalCredits);
         setHighlighted(wins);
 
-        // After updating local state, update the user's credits in Firestore
+        // Win or loss message
+        if (winDetected) {
+            const randomMessage = winningMessages[Math.floor(Math.random() * winningMessages.length)];
+            setSlottoText(randomMessage);
+        } else {
+            const randomMessage = losingMessages[Math.floor(Math.random() * losingMessages.length)];
+            setSlottoText(randomMessage);
+        }
+
         updateMoney(totalCredits);
     };
 
-    // Update money in Firestore
     const updateMoney = async (newMoney) => {
         try {
             if (userDocId) {
@@ -198,79 +287,88 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
     };
 
     return (
-        <Draggable defaultPosition={{ x: randomX, y: randomY }}>
-            <div className="slot-machine-container">
-                <div className="slot-machine-window">
-                    <div className="top-bar">
-                        <span className="top-bar-title">SlotMachine95.exe</span>
-                        <div className="top-bar-buttons">
-                            <button className="close-button" onClick={closeGame}>
-                        X
+        <>
+            <Draggable style={{ zIndex: '99999' }}>
+                <div className="SlottoCon">
+                    <div className="bubble right">{SlottoText}</div>
+                    <img className='Slotto' src={Alien} alt="Alien" style={{ pointerEvents: 'none' }} />
+                </div>
+            </Draggable>
+
+            <Draggable defaultPosition={{ x: randomX, y: randomY }}>
+                <div className="slot-machine-container">
+                    <div className="slot-machine-window">
+                        <div className="top-bar">
+                            <span className="top-bar-title">SlotMachine95.exe</span>
+                            <div className="top-bar-buttons">
+                                <button className="close-button" onClick={closeGame}>
+                                    X
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="slot-machine-content">
+                            <div className="credits">Gambucks: {credits}</div>
+
+                            <label className="bet">Bet Amount: </label>
+                            <input
+                                className="bet-input"
+                                type="number"
+                                value={bet}
+                                onChange={(e) => setBet(Number(e.target.value))}
+                                min="1"
+                            />
+
+                            <div className="bet-controls">
+                                <div className="bet-adjust bet-decrease">
+                                    {[1, 10, 100, 1000].map((value) => (
+                                        <button key={value} onClick={() => adjustBet(-value)}>
+                                            -{value}
+                                        </button>
+                                    ))}
+                                    <button onClick={() => setBet((prevBet) => prevBet / 2)}>
+                                        Halve
+                                    </button>
+                                </div>
+
+                                <div className="slot-reels">
+                                    {reels.map((row, rowIndex) => (
+                                        <div key={rowIndex} className="slot-reel">
+                                            {row.map((symbol, colIndex) => (
+                                                <div
+                                                    key={`${rowIndex}-${colIndex}`}
+                                                    className={`slot-cell ${isHighlighted(rowIndex, colIndex) ? "highlighted" : ""}`}
+                                                >
+                                                    {symbol}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="bet-adjust bet-increase">
+                                    {[1, 10, 100, 1000].map((value) => (
+                                        <button key={value} onClick={() => adjustBet(value)}>
+                                            +{value}
+                                        </button>
+                                    ))}
+                                    <button onClick={() => setBet((prevBet) => prevBet * 2)}>
+                                        Double
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button
+                                onClick={spin}
+                                disabled={spinning || credits < bet}
+                                className={`spin-button ${spinning || credits < bet ? "disabled" : ""}`}
+                            >
+                                {spinning ? "Spinning..." : "Spin"}
                             </button>
                         </div>
                     </div>
-
-                    <div className="slot-machine-content">
-                        <div className="credits">Gambucks: {credits}</div>
-
-                        <label className="bet">Bet Amount: </label>
-                        <input
-                            className="bet-input"
-                            type="number"
-                            value={bet}
-                            onChange={(e) => setBet(Number(e.target.value))}
-                            min="1"
-                        />
-
-                        <div className="bet-controls">
-                            <div className="bet-adjust bet-decrease">
-                                {[1, 10, 100, 1000].map((value) => (
-                                    <button key={value} onClick={() => adjustBet(-value)}>
-                                        -{value}
-                                    </button>
-                                ))}
-                                <button onClick={() => setBet((prevBet) => prevBet / 2)}>
-                                    Halve
-                                </button>
-                            </div>
-
-                            <div className="slot-reels">
-                                {reels.map((row, rowIndex) => (
-                                    <div key={rowIndex} className="slot-reel">
-                                        {row.map((symbol, colIndex) => (
-                                            <div
-                                                key={`${rowIndex}-${colIndex}`}
-                                                className={`slot-cell ${isHighlighted(rowIndex, colIndex) ? "highlighted" : ""}`}
-                                            >
-                                                {symbol}
-                                            </div>
-                                        ))}
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="bet-adjust bet-increase">
-                                {[1, 10, 100, 1000].map((value) => (
-                                    <button key={value} onClick={() => adjustBet(value)}>
-                                        +{value}
-                                    </button>
-                                ))}
-                                <button onClick={() => setBet((prevBet) => prevBet * 2)}>
-                                    Double
-                                </button>
-                            </div>
-                        </div>
-
-                        <button
-                            onClick={spin}
-                            disabled={spinning || credits < bet}
-                            className={`spin-button ${spinning || credits < bet ? "disabled" : ""}`}
-                        >
-                            {spinning ? "Spinning..." : "Spin"}
-                        </button>
-                    </div>
                 </div>
-            </div>
-        </Draggable>
+            </Draggable>
+        </>
     );
 }

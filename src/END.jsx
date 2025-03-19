@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import pokerDogs from "./Assets/PokerDawgs.png";
 import fadeInSound from "./Assets/SoundEffects/cheer.wav"; // Import the sound file
@@ -10,6 +10,27 @@ export default function END() {
   const navigate = useNavigate();
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [isScrollingDone, setIsScrollingDone] = useState(false);
+  const [noLines, setNoLines] = useState([]); // State for the "No" lines
+  const [showFadeIn, setShowFadeIn] = useState(false); // New state for fade-in delay
+  const poemRef = useRef(null); // Ref to track the poem's height
+
+  const poem = `
+"Yes, my nature is my weak point. I have only to remember what
+happened to me some months ago at Roulettenberg, before my final ruin. What
+a notable instance that was of my capacity for resolution! On the occasion in
+question I had lost everything--everything; yet, just as I was leaving the
+Casino, I heard another gulden give a rattle in my pocket! “Perhaps I shall need
+it for a meal,” I thought to myself; but a hundred paces further on, I changed
+my mind, and returned. That gulden I staked upon manque--and there is
+something in the feeling that, though one is alone, and in a foreign land, and
+far from one’s own home and friends, and ignorant of whence one’s next meal
+is to come, one is nevertheless staking one’s very last coin! Well, I won the
+stake, and in twenty minutes had left the Casino with a hundred and seventy
+gulden in my pocket! That is a fact, and it shows what a last remaining gulden
+can do. . . . But what if my heart had failed me, or I had shrunk from making
+up my mind? . . .
+<span class="highlight">No: tomorrow all shall be ended!"</span>
+`;
 
   useEffect(() => {
     if (location.state?.fromUnlocked) {
@@ -20,110 +41,63 @@ export default function END() {
   }, [location, navigate]);
 
   useEffect(() => {
-    if (isUnlocked) {
+    if (isUnlocked && poemRef.current) {
+      // Calculate the duration of the scrolling animation
+      const poemHeight = poemRef.current.scrollHeight;
+      const screenHeight = window.innerHeight;
+      const scrollDistance = poemHeight + screenHeight; // Total scroll distance
+      const scrollSpeed = 30; // Reduced scroll speed (pixels per second)
+      const duration = scrollDistance / scrollSpeed; // Duration in seconds
+  
+      // Set the animation duration dynamically
+      poemRef.current.style.animationDuration = `${duration}s`;
+  
+      // Timer for when the scroll finishes
       const timer = setTimeout(() => {
         setIsScrollingDone(true);
-      }, 65000); // 65 seconds
-
+      }, duration * 1000); // Convert to milliseconds
+  
       return () => clearTimeout(timer);
     }
   }, [isUnlocked]);
+  
+  
 
   useEffect(() => {
     if (isScrollingDone) {
+
+      // Start the "No" line scrolling effect (faster intervals)
+      const interval = setInterval(() => {
+        setNoLines((prev) => [
+          ...prev.filter((item) => item.y > -50),
+          {
+            id: Date.now(),
+            y: window.innerHeight,
+            x: Math.random() * (window.innerWidth - 300), // Constrain x to prevent overflow
+          },
+        ]);
+      }, 1000); // Add a new "No" line every 1 second (instead of 2)
+
+      const moveInterval = setInterval(() => {
+        setNoLines((prev) => prev.map((item) => ({ ...item, y: item.y - 4 }))); // Move faster (4px per frame instead of 2)
+      }, 30);
+
+      // Set a delay before showing the fade-in container
+      const fadeInTimer = setTimeout(() => {
+        setShowFadeIn(true);
+              // Play the sound effect
       const audio = new Audio(fadeInSound);
       audio.play();
+      }, 5000); // 5 seconds delay
+
+      return () => {
+        clearInterval(interval);
+        clearInterval(moveInterval);
+        clearTimeout(fadeInTimer);
+      };
     }
   }, [isScrollingDone]);
 
-  const poem = `
-    You stand here now, at the edge of the spinning,
-    Where the air hums low, a song never winning.
-    The wheel turns, its spokes like knives in the dark,
-    Each click a whisper, each tick a spark.
-
-    You came for the glow, the promise of more,
-    The shimmering prize beyond the door.
-    But the door never closes, the prize never stays,
-    It slips through your fingers, a mirage in the haze.
-
-    The faces around you are blurred, undefined,
-    Reflections of something you left far behind.
-    Their laughter is hollow, their voices a thread,
-    A chorus of echoes from the paths you once tread.
-
-    You placed your bets, though no coins were seen,
-    Traded your hours for the might-have-been.
-    The wheel kept spinning, the numbers aligned,
-    But the cost was your shadow, the self you confined.
-
-    And now you see it, the truth in the spin,
-    The wheel was a circle, a loop you were in.
-    The prize was a phantom, the game a disguise,
-    A labyrinth built on your own hungry eyes.
-
-    In the beginning, the wheel was a dream,
-    A glimmer of gold in a world turned gray.
-    You reached for it, fingers trembling,
-    And the wheel whispered, "Stay."
-
-    It promised you kingdoms, a crown of stars,
-    A map to a treasure that was always yours.
-    But the map was a mirror, the treasure a lie,
-    And the stars were just embers that burned as they died.
-
-    The wheel spun faster, the air grew thin,
-    The faces around you began to blend in.
-    You forgot their names, their voices, their eyes,
-    Until all that remained was the hum and the prize.
-
-    You traded your days for the spin of the wheel,
-    Your nights for the chance at a fortune unreal.
-    But the fortune was smoke, the wheel a machine,
-    And the cost was your soul, unseen, unseen.
-
-    The wheel grew louder, its song a scream,
-    A cacophony of hopes in a world turned mean.
-    You clung to the edge, your hands raw and worn,
-    But the wheel kept spinning, your spirit forlorn.
-
-    The prize was a shadow, the game a trap,
-    A cycle of loss with no end, no map.
-    And yet you stayed, though the light grew dim,
-    For the wheel had become your only hymn.
-
-    But here, at the edge, the wheel slows its pace,
-    The hum fades to silence, the light leaves no trace.
-    You step away, though the pull is still strong,
-    The song of the spinning, the siren’s sweet song.
-
-    And as you walk, the world feels less thin,
-    The air less heavy, the light within.
-    The wheel fades behind you, its glow now a spark,
-    A memory fading, a mark in the dark.
-
-    For the game was never the wheel or the glow,
-    But the hands that held you, the seeds you would sow.
-    And now you are free, though the path is unclear,
-    The wheel is behind you, the way forward is here.
-
-    The faces return, their voices now clear,
-    A symphony of life, not a chorus of fear.
-    The prize was a phantom, the game a disguise,
-    But the truth was within you, behind your own eyes.
-
-    And so you walk, though the wheel still spins,
-    Its song now distant, a hum on the wind.
-    You carry the lessons, the scars, the light,
-    And the wheel becomes silence, lost in the night.
-
-    <span class="highlight">
-    For the greatest reward was never the prize,
-    But the truth in your heart, the spark in your eyes.
-    The wheel fades behind, a memory, a ghost,
-    And you, dear traveler, are what matters the most.
-    </span>
-  `;
   return (
     <>
       <Helmet>
@@ -131,14 +105,27 @@ export default function END() {
       </Helmet>
       {isUnlocked ? (
         <div className="end-container">
-          <div className="scrolling-text">
+          <div className="scrolling-text" ref={poemRef}>
             <pre
               style={{ fontFamily: "PixelFont" }}
               dangerouslySetInnerHTML={{ __html: poem }}
             />
           </div>
+          {isScrollingDone && (
+            <div className="infinite-loop-container">
+              {noLines.map((item) => (
+                <div
+                  key={item.id}
+                  className="infinite-loop-text"
+                  style={{ top: item.y, left: item.x }}
+                >
+                  No: tomorrow all shall be ended!
+                </div>
+              ))}
+            </div>
+          )}
           <div
-            className={`fade-in-container ${isScrollingDone ? "visible" : ""}`}
+            className={`fade-in-container ${showFadeIn ? "visible" : ""}`}
           >
             <img
               src={pokerDogs}

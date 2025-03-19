@@ -256,3 +256,16 @@
   background: #f0f0f0;
   color: black;
 }
+
+.GoBack {
+  padding: 8px 16px;
+  background-color: #c0c0c0;
+  border: 2px outset #4f4f4f;
+  font-weight: bold;
+  font-family: PixelFont;
+  margin-left: 10px;
+}
+
+.GoBack:hover {
+  background-color: #808080;
+}

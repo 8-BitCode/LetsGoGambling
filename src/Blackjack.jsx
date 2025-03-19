@@ -35,24 +35,10 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
     const [userDocId, setUserDocId] = useState(null);
 
     const randomX = Math.floor(Math.random() * (window.innerWidth - 600));
-    const randomY = Math.floor(Math.random() * (window.innerHeight - 583 - 40)); // - 40 becuase of the button bar
+    const randomY = Math.floor(Math.random() * (window.innerHeight - 583 - 40)); // - 40 for the bar
 
     const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
-    const values = [
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
-        "J",
-        "Q",
-        "K",
-        "A",
-    ];
+    const values = ["2","3","4","5","6","7","8","9","10","J","Q","K","A"];
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -66,37 +52,35 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
         return () => unsubscribe();
     }, [navigate]);
 
-  const fetchMoney = (uid) => {
-    const playersRef = collection(db, "Players");
-    const q = query(playersRef, where("uid", "==", uid));
+    const fetchMoney = (uid) => {
+        const playersRef = collection(db, "Players");
+        const q = query(playersRef, where("uid", "==", uid));
 
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      if (!querySnapshot.empty) {
-        const userDoc = querySnapshot.docs[0];
-        setMoney(userDoc.data().money);
-        setUserDocId(userDoc.id);
-      } else {
-        alert("User data not found.");
-      }
-    });
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            if (!querySnapshot.empty) {
+                const userDoc = querySnapshot.docs[0];
+                setMoney(userDoc.data().money);
+                setUserDocId(userDoc.id);
+            } else {
+                alert("User data not found.");
+            }
+        });
 
-    return () => unsubscribe();
-  };
-
+        return () => unsubscribe();
+    };
 
     const updateMoney = async (newMoney) => {
         try {
             if (userDocId) {
                 const userDocRef = doc(db, "Players", userDocId);
                 await updateDoc(userDocRef, { money: newMoney });
-                setMoney(newMoney); // Update local state
+                setMoney(newMoney);
             }
         } catch (err) {
             alert("Failed to update money: " + err.message);
         }
     };
 
-    // Initialize Deck & Shuffle
     const initialiseDeck = () => {
         const newDeck = [];
         for (let suit of suits) {
@@ -115,7 +99,6 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
         return deck;
     };
 
-    // Start Game
     const startGame = () => {
         if (money === 0 && bet === 0) {
             alert("You are out of money! Please exit the game.");
@@ -124,6 +107,14 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
             alert("Please place a bet to start the game.");
             return;
         }
+
+        // *** ADD 1 TO LEVEL HERE ***
+        setLevel((prevLevel) => {
+            const newLevel = prevLevel + 1;
+            updateLevelInFirestore(newLevel); // Update Level in Firestore
+            return newLevel;
+        });
+        // ***************************
 
         setGameActive(true);
         const newDeck = initialiseDeck();
@@ -150,7 +141,6 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
         }
     };
 
-    // Calculate Hand Value
     const getHandValue = (hand) => {
         let value = 0;
         let numAces = 0;
@@ -171,7 +161,6 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
         return value;
     };
 
-    // Hit Function
     const hit = () => {
         if (gameOver) return;
         const newDeck = [...deck];
@@ -182,20 +171,22 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
         const newPlayerHandValue = getHandValue(newPlayerHand);
         if (newPlayerHandValue > 21) {
             setMessage(`Bust! You lose your bet. - ${bet}`);
-            updateMoney(Math.max(money, 0)); // Ensure money doesn't go below 0
+            updateMoney(Math.max(money, 0));
             gameOverFunction();
         } else if (newPlayerHandValue === 21 && getHandValue(dealerHand) !== 21) {
             setMessage(`You win! Your bet is doubled! + ${2 * bet}`);
             updateMoney(money + 2 * bet);
             gameOverFunction();
-        } else if (newPlayerHandValue === 21 && getHandValue(dealerHand) === 21) {
+        } else if (
+            newPlayerHandValue === 21 &&
+            getHandValue(dealerHand) === 21
+        ) {
             setMessage(`It's a tie. Your bet is returned. + ${bet}`);
             updateMoney(money + bet);
             gameOverFunction();
         }
     };
 
-    // Stand Function
     const stand = () => {
 
 
@@ -216,7 +207,7 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
             updateMoney(money + 2 * bet);
         } else if (playerValue < dealerValue) {
             setMessage(`Dealer wins. You lose your bet. - ${bet}`);
-            updateMoney(Math.max(money, 0)); // Ensure money doesn't go below 0
+            updateMoney(Math.max(money, 0));
         } else {
             setMessage(`It's a tie. Your bet is returned. + ${bet}`);
             updateMoney(money + bet);
@@ -224,14 +215,14 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
         gameOverFunction();
     };
 
-    // Game Over Function
     const gameOverFunction = () => {
         setGameOver(true);
         setGameActive(false);
         setBet(0);
         setMessage(
-            (message) => `${message}
-      Resetting game...`,
+            (message) =>
+                `${message}
+      Resetting game...`
         );
         setTimeout(() => {
             setPlayerHand([]);
@@ -240,7 +231,6 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
         }, 2000);
     };
 
-    // Bet Functions
     const betMoney = (amount) => {
         if (amount > 0) {
             setMoney((prevMoney) => {
@@ -266,7 +256,6 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
         }
     };
 
-    // Bet Intervals
     const incrementInterval = useRef(null);
     const decrementInterval = useRef(null);
 
@@ -302,7 +291,6 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
                 <title>BLACKJACK</title>
             </Helmet>
 
-            {/* Windows 95 Style Container */}
             <Draggable defaultPosition={{ x: randomX, y: randomY }}>
                 <div className="Blackjack-container" style={{ width: "600px" }}>
                     <div className="Blackjack-window">

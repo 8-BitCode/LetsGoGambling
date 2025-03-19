@@ -24,6 +24,7 @@ const UserEntry = () => {
       console.error('Error playing sound:', error);
     });
   };
+
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date();
@@ -61,8 +62,12 @@ const UserEntry = () => {
   };
 
   const handleGoogleLogin = async () => {
-    playClickSound()
+    playClickSound();
     try {
+      // Sign out the user before triggering the sign-in popup
+      await auth.signOut();
+      
+      // Trigger the Google sign-in popup
       const result = await signInWithPopup(auth, provider);
       alert("Google login successful!");
     } catch (err) {
@@ -94,17 +99,14 @@ const UserEntry = () => {
       setUsernameAvailable(false);
     }
   };
-  
-  
 
   const handleGoToGameSelection = () => {
-    playClickSound()
+    playClickSound();
     if (isUsernameSet) {
       navigate("/GameSelection", { state: { username, money: 1000, level: 0 } }); // Pass username, money, and level
     } else {
       alert("You need to set a username first!");
     }
-
   };
 
   if (isLoading) return <div>Loading...</div>;
