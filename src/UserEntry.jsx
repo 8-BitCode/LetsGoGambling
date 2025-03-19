@@ -85,15 +85,16 @@ const UserEntry = () => {
     const q = query(usernameRef, where("username", "==", username));
     const querySnapshot = await getDocs(q);
     if (querySnapshot.empty) {
-      // Username is available, save it with initial money and debt
+      // Username is available, save it with initial money, debt, and level
       await setDoc(doc(db, "Players", username), {
         uid: user.uid,
         username: username,
         money: 1000, // Initial money set to 1000
         debt: 0,     // Initialize debt as 0
+        level: 1     // Initialize level as 0
       });
       setIsUsernameSet(true);
-      navigate("/GameSelection", { state: { username, money: 1000, debt: 0 } });  // Pass username, money, and debt
+      navigate("/GameSelection", { state: { username, money: 1000, debt: 0, level: 0 } });  // Pass username, money, debt, and level
     } else {
       setUsernameAvailable(false);
     }
@@ -102,7 +103,7 @@ const UserEntry = () => {
   const handleGoToGameSelection = () => {
     playClickSound();
     if (isUsernameSet) {
-      navigate("/GameSelection", { state: { username, money: 1000 } }); // Pass username and money
+      navigate("/GameSelection", { state: { username, money: 1000, level: 0 } }); // Pass username, money, and level
     } else {
       alert("You need to set a username first!");
     }
