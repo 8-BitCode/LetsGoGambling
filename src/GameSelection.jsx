@@ -66,7 +66,7 @@ const GameSelection = () => {
   const [isEndUnlocked, setIsEndUnlocked] = useState(false); // Track if END is unlocked
   const [isPlaying, setIsPlaying] = useState(true); // Track audio state
   const audioRef = useRef(null); // Ref for the audio element
-  const [volume, setVolume] = useState(0.1);
+  const [volume, setVolume] = useState(1);
   const [games, setGames] = useState([
     { id: 0, name: 'Messages', icon: '📭', route: '/GameSelection' }, // Add Messages to the games list
     { id: 1, name: 'Statistics', icon: '📈', route: '/GameSelection' },
@@ -178,8 +178,8 @@ const GameSelection = () => {
   useEffect(() => {
     const calculateInterest = async () => {
       if (debt > 0 && userDocId) {
-        const interest = debt * 0.01; // 1% interest
-        const newDebt = debt + interest;
+        const interest = debt * (Math.E)/100; // 1% interest
+        const newDebt = parseFloat((debt + interest).toFixed(2)); // Round to 2 decimal places
   
         try {
           const userDocRef = doc(db, 'Players', userDocId);
@@ -196,7 +196,7 @@ const GameSelection = () => {
     const interval = setInterval(calculateInterest, 60000); // 1 minute
     return () => clearInterval(interval);
   }, [debt, userDocId]);
-
+   
   const updateLevelInFirestore = async (newLevel) => {
     try {
       if (userDocId) {
@@ -208,68 +208,22 @@ const GameSelection = () => {
     }
   };
 
-  useEffect(() => {
-    const calculateInterest = async () => {
-      if (debt > 0 && userDocId) {
-        const interest = debt * 0.01; // 1% interest
-        const newDebt = debt + interest;
-
-        try {
-          const userDocRef = doc(db, 'Players', userDocId);
-          await updateDoc(userDocRef, {
-            debt: newDebt,
-          });
-          setDebt(newDebt);
-        } catch (err) {
-          console.error('Failed to update debt:', err);
-        }
-      }
-    };
     
-
-        
-
-    const interval = setInterval(calculateInterest, 60000); // 1 minute
-    return () => clearInterval(interval);
-  }, [debt, userDocId]);
-
-  // DEBUG TESTING BUTTON!
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === '9') {
-        setLevel(prevLevel => {
-          const newLevel = prevLevel + 1;
-          updateLevelInFirestore(newLevel);
-          return newLevel;
-        });
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [updateLevelInFirestore]);
-  // DEBUG TESTING BUTTON!
-
-  useEffect(() => {
-    const calculateInterest = async () => {
-      if (debt > 0 && userDocId) {
-        const interest = debt * 0.01; // 1% interest
-        const newDebt = debt + interest;
-
-        try {
-          const userDocRef = doc(db, 'Players', userDocId);
-          await updateDoc(userDocRef, {
-            debt: newDebt,
-          });
-          setDebt(newDebt);
-        } catch (err) {
-          console.error('Failed to update debt:', err);
-        }
-      }
-    };
-
-    const interval = setInterval(calculateInterest, 60000); // 1 minute
-    return () => clearInterval(interval);
-  }, [debt, userDocId]);
+  // // DEBUG TESTING BUTTON!
+  // useEffect(() => {
+  //   const handleKeyDown = (e) => {
+  //     if (e.key === '9') {
+  //       setLevel(prevLevel => {
+  //         const newLevel = prevLevel + 1;
+  //         updateLevelInFirestore(newLevel);
+  //         return newLevel;
+  //       });
+  //     }
+  //   };
+  //   window.addEventListener('keydown', handleKeyDown);
+  //   return () => window.removeEventListener('keydown', handleKeyDown);
+  // }, [updateLevelInFirestore]);
+  // // DEBUG TESTING BUTTON!
 
   const handleGameDoubleClick = (game) => {
     playClickSound();
