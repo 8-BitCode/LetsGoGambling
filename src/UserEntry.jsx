@@ -81,9 +81,17 @@ const UserEntry = () => {
 
   const handleUsernameSubmit = async (e) => {
     e.preventDefault();
+  
+    // Convert the entered username to lowercase and check if it matches "steve-o"
+    if (username.toLowerCase() === "steve-o") {
+      setUsernameAvailable(false);
+      return; // Exit the function early if the username is invalid
+    }
+  
     const usernameRef = collection(db, "Players");
     const q = query(usernameRef, where("username", "==", username));
     const querySnapshot = await getDocs(q);
+  
     if (querySnapshot.empty) {
       // Username is available, save it with initial money, debt, and level
       await setDoc(doc(db, "Players", username), {
@@ -91,12 +99,13 @@ const UserEntry = () => {
         username: username,
         money: 1000, // Initial money set to 1000
         debt: 0,     // Initialize debt as 0
-        level: 1     // Initialize level as 0
+        level: 1     // Initialize level as 1
       });
       setIsUsernameSet(true);
-      navigate("/GameSelection", { state: { username, money: 1000, debt: 0, level: 0 } });  // Pass username, money, debt, and level
+      navigate("/GameSelection", { state: { username, money: 1000, debt: 0, level: 1 } });  // Pass username, money, debt, and level
     } else {
       setUsernameAvailable(false);
+      setError("Username is already taken. Please choose another one.");
     }
   };
 
