@@ -189,6 +189,7 @@ const GameSelection = () => {
       alert('Failed to fetch user data: ' + err.message);
     }
   };
+
   useEffect(() => {
     const calculateInterest = async () => {
       if (debt > 0 && userDocId) {
@@ -223,21 +224,21 @@ const GameSelection = () => {
   };
 
     
-  // // DEBUG TESTING BUTTON!
-  // useEffect(() => {
-  //   const handleKeyDown = (e) => {
-  //     if (e.key === '9') {
-  //       setLevel(prevLevel => {
-  //         const newLevel = prevLevel + 1;
-  //         updateLevelInFirestore(newLevel);
-  //         return newLevel;
-  //       });
-  //     }
-  //   };
-  //   window.addEventListener('keydown', handleKeyDown);
-  //   return () => window.removeEventListener('keydown', handleKeyDown);
-  // }, [updateLevelInFirestore]);
-  // // DEBUG TESTING BUTTON!
+  // DEBUG TESTING BUTTON!
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === '9') {
+        setLevel(prevLevel => {
+          const newLevel = prevLevel + 1;
+          updateLevelInFirestore(newLevel);
+          return newLevel;
+        });
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [updateLevelInFirestore]);
+  // DEBUG TESTING BUTTON!
 
   const handleGameDoubleClick = (game) => {
     playClickSound();
@@ -457,7 +458,9 @@ const onNewMail = (hasNewMail) => {
             onNewMail={onNewMail}
             username={username} 
             money={money}      
-            hasNewMail={hasNewMail} 
+            hasNewMail={hasNewMail}
+            setLevel={setLevel}
+            updateLevelInFirestore={updateLevelInFirestore}
           />
         )}
         {activeGames.includes('Statistics') && (
