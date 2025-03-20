@@ -3,7 +3,9 @@ import "./CssFiles/Messages.css";
 import { Helmet } from "react-helmet";
 import Draggable from "react-draggable";
 import Click from './Assets/SoundEffects/Click.wav';
-
+import MumPfpIcon from './Assets/Icons/MumPfpIcon.png'
+import LGGpfpIcon from './Assets/Icons/LGGpfpIcon.png'
+import SteveOPfpIcon from './Assets/Icons/SteveOPfpIcon.png'
 const Messages = ({ closeGame, Level, onNewMail, username, money,hasNewMail }) => {
     const [activeButton, setActiveButton] = useState(null);
     const [message, setMessage] = useState(hasNewMail ? "You got mail" : "No new mail");
@@ -203,6 +205,7 @@ const Messages = ({ closeGame, Level, onNewMail, username, money,hasNewMail }) =
     onClick={() => handleButtonClick("LGGCorp")}
 >
     LGGCorp
+    <img className='Pfps' src={LGGpfpIcon}></img>
 </button>
 <button
     id="messages_seperation"
@@ -210,6 +213,7 @@ const Messages = ({ closeGame, Level, onNewMail, username, money,hasNewMail }) =
     onClick={() => handleButtonClick("Mum")}
 >
     Mum
+    <img className='Pfps' src={MumPfpIcon}></img>
 </button>
 <button
     id="messages_seperation"
@@ -217,6 +221,7 @@ const Messages = ({ closeGame, Level, onNewMail, username, money,hasNewMail }) =
     onClick={() => handleButtonClick("steve-o")}
 >
     steve-o
+    <img className='Pfps' src={SteveOPfpIcon}></img>
 </button>
                             </div>
                             <div

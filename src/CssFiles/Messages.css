@@ -234,3 +234,7 @@
 .Messages-sidebar button.unread.active {
   background-color: #ffffff; /* When active, override the unread color */
 }
+.Pfps{
+  width: 70px;
+  height:70px;
+}
