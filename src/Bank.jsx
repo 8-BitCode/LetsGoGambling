@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Draggable from "react-draggable";
 import { Helmet } from "react-helmet";
-import { db, doc, getDoc, updateDoc } from "./firebase"; // Import the necessary functions
+import { db, doc, updateDoc, onSnapshot } from "./firebase"; // Import onSnapshot
 import "./CssFiles/Bank.css";
 import Click from './Assets/SoundEffects/Click.wav';
 
@@ -21,31 +21,29 @@ export default function Bank({ closeBank, userId }) {
     });
   };
 
-  // Fetch data from Firebase when the component mounts
+  // Fetch data from Firebase using onSnapshot for live updates
   useEffect(() => {
-    const fetchBankData = async () => {
-      const docRef = doc(db, "Players", userId); // Assumes you have a collection "Players" and userId is passed as a prop
-      const docSnap = await getDoc(docRef);
+    const docRef = doc(db, "Players", userId); // Reference to the user's document
+
+    // Set up a real-time listener for the document
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
-        setBalance(docSnap.data().money || 0);
-        setDebt(docSnap.data().debt || 0); // Fetch debt from the database
+        setBalance(docSnap.data().money || 0); // Update balance
+        setDebt(docSnap.data().debt || 0); // Update debt
       } else {
         console.log("No such document!");
       }
-    };
-    fetchBankData();
+    });
+
+    // Clean up the listener when the component unmounts
+    return () => unsubscribe();
   }, [userId]);
 
   const handleTakeLoan = async () => {
-    playClickSound()
+    playClickSound();
     if (amount > 0) {
       const newBalance = balance + amount;
       const newDebt = debt + amount; // Increase the debt by the loan amount
-
-      // Update state
-      setBalance(newBalance);
-      setDebt(newDebt);
-      setAmount(0);
 
       // Update data in Firestore
       const docRef = doc(db, "Players", userId);
@@ -57,15 +55,10 @@ export default function Bank({ closeBank, userId }) {
   };
 
   const handleRepayLoan = async () => {
-    playClickSound()
+    playClickSound();
     if (amount > 0 && amount <= balance && amount <= debt) {
       const newBalance = balance - amount;
       const newDebt = debt - amount; // Decrease the debt by the repayment amount
-
-      // Update state
-      setBalance(newBalance);
-      setDebt(newDebt);
-      setAmount(0);
 
       // Update data in Firestore
       const docRef = doc(db, "Players", userId);
@@ -90,14 +83,14 @@ export default function Bank({ closeBank, userId }) {
         </div>
         <div className="bank-content">
           <div className="balance-display">Shambux: ${balance}</div>
-          <div className="balance-display">Debt: ${debt}</div> {/* Display the debt */}
+          <div className="balance-display">Anti Shambux: ${debt}</div> {/* Display the debt */}
           <input
             type="number"
             className="money-input"
             value={amount}
             onChange={(e) => setAmount(Math.max(0, parseInt(e.target.value) || 0))}
           />
-          <div style={{color:'black', opacity:'40%'}}>Interest (1% per minute)</div>
+          <div style={{ color: 'black', opacity: '40%' }}>Interest (e% per minute)</div>
           <div className="button-group">
             <button className="bank-button" onClick={handleTakeLoan}>Take Loan</button>
             <button className="bank-button" onClick={handleRepayLoan} disabled={amount > balance || amount > debt}>

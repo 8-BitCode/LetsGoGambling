@@ -48,6 +48,12 @@ const Roulette = ({ closeGame, setLevel, updateLevelInFirestore }) => {
 
         if (isSpinning) return; // Prevent multiple spins at once
         setIsSpinning(true); // Start spinning
+        
+        setLevel((prevLevel) => {
+            const newLevel = prevLevel + 1;
+            updateLevelInFirestore(newLevel); // Update Level in Firestore
+            return newLevel;
+        });
     
         // Generate a random final result
         const finalResult = Math.floor(Math.random() * 38) - 1;

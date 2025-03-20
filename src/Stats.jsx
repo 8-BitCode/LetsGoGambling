@@ -49,9 +49,7 @@ export default function Stats({ closeGame, loggedInUser, selectedUser }) {
               <tr>
                 <th>Name</th>
                 <th>ShamBux 🍀</th>
-                <th>
-                  <s>debt</s> anti cash.
-                </th>
+                <th>Anti Shambux</th>
                 <th>LEVEL</th>
               </tr>
             </thead>

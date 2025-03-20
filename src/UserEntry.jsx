@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { onAuthStateChanged } from "firebase/auth"; // Import the missing function
 import "./CssFiles/UserEntry.css"; // Import the external CSS file
-import TheCreature from "./Assets/PDTheCreature.png";
+import TheCreature from "./Assets/Icons/UserPfpIcon.png";
 import Click from './Assets/SoundEffects/Click.wav';
 
 const UserEntry = () => {

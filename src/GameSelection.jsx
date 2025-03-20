@@ -17,6 +17,16 @@ import { doc, getDoc, setDoc, updateDoc, increment } from 'firebase/firestore';
 import Click from './Assets/SoundEffects/Click.wav';
 import EmailSound from './Assets/SoundEffects/YouGotMail.wav'
 import JAZZ from './Assets/SoundEffects/JAZZ.wav'
+import NoMailIcon from './Assets/Icons/NoMailIcon.png'
+import NewMailIcon from './Assets/Icons/NewMailIcon.png'
+import StatsIcon from './Assets/Icons/StatsIcon.png'
+import BlackJackIcon from './Assets/Icons/BlackJackIcon.png'
+import RouletteIcon from './Assets/Icons/RouletteIcon.png'
+import SlotsIcon from './Assets/Icons/SlotsIcon.png'
+import BankIcon from './Assets/Icons/BankIcon.png'
+import QuestionMarkIcon from './Assets/Icons/QuestionMarkIcon.png'
+import SoundOnIcon from './Assets/Icons/SoundOnIcon.png'
+import SoundOffIcon from './Assets/Icons/SoundOffIcon.png'
 const MoneySlot = ({ amount }) => {
   const digits = amount.toString().split('');
 
@@ -66,14 +76,15 @@ const GameSelection = () => {
   const [isEndUnlocked, setIsEndUnlocked] = useState(false); // Track if END is unlocked
   const [isPlaying, setIsPlaying] = useState(true); // Track audio state
   const audioRef = useRef(null); // Ref for the audio element
+  const [volume, setVolume] = useState(1);
   const [games, setGames] = useState([
-    { id: 0, name: 'Messages', icon: '📭', route: '/GameSelection' }, // Add Messages to the games list
-    { id: 1, name: 'Statistics', icon: '📈', route: '/GameSelection' },
-    { id: 2, name: 'Black Jack', icon: '🃏', route: '/GameSelection' },
-    { id: 3, name: 'Roulette', icon: '🛞', route: '/GameSelection' },
-    { id: 4, name: 'Slots', icon: '🎰', route: '/GameSelection' },
-    { id: 5, name: 'Bank', icon: '🏦', route: '/GameSelection' },
-    { id: 6, name: 'Locked', icon: '🔒', route: '/GameSelection' },
+    { id: 0, name: 'Messages', icon: NoMailIcon, route: '/GameSelection' }, // Add Messages to the games list
+    { id: 1, name: 'Statistics', icon: StatsIcon, route: '/GameSelection' },
+    { id: 2, name: 'Black Jack', icon: BlackJackIcon, route: '/GameSelection' },
+    { id: 3, name: 'Roulette', icon: RouletteIcon, route: '/GameSelection' },
+    { id: 4, name: 'Slots', icon: SlotsIcon, route: '/GameSelection' },
+    { id: 5, name: 'Bank', icon: BankIcon, route: '/GameSelection' },
+    { id: 6, name: 'Locked', icon: QuestionMarkIcon, route: '/GameSelection' },
   ]);
 
   const toggleAudio = () => {
@@ -106,7 +117,11 @@ const GameSelection = () => {
 
   useEffect(() => {
     // Define level milestones that trigger new mail
-    const newMailLevels = [0, 0, 0, 2, 15, 24, 25, 25, 34, 41, 42, 50, 52, 52, 60, 66, 70, 72, 80, 83, 95, 96, 100, 101, 107, 118, 129, 130, 140, 149, 160, 165, 190, 191, 210];
+    const newMailLevels = [
+      0, 2, 14, 20, 21, 30, 45, 46, 55, 65, 75, 78, 79, 90, 100,
+      110, 120, 130, 132, 140, 150, 155, 175, 190, 210, 220, 240,
+      249, 250, 270, 280, 285, 290, 310, 330, 331, 360
+  ];
     const audio = new Audio(EmailSound);
 
     if (newMailLevels.includes(Level)) {
@@ -177,8 +192,8 @@ const GameSelection = () => {
   useEffect(() => {
     const calculateInterest = async () => {
       if (debt > 0 && userDocId) {
-        const interest = debt * 0.01; // 1% interest
-        const newDebt = debt + interest;
+        const interest = debt * (Math.E)/100; // 1% interest
+        const newDebt = parseFloat((debt + interest).toFixed(2)); // Round to 2 decimal places
   
         try {
           const userDocRef = doc(db, 'Players', userDocId);
@@ -195,7 +210,7 @@ const GameSelection = () => {
     const interval = setInterval(calculateInterest, 60000); // 1 minute
     return () => clearInterval(interval);
   }, [debt, userDocId]);
-
+   
   const updateLevelInFirestore = async (newLevel) => {
     try {
       if (userDocId) {
@@ -207,100 +222,49 @@ const GameSelection = () => {
     }
   };
 
-  useEffect(() => {
-    const calculateInterest = async () => {
-      if (debt > 0 && userDocId) {
-        const interest = debt * 0.01; // 1% interest
-        const newDebt = debt + interest;
-
-        try {
-          const userDocRef = doc(db, 'Players', userDocId);
-          await updateDoc(userDocRef, {
-            debt: newDebt,
-          });
-          setDebt(newDebt);
-        } catch (err) {
-          console.error('Failed to update debt:', err);
-        }
-      }
-    };
     
-
-        
-
-    const interval = setInterval(calculateInterest, 60000); // 1 minute
-    return () => clearInterval(interval);
-  }, [debt, userDocId]);
-
-  // DEBUG TESTING BUTTON!
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === '9') {
-        setLevel(prevLevel => {
-          const newLevel = prevLevel + 1;
-          updateLevelInFirestore(newLevel);
-          return newLevel;
-        });
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [updateLevelInFirestore]);
-  // DEBUG TESTING BUTTON!
-
-  useEffect(() => {
-    const calculateInterest = async () => {
-      if (debt > 0 && userDocId) {
-        const interest = debt * 0.01; // 1% interest
-        const newDebt = debt + interest;
-
-        try {
-          const userDocRef = doc(db, 'Players', userDocId);
-          await updateDoc(userDocRef, {
-            debt: newDebt,
-          });
-          setDebt(newDebt);
-        } catch (err) {
-          console.error('Failed to update debt:', err);
-        }
-      }
-    };
-
-    const interval = setInterval(calculateInterest, 60000); // 1 minute
-    return () => clearInterval(interval);
-  }, [debt, userDocId]);
+  // // DEBUG TESTING BUTTON!
+  // useEffect(() => {
+  //   const handleKeyDown = (e) => {
+  //     if (e.key === '9') {
+  //       setLevel(prevLevel => {
+  //         const newLevel = prevLevel + 1;
+  //         updateLevelInFirestore(newLevel);
+  //         return newLevel;
+  //       });
+  //     }
+  //   };
+  //   window.addEventListener('keydown', handleKeyDown);
+  //   return () => window.removeEventListener('keydown', handleKeyDown);
+  // }, [updateLevelInFirestore]);
+  // // DEBUG TESTING BUTTON!
 
   const handleGameDoubleClick = (game) => {
     playClickSound();
-    if (game.name === 'Unlocked' && !isEndUnlocked) {
-      alert('You must bin all icons first!');
-      return;
-    }
 
     if (!activeGames.includes(game.name)) {
       setActiveGames([...activeGames, game.name]);
-      if (game.name === 'Unlocked') {
+      if (game.name === 'ErroR DOnt ENert') {
+        console.log('Navigating to /END...');
         navigate('/END', { state: { fromUnlocked: true } }); // Pass state
       } else {
         navigate(game.route);
       }
     }
 
-    // Reset the Messages icon to closed mailbox when opened
-    if (game.name === 'Messages') {
-      setHasNewMail(false); // Reset new mail state
-      const updatedGames = games.map((g) => {
-        if (g.name === 'Messages') {
-          return {
-            ...g,
-            icon: '📭', // Reset icon to closed mailbox
-          };
-        }
-        return g;
-      });
-      setGames(updatedGames);
-    }
   };
+  useEffect(() => {
+    const updatedGames = games.map((game) => {
+      if (game.name === 'Messages') {
+        return {
+          ...game,
+          icon: hasNewMail ? NewMailIcon : NoMailIcon, // Change icon based on hasNewMail
+        };
+      }
+      return game;
+    });
+    setGames(updatedGames);
+  }, [hasNewMail]);
 
   const handleDragStop = (event, game) => {
     const iconRef = iconRefs.current[game.id];
@@ -337,7 +301,7 @@ const GameSelection = () => {
               return {
                 ...game,
                 icon: '🔓',
-                name: 'Unlocked',
+                name: 'ErroR DOnt ENert',
                 route: '/END',
               };
             }
@@ -432,38 +396,15 @@ const GameSelection = () => {
   //   navigate('/UserEntry');
   // }
 
-  // Update the Messages icon based on hasNewMail
-useEffect(() => {
-  const updatedGames = games.map((game) => {
-    if (game.name === 'Messages') {
-      return {
-        ...game,
-        icon: hasNewMail ? '📬' : '📭', // Change icon based on hasNewMail
-      };
-    }
-    return game;
-  });
-  setGames(updatedGames);
-}, [hasNewMail]);
 
   function GoBack() {
     playClickSound();
     navigate('/UserEntry');
   }
 
-  // Update the Messages icon based on hasNewMail
-useEffect(() => {
-  const updatedGames = games.map((game) => {
-    if (game.name === 'Messages') {
-      return {
-        ...game,
-        icon: hasNewMail ? '📬' : '📭', // Change icon based on hasNewMail
-      };
-    }
-    return game;
-  });
-  setGames(updatedGames);
-}, [hasNewMail]);
+const onNewMail = (hasNewMail) => {
+  setHasNewMail(hasNewMail);
+};
 
   return (
     <div className="GS-Container">
@@ -492,7 +433,7 @@ useEffect(() => {
                 className="GS-Icon"
                 ref={(el) => (iconRefs.current[game.id] = el)}
               >
-                <div className="GS-IconImage">{game.icon}</div>
+                <div className="GS-IconImage"><img src={game.icon} alt={game.name}/></div>
                 <div className="GS-IconLabel">{game.name}</div>
               </div>
             </Draggable>
@@ -513,9 +454,10 @@ useEffect(() => {
           <Messages
             closeGame={() => openLeavePopup('Messages')}
             Level={Level}
-            onNewMail={(hasNewMail) => setHasNewMail(hasNewMail)}
+            onNewMail={onNewMail}
             username={username} 
-            money={money}       
+            money={money}      
+            hasNewMail={hasNewMail} 
           />
         )}
         {activeGames.includes('Statistics') && (
@@ -558,9 +500,22 @@ useEffect(() => {
           )}
         </div>
                   <div className="audio-controls">
-  <div className="volume-icon" onClick={toggleAudio}>
-    {isPlaying ? '🔊' : '🔇'}
-  </div>
+                  <div className="volume-icon" onClick={toggleAudio}>
+  <img src={isPlaying ? SoundOnIcon: SoundOffIcon} alt="Volume" />
+</div>
+  <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={(e) => {
+              const newVolume = parseFloat(e.target.value);
+              setVolume(newVolume);
+              audioRef.current.volume = newVolume; // Update audio volume
+            }}
+            className="volume-slider"
+          />
 </div>
         <div className="GS-TaskbarUsername">Hello, {username}</div>
       </div>

@@ -12,9 +12,24 @@ import {
     where,
 } from "firebase/firestore";
 import "./CssFiles/Slots.css";
-import Alien from './Assets/DitherAlien.png';
+import Alien from './Assets/Icons/SlottoUwU.png';
+import ShamIcon from './Assets/Icons/ShamIcon.png'
+import SevenIcon from './Assets/Icons/SevenIcon.png'
+import CherryIcon from './Assets/Icons/CherryIcon.png'
+import DiamondIcon from './Assets/Icons/DiamondIcon.png'
+import QuestionMarkIcon from './Assets/Icons/QuestionMarkIcon.png'
+import HorseShoeIcon from './Assets/Icons/HorseShoeIcon.png'
 
 const symbols = ["7", "🎵", "🍀", "🔔", "💎", "🐎"];
+
+const symbolImages = {
+    "7": SevenIcon,
+    "🎵": QuestionMarkIcon,
+    "🍀": ShamIcon,
+    "🔔": CherryIcon,
+    "💎": DiamondIcon,
+    "🐎": HorseShoeIcon,
+};
 
 export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestore }) {
     const navigate = useNavigate();
@@ -23,9 +38,9 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
     const randomX = Math.floor(Math.random() * (window.innerWidth - 600));
     const randomY = Math.floor(Math.random() * (window.innerHeight - 490 - 40));
     const [reels, setReels] = useState([
-        ["?", "?", "?"],
-        ["?", "?", "?"],
-        ["?", "?", "?"],
+        ["7", "7", "7"],
+        ["7", "7", "7"],
+        ["7", "7", "7"],
     ]);
     const [credits, setCredits] = useState(0);
     const [bet, setBet] = useState(0);
@@ -361,19 +376,19 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
                                 </div>
 
                                 <div className="slot-reels">
-                                    {reels.map((row, rowIndex) => (
-                                        <div key={rowIndex} className="slot-reel">
-                                            {row.map((symbol, colIndex) => (
-                                                <div
-                                                    key={`${rowIndex}-${colIndex}`}
-                                                    className={`slot-cell ${isHighlighted(rowIndex, colIndex) ? "highlighted" : ""}`}
-                                                >
-                                                    {symbol}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    ))}
-                                </div>
+                                {reels.map((row, rowIndex) => (
+                                    <div key={rowIndex} className="slot-reel">
+                                        {row.map((symbol, colIndex) => (
+                                            <div
+                                                key={`${rowIndex}-${colIndex}`}
+                                                className={`slot-cell ${isHighlighted(rowIndex, colIndex) ? "highlighted" : ""}`}
+                                            >
+                                                <img src={symbolImages[symbol]} alt={symbol} className="symbol-image" />
+                                            </div>
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
 
                                 <div className="bet-adjust bet-increase">
                                     {[1, 10, 100, 1000].map((value) => (
