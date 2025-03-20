@@ -42,10 +42,7 @@
   .GS-IconImage img {
     height: 7vh; /* Adjust this value to your desired size */
     width: 7vh; /* Adjust this value to your desired size */
-    -webkit-user-drag: none;
-    -khtml-user-drag: none;
-    -moz-user-drag: none;
-    -o-user-drag: none;
+    pointer-events: none;
   }
   .GS-IconLabel{
     margin-top: 4px;
