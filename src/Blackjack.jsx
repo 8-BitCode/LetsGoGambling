@@ -315,7 +315,7 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
                         <div className="Blackjack-Bet">
                             <div className="Blackjack-Money">
                                 <div className="Blackjack-Money-Child">
-                                    <h2>ShamBux = {money}</h2>
+                                    <h2>Shambux = {money}</h2>
                                     <h2>Bet = {bet}</h2>
                                 </div>
                                 <div className="Blackjack-Money-Child">

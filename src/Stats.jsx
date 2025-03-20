@@ -48,7 +48,7 @@ export default function Stats({ closeGame, loggedInUser, selectedUser }) {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>ShamBux 🍀</th>
+                <th>Shambux 🍀</th>
                 <th>Anti Shambux</th>
                 <th>LEVEL</th>
               </tr>
