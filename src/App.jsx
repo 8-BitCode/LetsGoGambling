@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import TermsOfService from './TermsOfService';
 import UserEntry from './UserEntry';
@@ -15,6 +15,8 @@ export default () => (
   <div className='Intro-Container'>
      <BrowserRouter>
       <Routes>
+        {/* Redirect "/" to UserEntry so the app always shows something */}
+        <Route path= "/" element = {<Navigate to="/UserEntry" />} />
         <Route path="/TermsOfService" element={<TermsOfService />}/>
         <Route path="/UserEntry" element={<UserEntry />} />
         <Route path="/GameSelection" element={<GameSelection />} />

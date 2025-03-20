@@ -80,8 +80,7 @@ const GameSelection = () => {
             </div>
           ))}
         </div>
-
-        {/* ✅ Stats Page Button */}
+        
         <div className="mt-8 text-center">
           <Button 
             onClick={() => navigate("/stats")}
