@@ -188,6 +188,8 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
     };
 
     const stand = () => {
+
+
         if (gameOver) return;
         let newDeck = [...deck];
         let newDealerHand = [...dealerHand];

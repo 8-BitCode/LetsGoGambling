@@ -237,6 +237,28 @@ const GameSelection = () => {
   }, [updateLevelInFirestore]);
   // DEBUG TESTING BUTTON!
 
+  useEffect(() => {
+    const calculateInterest = async () => {
+      if (debt > 0 && userDocId) {
+        const interest = debt * 0.01; // 1% interest
+        const newDebt = debt + interest;
+
+        try {
+          const userDocRef = doc(db, 'Players', userDocId);
+          await updateDoc(userDocRef, {
+            debt: newDebt,
+          });
+          setDebt(newDebt);
+        } catch (err) {
+          console.error('Failed to update debt:', err);
+        }
+      }
+    };
+
+    const interval = setInterval(calculateInterest, 60000); // 1 minute
+    return () => clearInterval(interval);
+  }, [debt, userDocId]);
+
   const handleGameDoubleClick = (game) => {
     playClickSound();
     if (game.name === 'Unlocked' && !isEndUnlocked) {
@@ -253,21 +275,19 @@ const GameSelection = () => {
       }
     }
 
-    // Reset the Messages icon to closed mailbox when opened
-    if (game.name === 'Messages') {
-      setHasNewMail(false); // Reset new mail state
-      const updatedGames = games.map((g) => {
-        if (g.name === 'Messages') {
-          return {
-            ...g,
-            icon: '📭', // Reset icon to closed mailbox
-          };
-        }
-        return g;
-      });
-      setGames(updatedGames);
-    }
   };
+  useEffect(() => {
+    const updatedGames = games.map((game) => {
+      if (game.name === 'Messages') {
+        return {
+          ...game,
+          icon: hasNewMail ? '📬' : '📭', // Change icon based on hasNewMail
+        };
+      }
+      return game;
+    });
+    setGames(updatedGames);
+  }, [hasNewMail]);
 
   const handleDragStop = (event, game) => {
     const iconRef = iconRefs.current[game.id];
@@ -413,6 +433,28 @@ useEffect(() => {
   setGames(updatedGames);
 }, [hasNewMail]);
 
+  function GoBack() {
+    playClickSound();
+    navigate('/UserEntry');
+  }
+
+  // Update the Messages icon based on hasNewMail
+useEffect(() => {
+  const updatedGames = games.map((game) => {
+    if (game.name === 'Messages') {
+      return {
+        ...game,
+        icon: hasNewMail ? '📬' : '📭', // Change icon based on hasNewMail
+      };
+    }
+    return game;
+  });
+  setGames(updatedGames);
+}, [hasNewMail]);
+const onNewMail = (hasNewMail) => {
+  setHasNewMail(hasNewMail);
+};
+
   return (
     <div className="GS-Container">
       <Helmet>
@@ -461,10 +503,10 @@ useEffect(() => {
           <Messages
             closeGame={() => openLeavePopup('Messages')}
             Level={Level}
-            onNewMail={(hasNewMail) => setHasNewMail(hasNewMail)}
+            onNewMail={onNewMail}
             username={username} 
-            money={money}
-            updateLevel={updateLevelInFirestore}      
+            money={money}      
+            hasNewMail={hasNewMail} 
           />
         )}
         {activeGames.includes('Statistics') && (

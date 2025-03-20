@@ -13,7 +13,6 @@
     color: black;
   }
   
-  
     
     /* Start Game button styling */
     button.Messages-Start{
@@ -219,4 +218,19 @@
 
 .Messages-sidebar button.unread.active {
     background-color: #ffffff; /* When active, override the unread color */
+}
+    
+/* Ensure .new-mail has higher specificity */
+.Messages-sidebar button.new-mail {
+  background-color: yellow !important; /* Force yellow background */
+  font-weight: bold !important; /* Force bold text */
+}
+
+/* Remove conflicting styles */
+.Messages-sidebar button.unread {
+  background-color: #ff9999; /* Light red for unread messages */
+}
+
+.Messages-sidebar button.unread.active {
+  background-color: #ffffff; /* When active, override the unread color */
 }

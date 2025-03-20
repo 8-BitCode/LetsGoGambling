@@ -162,7 +162,6 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
             alert("Please place a bet to start the game.");
             return;
         }
-
         setSpinning(true);
         const newCredits = credits - bet;
         setCredits(newCredits);
