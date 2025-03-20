@@ -15,7 +15,7 @@ import Blackjack from './Blackjack';
 import Roulette from './Roulette';
 import { doc, getDoc, setDoc, updateDoc, increment } from 'firebase/firestore';
 import Click from './Assets/SoundEffects/Click.wav';
-import EmailSound from './Assets/SoundEffects/EmailSound.wav'
+import EmailSound from './Assets/SoundEffects/YouGotMail.wav'
 import JAZZ from './Assets/SoundEffects/JAZZ.wav'
 import NoMailIcon from './Assets/Icons/NoMailIcon.png'
 import NewMailIcon from './Assets/Icons/NewMailIcon.png'
@@ -117,7 +117,11 @@ const GameSelection = () => {
 
   useEffect(() => {
     // Define level milestones that trigger new mail
-    const newMailLevels = [1, 2, 15, 24, 25, 34, 41, 42, 50, 52, 60, 66, 70, 72, 80, 83, 95, 96, 100, 101, 107, 118, 129, 130, 140, 149, 160, 165, 190, 191, 210];
+    const newMailLevels = [
+      0, 2, 14, 20, 21, 30, 45, 46, 55, 65, 75, 78, 79, 90, 100,
+      110, 120, 130, 132, 140, 150, 155, 175, 190, 210, 220, 240,
+      249, 250, 270, 280, 285, 290, 310, 330, 331, 360
+  ];
     const audio = new Audio(EmailSound);
 
     if (newMailLevels.includes(Level)) {
