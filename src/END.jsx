@@ -13,6 +13,21 @@ export default function END() {
   const [noLines, setNoLines] = useState([]); // State for the "No" lines
   const [showFadeIn, setShowFadeIn] = useState(false); // New state for fade-in delay
   const poemRef = useRef(null); // Ref to track the poem's height
+  const { fromUnlocked, setShowUnlockMessage } = location.state || {};
+  const { isEndUnlocked, money } = location.state || {};
+
+  useEffect(() => {
+    if (isEndUnlocked === undefined) {
+        // Redirect to /GameSelection only if isEndUnlocked is not provided
+        navigate("/GameSelection");
+    } else {
+        setIsUnlocked(true); // Allow the page to render
+    }
+}, [isEndUnlocked, navigate]);
+const calculateRequiredAmount = (money) => {
+  if (money === 0) return 1000; // Default to 1000 if money is 0
+  return Math.pow(10, Math.ceil(Math.log10(money + 1))) * 10;
+};
 
   const poem = `
   Fyodor Dostoevsky, The Gambler:
@@ -34,13 +49,6 @@ up my mind? . . .
 
 `;
 
-  useEffect(() => {
-    if (location.state?.fromUnlocked) {
-      setIsUnlocked(true);
-    } else {
-      navigate("/GameSelection");
-    }
-  }, [location, navigate]);
 
   useEffect(() => {
     if (isUnlocked && poemRef.current) {
@@ -100,44 +108,58 @@ up my mind? . . .
     }
   }, [isScrollingDone]);
 
-  return (
+return (
     <>
-      <Helmet>
-        <title>The End</title>
-      </Helmet>
-      {isUnlocked ? (
+        <Helmet>
+            <title>The End</title>
+        </Helmet>
         <div className="end-container">
-          <div className="scrolling-text" ref={poemRef}>
-            <pre
-              style={{ fontFamily: "PixelFont" }}
-              dangerouslySetInnerHTML={{ __html: poem }}
-            />
-          </div>
-          {isScrollingDone && (
-            <div className="infinite-loop-container">
-              {noLines.map((item) => (
-                <div
-                  key={item.id}
-                  className="infinite-loop-text"
-                  style={{ top: item.y, left: item.x }}
-                >
-                  No: tomorrow all shall be ended!
+            {/* Alternate Message */}
+            {!isEndUnlocked && (
+              <div className='LockedContainer'>
+                <p style={{position:'absolute', color:'red', zIndex:'10000', top:'50x', left:'100px',fontSize:'9em', color:'white'}}>:(</p>
+                <div className="unlock-message-overlay">
+                    <div className="unlock-message">
+                        <h1>TO UNLOCK PLEASE GAIN ${calculateRequiredAmount(money)}</h1>
+                        <button onClick={() => navigate("/GameSelection")}>GO BACK TO GAMBLING!!!</button>
+                    </div>
                 </div>
-              ))}
-            </div>
-          )}
-          <div
-            className={`fade-in-container ${showFadeIn ? "visible" : ""}`}
-          >
-            <img
-              src={pokerDogs}
-              alt="Fade-in Image"
-              className="fade-in-image"
-            />
-            <p className="fade-in-text">Let's Go Gambling</p>
-          </div>
+                </div>
+            )}
+
+            {/* Normal Ending Content */}
+            {isEndUnlocked && (
+                <>
+                    <div className="scrolling-text" ref={poemRef}>
+                        <pre
+                            style={{ fontFamily: "PixelFont" }}
+                            dangerouslySetInnerHTML={{ __html: poem }}
+                        />
+                    </div>
+                    {isScrollingDone && (
+                        <div className="infinite-loop-container">
+                            {noLines.map((item) => (
+                                <div
+                                    key={item.id}
+                                    className="infinite-loop-text"
+                                    style={{ top: item.y, left: item.x }}
+                                >
+                                    No: tomorrow all shall be ended!
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    <div className={`fade-in-container ${showFadeIn ? "visible" : ""}`}>
+                        <img
+                            src={pokerDogs}
+                            alt="Fade-in Image"
+                            className="fade-in-image"
+                        />
+                        <p className="fade-in-text">Let's Go Gambling</p>
+                    </div>
+                </>
+            )}
         </div>
-      ) : null}
     </>
-  );
+);
 }

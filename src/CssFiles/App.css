@@ -12,7 +12,7 @@ body{
     cursor: url('../Assets/CusorImages/NORMAL.png'), auto;
     image-rendering: pixelated;
 }
-a, button, .clickable, .TOS-Container .button, .GS-Icon, .GS-EasterEgg, .continue-button, .control-button, .spin-button, .bet-adjust, .bet-decrease, .GS-SuggestionItem, .popup-button, .volume-icon, .volume-slider{
+a, button, .clickable, .TOS-Container .button, .GS-Icon, .GS-EasterEgg, .continue-button, .control-button, .spin-button, .bet-adjust, .bet-decrease, .GS-SuggestionItem, .popup-button, .volume-icon, .volume-slider, .unlock-message button{
     cursor: url('../Assets/CusorImages/LINK_SELECT.png'), pointer;
 }
 input {

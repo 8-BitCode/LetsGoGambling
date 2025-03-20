@@ -98,3 +98,49 @@
   color: gold; /* Change to your desired color */
   font-weight: bold; /* Optional: make the keywords bold */
 }
+.unlock-message-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  background-color: #0827f4;
+}
+.LockedContainer{
+  width: 100vw;
+  height: 100vh;
+}
+.unlock-message {
+  background: #000;
+  border: 2px solid #fff;
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+  font-family: BIOSFont;
+}
+
+.unlock-message h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.unlock-message button {
+  background: #fff;
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.unlock-message-overlay button{
+  background-color: #c0c0c0;
+  border: 1px outset #4f4f4f; /* Changed to outset border */
+  font-family: BIOSFont;
+}
+.unlock-message-overlay{
+  font-family: BIOSFont;
+}

@@ -89,6 +89,7 @@ const GameSelection = () => {
     const [activePopups, setActivePopups] = useState([]);
     const [deletedIcons, setDeletedIcons] = useState([]);
     const [isEndUnlocked, setIsEndUnlocked] = useState(false); // Track if END is unlocked
+    const [showUnlockMessage, setShowUnlockMessage] = useState(false);
     const [isPlaying, setIsPlaying] = useState(true); // Track audio state
     const audioRef = useRef(null); // Ref for the audio element
     const [volume, setVolume] = useState(1);
@@ -241,35 +242,37 @@ const GameSelection = () => {
         }
     };
 
-    // DEBUG TESTING BUTTON!
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === "9") {
-                setLevel((prevLevel) => {
-                    const newLevel = prevLevel + 1;
-                    updateLevelInFirestore(newLevel);
-                    return newLevel;
-                });
-            }
-        };
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [updateLevelInFirestore]);
-    // DEBUG TESTING BUTTON!
+    // // DEBUG TESTING BUTTON!
+    // useEffect(() => {
+    //     const handleKeyDown = (e) => {
+    //         if (e.key === "9") {
+    //             setLevel((prevLevel) => {
+    //                 const newLevel = prevLevel + 1;
+    //                 updateLevelInFirestore(newLevel);
+    //                 return newLevel;
+    //             });
+    //         }
+    //     };
+    //     window.addEventListener("keydown", handleKeyDown);
+    //     return () => window.removeEventListener("keydown", handleKeyDown);
+    // }, [updateLevelInFirestore]);
+    // // DEBUG TESTING BUTTON!
 
     const handleGameDoubleClick = (game) => {
         playClickSound();
-
+    
+        if (game.name === "Locked") {
+            // Navigate to /END with isEndUnlocked and money
+            navigate("/END", { state: { isEndUnlocked, money } });
+            return;
+        }
+    
         if (!activeGames.includes(game.name)) {
             setActiveGames([...activeGames, game.name]);
-            if (game.name === "ErroR DOnt ENert") {
-                console.log("Navigating to /END...");
-                navigate("/END", { state: { fromUnlocked: true } }); // Pass state
-            } else {
-                navigate(game.route);
-            }
+            navigate(game.route);
         }
     };
+
     useEffect(() => {
         const updatedGames = games.map((game) => {
             if (game.name === "Messages") {
@@ -286,39 +289,39 @@ const GameSelection = () => {
     const handleDragStop = (event, game) => {
         const iconRef = iconRefs.current[game.id];
         if (!easterEggRef.current || !iconRef) return;
-
+    
         const iconRect = iconRef.getBoundingClientRect();
         const easterEggRect = easterEggRef.current.getBoundingClientRect();
-
+    
         const isOverlapping =
             iconRect.left < easterEggRect.right &&
             iconRect.right > easterEggRect.left &&
             iconRect.top < easterEggRect.bottom &&
             iconRect.bottom > easterEggRect.top;
-
+    
         if (isOverlapping) {
             console.log(`Icon ${game.name} deleted.`);
             iconRef.style.display = "none";
             setDeletedIcons((prev) => {
                 const newDeletedIcons = [...prev, game.id];
                 console.log("Deleted Icons:", newDeletedIcons);
-
+    
                 // Check if all icons (except "Locked") are deleted
                 const allIconsDeleted = games
                     .filter((game) => game.name !== "Locked")
                     .every((game) => newDeletedIcons.includes(game.id));
-
+    
                 console.log("All icons deleted?", allIconsDeleted);
-
+    
                 if (allIconsDeleted) {
                     console.log("Unlocking END route...");
-                    setIsEndUnlocked(true);
+                    setIsEndUnlocked(true); // Set isEndUnlocked to true
                     const updatedGames = games.map((game) => {
                         if (game.name === "Locked") {
                             return {
                                 ...game,
                                 icon: "🔓",
-                                name: "ErroR DOnt ENert",
+                                name: "Locked",
                                 route: "/END",
                             };
                         }
@@ -327,7 +330,7 @@ const GameSelection = () => {
                     setGames(updatedGames);
                     console.log("Games array updated:", updatedGames);
                 }
-
+    
                 return newDeletedIcons;
             });
         }
