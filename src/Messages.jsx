@@ -149,7 +149,7 @@ const Messages = ({
 
             if (Level >= 190) {
                 newMessage =
-                    "A CEO MUST ALWAYS NEGOTIATE FROM A POSITION OF STRENGTH.<br/><br/> THAT'S WHY I OFFERED THE EMPLOYEES A VERY GENEROUS DEAL.<br/><br/> KEEP WORKING FOR MINIMUM WAGE, DISSOLVE THE UNION, AND STOP THREATENING TO LEAK OUR 100% LEGAL CHRONO-MANIPULATION TECHNOLOGY. OR JUST QUIT!<br/><br/><br/>ON AN ENTIRELY UNRELATED NOTE, HEY USER YOU WOULDN'T HAPPEN TO BE SEARCHING FOR EMPLOYMENT?" +
+                    "A CEO MUST ALWAYS NEGOTIATE FROM A POSITION OF STRENGTH.<br/><br/> THAT'S WHY I OFFERED THE EMPLOYEES A VERY GENEROUS DEAL.<br/><br/> KEEP WORKING FOR MINIMUM WAGE, DISSOLVE THE UNION, AND STOP THREATENING TO LEAK OUR 100% LEGAL TIME-MANIPULATION TECHNOLOGY. OR JUST QUIT!<br/><br/><br/>ON AN ENTIRELY UNRELATED NOTE, HEY USER YOU WOULDN'T HAPPEN TO BE SEARCHING FOR EMPLOYMENT?" +
                     generateSeparator() +
                     newMessage;
             }
@@ -198,7 +198,7 @@ const Messages = ({
             }
             if (Level >= 75) {
                 newMessage =
-                    "Hello my sweet little crab cake! Do you remember my old friend Layla? She bought a drawing from you once when you were a kid, and then you and Steven spent months hounding her with your homemade arts and crafts, trying to get her to buy more. Ahaha, she ended up spending so much at our house that she had to stop coming over!<br/><br/> Anyway, her son, Zain, fancies himself a bit of an internet investor. Keeps going on about some kind of 'dot-com balloon' and how it's never going to burst. Very confident. <br/><br/> Naturally, he was quite intrigued when I mentioned your <span style='color:blue;'><b>internet business!</b></span> <br/><br/> So, I have invited them both over for tea and biscuits tonight. If you and your business partner happen to be free, this could be a golden opportunity to continue your long-standing tradition of selling things to this poor family." +
+                    "Hello my sweet little crab cake! Do you remember my old friend Layla? She bought a drawing from you once when you were a kid, and then you and Steven spent months hounding her with your homemade arts and crafts, trying to get her to buy more. Ahaha, she ended up spending so much at our house that she had to stop coming over!<br/><br/> Anyway, her son, Zain, fancies himself a bit of an internet investor. Keeps going on about some kind of 'dot-com balloon' and how it is never going to burst. Very confident. <br/><br/> Naturally, he was quite intrigued when I mentioned your <span style='color:blue;'><b>internet business!</b></span> <br/><br/> So, I have invited them both over for tea and biscuits tonight. If you and your business partner happen to be free, this could be a golden opportunity to continue your long-standing tradition of selling things to this poor family." +
                     generateSeparator() +
                     newMessage;
             }
