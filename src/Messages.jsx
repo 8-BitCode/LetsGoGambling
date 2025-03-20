@@ -43,7 +43,7 @@ const Messages = ({ closeGame, Level, onNewMail, username, money, updateLevel })
         const messageLevels = {
             LGGCorp: [0, 2, 20, 32, 45, 52, 70, 95],
             Mum: [0, 24, 41, 52, 66, 80, 100, 101, 130, 210],
-            "steve-o": [0, 15, 21, 25, 34, 50, 60, 72, 83, 96, 107, 118, 129, 140, 149, 160, 165, 190, 191]
+            "steve-o": [0, 15, 25, 34, 50, 60, 72, 83, 96, 107, 118, 129, 140, 149, 160, 165, 190, 191]
         };
 
         // Get already read messages from localStorage
@@ -135,28 +135,30 @@ const Messages = ({ closeGame, Level, onNewMail, username, money, updateLevel })
             if (Level >= 24) {
                 newMessage = "<b> I noticed you have not answered my phone calls >:( </b> <br/><br/>Were this under normal circumstances, I would be very angry with you. However, ahaha I have received an anonymous tip that suddenly changes everything!<br/><br/>Oh my sweet little child, you should have told me!! You’re becoming just like your father was when he was your age!<br/><br/>When he and I first got together, I was a bit apprehensive about his more… volatile line of income. But it was hard to argue when he would come home each night with two times more than the last!<br/><br/>I'm so proud of you <3  Good luck ;)" + generateSeparator() + newMessage;
             }
-            if (Level >= 50) {
+            if (Level >= 37) {
                 newMessage = "Hello my sweet little crab cake! Do you remember my old friend Layla? She bought a cute drawing from you once, and then you and Steven spent months hounding her with your homemade arts and crafts, trying to get her to buy more. Ahaha, she ended up spending so much at our house that she had to stop coming over!<br/><br/> Anyway, her son, Zain, fancies himself a bit of an internet investor. Keeps going on about some kind of 'dot-com balloon' and how it's never going to burst. Very confident. <br/><br/> Naturally, he was quite intrigued when I mentioned your <span style='color:blue;'><b>internet business!</b></span> <br/><br/> So, I have invited them both over for tea and biscuits tonight. If you and your business partner happen to be free, this could be a golden opportunity to continue your long-standing tradition of selling things to this poor family." + generateSeparator() + newMessage;
             }
-            if (Level >= 66) {
-                newMessage = "I baked you some delicious chelsea buns, your favourite! But if you want some, you are going to have to visit." + generateSeparator() + newMessage; 
-            }
-            if (Level >= 80) {
-                newMessage = "Oh sweetie!! You must come quick!<br/><br/>Your father is about to start his solo reenactment of 'The Card'!<br/><br/> He’s been practicing all week. There are props. There are costume changes. Worst of all, I think he expects audience participation. He handed me a script and said, ‘You’ll know when to come in.’ I will not. <br/><br/>Please come save me! If you let me suffer through this alone, I will never forgive you!!" + generateSeparator() + newMessage;
+            if (Level >= 41) {
+                newMessage = "Oh sweetie!! You must come quick!<br/><br/>Your father is about to start his solo reenactment of 'The Card'!<br/><br/> Oh what am I saying. You definitely do not want to see that." + generateSeparator() + newMessage;
             } 
-            if (Level >= 90) {
+            if (Level >= 42) {
+                newMessage = "Oh look! ------------"; // Fixed missing closing brace
+            }
+            if (Level >= 43) {
                 newMessage = "I miss you so much, please visit soon." + generateSeparator() + newMessage;
             }
-            if (Level >= 110) {
+            if (Level >= 66) {
                 newMessage = "I just got off the phone with Steven. I asked him for the name of your internet website so I could show some support from a distance!<br/><br/>He stammered, started to get quiet, I asked him if he was alright and he said he just needed to take a second to remember. After which I began to hear the distinct sound of keyboard pitter patter.<br/><br/>After a few empty seconds, he simply responded with “Littlewoods”.<br/><br/>Littlewoods retailer?! You two expect me to believe you’ve been chosen by John Moores himself to continue his business from beyond the grave?!<br/><br/>Oh dear, I must leave the scolding for later. I need to go restrain your father, he’s frothing like a mad dog because I mentioned John Moores again." + generateSeparator() + newMessage;
             }
-            if (Level >= 120) {
+            if (Level >= 80) {
                 newMessage = "I have been standing outside your front door knocking for the past hour. <br/><br/>I could hear your ringtone playing from the inside as I phoned you. And what sounded like the audio of a computer game. <br/><br/>I still do not know what you two have gotten yourselves into, but please do not leave me in the dark like this. If it’s something you feel like you need to do, then I will try to support you. But please, this secrtiveness is killing me. <br/><br/>By the way, I should apologise for the scratches on the door. I brought your father along with me." + generateSeparator() + newMessage;
             }
-            if (Level >= 140) {
+            if (Level >= 100) {
                 newMessage = "I cannot sleep.<br/><br/>Every time I close my eyes, all I can see is you. And then I get excited thinking you’ve come home, but you’re never here." + generateSeparator() + newMessage;
             }
-
+            if (Level >= 101) {
+                newMessage = "Also because your father has been having those theatrical dreams again. He keeps breaking into song while we’re in bed. And then for some reason John Moores keeps showing up at the end and it gets very violent, very fast.<br/>It is entertaining, but I am exhausted." + generateSeparator() + newMessage;
+            }
             if (Level >= 130) {
                 newMessage = "I’ve contacted everyone I can. The university, who tell me you haven’t been attending class. Your landlord, who tells me you have at least managed to pay rent on time. And most interestingly... your bank.<br/><br/>The bank tells me that your finances over the last few weeks have been extremely erratic. Rapid rise and falls, transfers and withdrawals, loans and paybacks even within the same day. They’ve had to call you dozens of times just to be sure you have not been defrauded. But funnily enough, you always manage to answer.<br/><br/>So then, do you just enjoy torturing your poor mother?<br/><br/>Regardless, this all paints me a clear enough picture. You are safe. Ensuring that has always been my priority.<br/><br/>Whatever financial nonsense you have gotten yourself involved in, I do not want to hear of any part of it. But the moment you come to your senses and realise that there are more important things.<br/>You can always come home. We won’t need to talk about it. And your chelsea buns will still be in the freezer, ready to be dethawed.<br/>Until then, goodbye. Please take care of yourself." + generateSeparator() + newMessage;
             }
