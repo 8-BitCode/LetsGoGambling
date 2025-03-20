@@ -5,11 +5,11 @@ import "./CssFiles/Stats.css";
 
 // Function to calculate Steve-o's Shambux based on the player's level
 const calculateSteveOShambux = (playerLevel) => {
-  let shambux = 20; // Starting Shambux at level 1
+  let shambux = 40; // Starting Shambux at level 1
 
   if (playerLevel >= 1 && playerLevel < 4) {
     // Level 1-3: Shambux remains 40
-    shambux = 20;
+    shambux = 40;
   } else if (playerLevel >= 4 && playerLevel <= 21) {
     // Every 3 levels, multiply by 1.5 (rounded down)
     const steps = Math.floor((playerLevel - 1) / 3);
