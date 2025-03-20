@@ -12,7 +12,7 @@ import {
     where,
 } from "firebase/firestore";
 import "./CssFiles/Slots.css";
-import Alien from './Assets/DitherAlien.png';
+import Alien from './Assets/Icons/SlottoUwU.png';
 
 const symbols = ["7", "🎵", "🍀", "🔔", "💎", "🐎"];
 
