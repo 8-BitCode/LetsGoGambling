@@ -1,6 +1,9 @@
 .GS-Container {
     min-height: 100vh;
-    background-color: #008080;
+    background: url('../Assets/game_select.png');
+    background-repeat: no-repeat;
+    background-size: cover; /* Ensures the entire image is visible */
+    background-position: bottom; /* Centers the image */
     font-family: 'BIOSFont', sans-serif;
     color: white;
     position: relative;
