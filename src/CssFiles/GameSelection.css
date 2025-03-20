@@ -8,6 +8,7 @@
     color: white;
     position: relative;
     overflow: hidden;
+    image-rendering: pixelated !important;
   }
   
   .GS-TimeDisplay {

@@ -244,19 +244,19 @@ const GameSelection = () => {
     };
 
     // // DEBUG TESTING BUTTON!
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === "9") {
-                setLevel((prevLevel) => {
-                    const newLevel = prevLevel + 1;
-                    updateLevelInFirestore(newLevel);
-                    return newLevel;
-                });
-            }
-        };
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [updateLevelInFirestore]);
+    // useEffect(() => {
+    //     const handleKeyDown = (e) => {
+    //         if (e.key === "9") {
+    //             setLevel((prevLevel) => {
+    //                 const newLevel = prevLevel + 1;
+    //                 updateLevelInFirestore(newLevel);
+    //                 return newLevel;
+    //             });
+    //         }
+    //     };
+    //     window.addEventListener("keydown", handleKeyDown);
+    //     return () => window.removeEventListener("keydown", handleKeyDown);
+    // }, [updateLevelInFirestore]);
     // // DEBUG TESTING BUTTON!
 
     const handleGameDoubleClick = (game) => {
