@@ -17,6 +17,16 @@ import { doc, getDoc, setDoc, updateDoc, increment } from 'firebase/firestore';
 import Click from './Assets/SoundEffects/Click.wav';
 import EmailSound from './Assets/SoundEffects/EmailSound.wav'
 import JAZZ from './Assets/SoundEffects/JAZZ.wav'
+import NoMailIcon from './Assets/Icons/NoMailIcon.png'
+import NewMailIcon from './Assets/Icons/NewMailIcon.png'
+import StatsIcon from './Assets/Icons/StatsIcon.png'
+import BlackJackIcon from './Assets/Icons/BlackJackIcon.png'
+import RouletteIcon from './Assets/Icons/RouletteIcon.png'
+import SlotsIcon from './Assets/Icons/SlotsIcon.png'
+import BankIcon from './Assets/Icons/BankIcon.png'
+import QuestionMarkIcon from './Assets/Icons/QuestionMarkIcon.png'
+import SoundOnIcon from './Assets/Icons/SoundOnIcon.png'
+import SoundOffIcon from './Assets/Icons/SoundOffIcon.png'
 const MoneySlot = ({ amount }) => {
   const digits = amount.toString().split('');
 
@@ -68,13 +78,13 @@ const GameSelection = () => {
   const audioRef = useRef(null); // Ref for the audio element
   const [volume, setVolume] = useState(1);
   const [games, setGames] = useState([
-    { id: 0, name: 'Messages', icon: '📭', route: '/GameSelection' }, // Add Messages to the games list
-    { id: 1, name: 'Statistics', icon: '📈', route: '/GameSelection' },
-    { id: 2, name: 'Black Jack', icon: '🃏', route: '/GameSelection' },
-    { id: 3, name: 'Roulette', icon: '🛞', route: '/GameSelection' },
-    { id: 4, name: 'Slots', icon: '🎰', route: '/GameSelection' },
-    { id: 5, name: 'Bank', icon: '🏦', route: '/GameSelection' },
-    { id: 6, name: 'Locked', icon: '🔒', route: '/GameSelection' },
+    { id: 0, name: 'Messages', icon: NoMailIcon, route: '/GameSelection' }, // Add Messages to the games list
+    { id: 1, name: 'Statistics', icon: StatsIcon, route: '/GameSelection' },
+    { id: 2, name: 'Black Jack', icon: BlackJackIcon, route: '/GameSelection' },
+    { id: 3, name: 'Roulette', icon: RouletteIcon, route: '/GameSelection' },
+    { id: 4, name: 'Slots', icon: SlotsIcon, route: '/GameSelection' },
+    { id: 5, name: 'Bank', icon: BankIcon, route: '/GameSelection' },
+    { id: 6, name: 'Locked', icon: QuestionMarkIcon, route: '/GameSelection' },
   ]);
 
   const toggleAudio = () => {
@@ -227,14 +237,11 @@ const GameSelection = () => {
 
   const handleGameDoubleClick = (game) => {
     playClickSound();
-    if (game.name === 'Unlocked' && !isEndUnlocked) {
-      alert('You must bin all icons first!');
-      return;
-    }
 
     if (!activeGames.includes(game.name)) {
       setActiveGames([...activeGames, game.name]);
-      if (game.name === 'Unlocked') {
+      if (game.name === 'ErroR DOnt ENert') {
+        console.log('Navigating to /END...');
         navigate('/END', { state: { fromUnlocked: true } }); // Pass state
       } else {
         navigate(game.route);
@@ -247,7 +254,7 @@ const GameSelection = () => {
       if (game.name === 'Messages') {
         return {
           ...game,
-          icon: hasNewMail ? '📬' : '📭', // Change icon based on hasNewMail
+          icon: hasNewMail ? NewMailIcon : NoMailIcon, // Change icon based on hasNewMail
         };
       }
       return game;
@@ -290,7 +297,7 @@ const GameSelection = () => {
               return {
                 ...game,
                 icon: '🔓',
-                name: 'Unlocked',
+                name: 'ErroR DOnt ENert',
                 route: '/END',
               };
             }
@@ -385,38 +392,12 @@ const GameSelection = () => {
   //   navigate('/UserEntry');
   // }
 
-  // Update the Messages icon based on hasNewMail
-useEffect(() => {
-  const updatedGames = games.map((game) => {
-    if (game.name === 'Messages') {
-      return {
-        ...game,
-        icon: hasNewMail ? '📬' : '📭', // Change icon based on hasNewMail
-      };
-    }
-    return game;
-  });
-  setGames(updatedGames);
-}, [hasNewMail]);
 
   function GoBack() {
     playClickSound();
     navigate('/UserEntry');
   }
 
-  // Update the Messages icon based on hasNewMail
-useEffect(() => {
-  const updatedGames = games.map((game) => {
-    if (game.name === 'Messages') {
-      return {
-        ...game,
-        icon: hasNewMail ? '📬' : '📭', // Change icon based on hasNewMail
-      };
-    }
-    return game;
-  });
-  setGames(updatedGames);
-}, [hasNewMail]);
 const onNewMail = (hasNewMail) => {
   setHasNewMail(hasNewMail);
 };
@@ -448,7 +429,7 @@ const onNewMail = (hasNewMail) => {
                 className="GS-Icon"
                 ref={(el) => (iconRefs.current[game.id] = el)}
               >
-                <div className="GS-IconImage">{game.icon}</div>
+                <div className="GS-IconImage"><img src={game.icon} alt={game.name}/></div>
                 <div className="GS-IconLabel">{game.name}</div>
               </div>
             </Draggable>
@@ -515,9 +496,9 @@ const onNewMail = (hasNewMail) => {
           )}
         </div>
                   <div className="audio-controls">
-  <div className="volume-icon" onClick={toggleAudio}>
-    {isPlaying ? '🔊' : '🔇'}
-  </div>
+                  <div className="volume-icon" onClick={toggleAudio}>
+  <img src={isPlaying ? SoundOnIcon: SoundOffIcon} alt="Volume" />
+</div>
   <input
             type="range"
             min="0"

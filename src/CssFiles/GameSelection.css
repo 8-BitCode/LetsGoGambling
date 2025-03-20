@@ -39,6 +39,14 @@
   .GS-IconImage {
     font-size: 32px;
   }
+  .GS-IconImage img {
+    height: 7vh; /* Adjust this value to your desired size */
+    width: 7vh; /* Adjust this value to your desired size */
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+  }
   .GS-IconLabel{
     margin-top: 4px;
     font-size: 10px;
@@ -275,13 +283,14 @@
 .audio-controls {
   display: flex;
   align-items: center; /* Align items vertically in the center */
-  gap: 10px; /* Add space between the icon and the button */
   margin-left: 10px; /* Add margin to the left of the container */
 }
 
 .volume-icon {
-  font-size: 24px; /* Increase the size of the icon */
   cursor: pointer; /* Change cursor to pointer on hover */
   transition: transform 0.2s ease; /* Add a smooth hover effect */
-  background-color: rgb(54, 54, 54);
+}
+.volume-icon img{
+  height:60px;
+  width:60px;
 }
