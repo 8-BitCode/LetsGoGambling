@@ -21,15 +21,19 @@
 }
 /* UserEntry.css */
 .UE-Container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    text-align: center;
-    background-color: #f0f0f0;
-    font-family: BIOSFont;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  background: url('../Assets/user_entry.png');
+  background-repeat: no-repeat;
+  background-size: cover; /* Ensures the entire image is visible */
+  background-position: bottom; /* Centers the image */
+  image-rendering: pixelated;
+  font-family: BIOSFont;
+  background-color: #000; /* Fallback color */
+}
   .content-wrapper {
     display: flex;
     flex-direction: column;
