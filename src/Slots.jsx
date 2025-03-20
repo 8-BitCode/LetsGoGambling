@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Draggable from "react-draggable";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import {
     getFirestore,
     doc,
@@ -12,18 +12,18 @@ import {
     where,
 } from "firebase/firestore";
 import "./CssFiles/Slots.css";
-import Alien from './Assets/Icons/SlottoUwU.png';
-import ShamIcon from './Assets/Icons/ShamIcon.png'
-import SevenIcon from './Assets/Icons/SevenIcon.png'
-import CherryIcon from './Assets/Icons/CherryIcon.png'
-import DiamondIcon from './Assets/Icons/DiamondIcon.png'
-import QuestionMarkIcon from './Assets/Icons/QuestionMarkIcon.png'
-import HorseShoeIcon from './Assets/Icons/HorseShoeIcon.png'
+import Alien from "./Assets/Icons/SlottoUwU.png";
+import ShamIcon from "./Assets/Icons/ShamIcon.png";
+import SevenIcon from "./Assets/Icons/SevenIcon.png";
+import CherryIcon from "./Assets/Icons/CherryIcon.png";
+import DiamondIcon from "./Assets/Icons/DiamondIcon.png";
+import QuestionMarkIcon from "./Assets/Icons/QuestionMarkIcon.png";
+import HorseShoeIcon from "./Assets/Icons/HorseShoeIcon.png";
 
 const symbols = ["7", "🎵", "🍀", "🔔", "💎", "🐎"];
 
 const symbolImages = {
-    "7": SevenIcon,
+    7: SevenIcon,
     "🎵": QuestionMarkIcon,
     "🍀": ShamIcon,
     "🔔": CherryIcon,
@@ -31,16 +31,20 @@ const symbolImages = {
     "🐎": HorseShoeIcon,
 };
 
-export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestore }) {
+export default function SlotMachine({
+    closeGame,
+    setLevel,
+    updateLevelInFirestore,
+}) {
     const navigate = useNavigate();
     const auth = getAuth();
     const db = getFirestore();
     const randomX = Math.floor(Math.random() * (window.innerWidth - 600));
     const randomY = Math.floor(Math.random() * (window.innerHeight - 490 - 40));
     const [reels, setReels] = useState([
-        ["7", "7", "7"],
-        ["7", "7", "7"],
-        ["7", "7", "7"],
+        ["🐎", "7", "🎵"],
+        ["🍀", "7", "🐎"],
+        ["💎", "7", "🔔"],
     ]);
     const [credits, setCredits] = useState(0);
     const [bet, setBet] = useState(0);
@@ -70,9 +74,9 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
         "You're my lucky charm. Spin again. Please. 🍀",
         "I'll always be here, cheering for you. Forever. 💕",
         "You’re playing with fire... and I’m the one holding the match. 🔥",
-        `I know everything about you, ${userEmail}. You can't escape. 🌑`
+        `I know everything about you, ${userEmail}. You can't escape. 🌑`,
     ];
-    
+
     const losingMessages = [
         "Better luck next time! 🍀",
         "Slotto feels your pain... 😢",
@@ -92,7 +96,7 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
         "I believe in you. More than anyone. Ever. 💕",
         "You're so close to winning big. Don't give up. 🚀",
         "I'll be here, waiting for you to spin again. Forever. 🌑",
-        `I know who you are, ${userEmail}`
+        `I know who you are, ${userEmail}`,
     ];
 
     // Fetch user money and email when authenticated
@@ -134,10 +138,12 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
         if (!isVoiceEnabled) return; // Don't speak if voice is disabled
 
         // Remove emojis and other non-text characters
-        const filteredText = text.replace(
-            /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2B50}\u{2B55}]/gu,
-            ""
-        ).trim();
+        const filteredText = text
+            .replace(
+                /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2B50}\u{2B55}]/gu,
+                "",
+            )
+            .trim();
 
         if (!filteredText) return;
 
@@ -149,7 +155,9 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
 
         // Optional: choose a specific voice
         const voices = window.speechSynthesis.getVoices();
-        const slottoVoice = voices.find((voice) => voice.name.includes("Microsoft David"));
+        const slottoVoice = voices.find((voice) =>
+            voice.name.includes("Microsoft David"),
+        );
         if (slottoVoice) {
             utterance.voice = slottoVoice;
         }
@@ -172,7 +180,6 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
             return newLevel;
         });
 
-
         if (bet === 0) {
             alert("Please place a bet to start the game.");
             return;
@@ -186,15 +193,15 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
         let interval = setInterval(() => {
             setReels((prevReels) =>
                 prevReels.map((row) =>
-                    row.map(() => symbols[Math.floor(Math.random() * symbols.length)])
-                )
+                    row.map(() => symbols[Math.floor(Math.random() * symbols.length)]),
+                ),
             );
         }, 100);
 
         setTimeout(() => {
             clearInterval(interval);
             const newReels = reels.map((row) =>
-                row.map(() => symbols[Math.floor(Math.random() * symbols.length)])
+                row.map(() => symbols[Math.floor(Math.random() * symbols.length)]),
             );
             setReels(newReels);
             setSpinning(false);
@@ -204,27 +211,27 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
 
     const [usedWinningMessages, setUsedWinningMessages] = useState([]);
     const [usedLosingMessages, setUsedLosingMessages] = useState([]);
-    
+
     const getNextMessage = (messages, usedMessages, setUsedMessages) => {
         if (usedMessages.length === messages.length) {
             // Reset if all messages have been used
             setUsedMessages([]);
         }
-    
+
         // Find the next message that hasn't been used recently
         const availableMessages = messages.filter(
-            (message) => !usedMessages.includes(message)
+            (message) => !usedMessages.includes(message),
         );
-    
+
         const nextMessage =
             availableMessages[Math.floor(Math.random() * availableMessages.length)];
-    
+
         // Update the used messages list
         setUsedMessages([...usedMessages, nextMessage]);
-    
+
         return nextMessage;
     };
-    
+
     const checkWins = (grid, updatedCredits) => {
         let wins = [];
         let winDetected = false;
@@ -287,7 +294,7 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
                 winAmount = Math.round(bet * (9 / 7) * betProportion);
             }
         }
-    
+
         const totalCredits = updatedCredits + winAmount;
         setCredits(totalCredits);
         setHighlighted(wins);
@@ -297,14 +304,14 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
             const nextMessage = getNextMessage(
                 winningMessages,
                 usedWinningMessages,
-                setUsedWinningMessages
+                setUsedWinningMessages,
             );
             setSlottoText(nextMessage);
         } else {
             const nextMessage = getNextMessage(
                 losingMessages,
                 usedLosingMessages,
-                setUsedLosingMessages
+                setUsedLosingMessages,
             );
             setSlottoText(nextMessage);
         }
@@ -332,10 +339,15 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
 
     return (
         <>
-            <Draggable style={{ zIndex: '99999' }}>
+            <Draggable style={{ zIndex: "99999" }}>
                 <div className="SlottoCon">
                     <div className="bubble right">{SlottoText}</div>
-                    <img className='Slotto' src={Alien} alt="Alien" style={{ pointerEvents: 'none' }} />
+                    <img
+                        className="Slotto"
+                        src={Alien}
+                        alt="Alien"
+                        style={{ pointerEvents: "none" }}
+                    />
                 </div>
             </Draggable>
 
@@ -370,25 +382,33 @@ export default function SlotMachine({ closeGame, setLevel, updateLevelInFirestor
                                             -{value}
                                         </button>
                                     ))}
-                                    <button onClick={() => setBet((prevBet) => Math.max(1, (prevBet / 2).toFixed(2)))}>
+                                    <button
+                                        onClick={() =>
+                                            setBet((prevBet) => Math.max(1, (prevBet / 2).toFixed(2)))
+                                        }
+                                    >
                                         Halve
                                     </button>
                                 </div>
 
                                 <div className="slot-reels">
-                                {reels.map((row, rowIndex) => (
-                                    <div key={rowIndex} className="slot-reel">
-                                        {row.map((symbol, colIndex) => (
-                                            <div
-                                                key={`${rowIndex}-${colIndex}`}
-                                                className={`slot-cell ${isHighlighted(rowIndex, colIndex) ? "highlighted" : ""}`}
-                                            >
-                                                <img src={symbolImages[symbol]} alt={symbol} className="symbol-image" />
-                                            </div>
-                                        ))}
-                                    </div>
-                                ))}
-                            </div>
+                                    {reels.map((row, rowIndex) => (
+                                        <div key={rowIndex} className="slot-reel">
+                                            {row.map((symbol, colIndex) => (
+                                                <div
+                                                    key={`${rowIndex}-${colIndex}`}
+                                                    className={`slot-cell ${isHighlighted(rowIndex, colIndex) ? "highlighted" : ""}`}
+                                                >
+                                                    <img
+                                                        src={symbolImages[symbol]}
+                                                        alt={symbol}
+                                                        className="symbol-image"
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ))}
+                                </div>
 
                                 <div className="bet-adjust bet-increase">
                                     {[1, 10, 100, 1000].map((value) => (

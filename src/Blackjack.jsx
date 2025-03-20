@@ -38,7 +38,21 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
     const randomY = Math.floor(Math.random() * (window.innerHeight - 583 - 40)); // - 40 for the bar
 
     const suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
-    const values = ["2","3","4","5","6","7","8","9","10","J","Q","K","A"];
+    const values = [
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "J",
+        "Q",
+        "K",
+        "A",
+    ];
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -108,14 +122,6 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
             return;
         }
 
-        // *** ADD 1 TO LEVEL HERE ***
-        setLevel((prevLevel) => {
-            const newLevel = prevLevel + 1;
-            updateLevelInFirestore(newLevel); // Update Level in Firestore
-            return newLevel;
-        });
-        // ***************************
-
         setGameActive(true);
         const newDeck = initialiseDeck();
         const playerHand = [newDeck.pop(), newDeck.pop()];
@@ -177,10 +183,7 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
             setMessage(`You win! Your bet is doubled! + ${2 * bet}`);
             updateMoney(money + 2 * bet);
             gameOverFunction();
-        } else if (
-            newPlayerHandValue === 21 &&
-            getHandValue(dealerHand) === 21
-        ) {
+        } else if (newPlayerHandValue === 21 && getHandValue(dealerHand) === 21) {
             setMessage(`It's a tie. Your bet is returned. + ${bet}`);
             updateMoney(money + bet);
             gameOverFunction();
@@ -188,8 +191,6 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
     };
 
     const stand = () => {
-
-
         if (gameOver) return;
         let newDeck = [...deck];
         let newDealerHand = [...dealerHand];
@@ -222,13 +223,21 @@ const Blackjack = ({ closeGame, setLevel, updateLevelInFirestore }) => {
         setMessage(
             (message) =>
                 `${message}
-      Resetting game...`
+      Resetting game...`,
         );
         setTimeout(() => {
             setPlayerHand([]);
             setDealerHand([]);
             setMessage("");
         }, 2000);
+
+        // *** ADD 1 TO LEVEL HERE ***
+        setLevel((prevLevel) => {
+            const newLevel = prevLevel + 1;
+            updateLevelInFirestore(newLevel); // Update Level in Firestore
+            return newLevel;
+        });
+        // ***************************
     };
 
     const betMoney = (amount) => {
