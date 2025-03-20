@@ -1,11 +1,11 @@
-
 @font-face {
     font-family: 'BIOSFont';
     src: url('../Assets/Fonts/WebPlus_IBM_VGA_9x8.woff') format('opentype');
     font-weight: normal;
     font-style: normal;
 }
-.TOS-Container{
+
+.TOS-Container {
     margin: 0;
     padding: 0;
     width: 100%;
@@ -14,8 +14,9 @@
     background: url('../Assets/tos.png') no-repeat;
     background-size: cover; /* Cover the entire viewport */
     image-rendering: pixelated; /* Pixelated effect for the background */
-
+    position: relative; /* Required for pseudo-elements */
 }
+
 .TOS-Container::before {
     content: '';
     position: absolute;
@@ -28,9 +29,21 @@
     z-index: 1; /* Ensure the gradient is above the background but below the content */
 }
 
+.TOS-Container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px; /* Adjust the height of the gradient */
+    background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)); /* Fade from black to transparent */
+    pointer-events: none; /* Ensure the gradient doesn't block interactions */
+    z-index: 1; /* Ensure the gradient is above the background but below the content */
+}
+
 .SemiContainer {
-    top:60px;
-    left:3vw;
+    top: 60px;
+    left: 3vw;
     width: 97vw; /* Adjust to fit within the CRT screen */
     height: 90vh; /* Adjust to fit within the CRT screen */
     background: transparent; /* Transparent background */
@@ -40,11 +53,10 @@
     position: relative; /* Required for the fade-out effect */
     overflow-y: auto; /* Allow vertical scrolling within the container */
     overflow-x: hidden; /* Prevent horizontal overflow */
-    
 }
 
 /* Add scanline effect */
-.TOS-Container::after {
+.TOS-Container .scanlines {
     content: '';
     position: absolute;
     top: 0;
@@ -106,6 +118,6 @@
     flex-grow: 1; /* Allow the input field to grow and fill the remaining space */
     text-align: left; /* Left-align the input text */
     width: auto; /* Let the input size adjust based on content */
-    left:-30px;
+    left: -30px;
     transform: perspective(500px) rotateX(1deg); /* Slight warp effect */
 }
