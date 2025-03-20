@@ -201,3 +201,16 @@ body {
   width: 50px; /* Adjust size as needed */
   height: 50px; /* Adjust size as needed */
 }
+.volume-iconSLo{
+  position: absolute;
+  bottom:-5px;
+  left:40px;
+}
+.volume-iconSLo img{
+  height: 100px;
+  width:100px;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+}

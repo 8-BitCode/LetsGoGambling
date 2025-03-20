@@ -19,6 +19,8 @@ import CherryIcon from "./Assets/Icons/CherryIcon.png";
 import DiamondIcon from "./Assets/Icons/DiamondIcon.png";
 import Guy from "./Assets/Icons/Guy.png";
 import HorseShoeIcon from "./Assets/Icons/HorseShoeIcon.png";
+import SoundOnIcon from "./Assets/Icons/SoundOnIcon.png";
+import SoundOffIcon from "./Assets/Icons/SoundOffIcon.png";
 
 const symbols = ["7", "🎵", "🍀", "🔔", "💎", "🐎"];
 
@@ -41,6 +43,7 @@ export default function SlotMachine({
     const db = getFirestore();
     const randomX = Math.floor(Math.random() * (window.innerWidth - 600));
     const randomY = Math.floor(Math.random() * (window.innerHeight - 490 - 40));
+    const [slottoVolume, setSlottoVolume] = useState(1); // Volume for Slotto's voice
     const [reels, setReels] = useState([
         ["🐎", "7", "🎵"],
         ["🍀", "7", "🐎"],
@@ -134,6 +137,10 @@ export default function SlotMachine({
     // Toggle for Slotto's voice
     const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
 
+    const toggleAudio = () => {
+        setIsVoiceEnabled((prev) => !prev); // Toggle voice on/off
+    };
+
     const speakText = (text) => {
         if (!isVoiceEnabled) return; // Don't speak if voice is disabled
 
@@ -141,7 +148,7 @@ export default function SlotMachine({
         // Randomize pitch and rate for a creepy effect
         utterance.pitch = Math.random() * 100;
         utterance.rate = 0.8 + Math.random() * 0.4;
-        utterance.volume = 1;
+        utterance.volume = slottoVolume;
 
         // Optional: choose a specific voice
         const voices = window.speechSynthesis.getVoices();
@@ -419,6 +426,15 @@ export default function SlotMachine({
                             >
                                 {spinning ? "Spinning..." : "Spin"}
                             </button>
+                            <div className="audio-controls">
+    {/* Sound On/Off Button */}
+    <div className="volume-iconSLo" onClick={toggleAudio}>
+        <img
+            src={isVoiceEnabled ? SoundOnIcon : SoundOffIcon}
+            alt={isVoiceEnabled ? "Sound On" : "Sound Off"}
+        />
+    </div>
+</div>
                         </div>
                     </div>
                 </div>
