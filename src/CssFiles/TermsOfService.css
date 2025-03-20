@@ -1,35 +1,83 @@
+
 @font-face {
     font-family: 'BIOSFont';
     src: url('../Assets/Fonts/WebPlus_IBM_VGA_9x8.woff') format('opentype');
     font-weight: normal;
     font-style: normal;
 }
-
-.TOS-Container {
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+.TOS-Container{
+    margin: 0;
+    padding: 0;
     width: 100%;
-    height: 100vh; /* Full page height */
-    background-color: black; /* Black background */
+    height: 100%;
+    overflow: hidden; /* Prevent scrolling on the entire page */
+    background: url('../Assets/tos.png') no-repeat;
+    background-size: cover; /* Cover the entire viewport */
+    image-rendering: pixelated; /* Pixelated effect for the background */
+
+}
+.TOS-Container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px; /* Adjust the height of the gradient */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)); /* Fade from black to transparent */
+    pointer-events: none; /* Ensure the gradient doesn't block interactions */
+    z-index: 1; /* Ensure the gradient is above the background but below the content */
+}
+
+.SemiContainer {
+    top:60px;
+    left:3vw;
+    width: 97vw; /* Adjust to fit within the CRT screen */
+    height: 90vh; /* Adjust to fit within the CRT screen */
+    background: transparent; /* Transparent background */
     color: #00ff00; /* Neon green text */
     padding: 20px; /* Padding around the whole container */
     box-sizing: border-box; /* Ensures padding doesn't overflow */
+    position: relative; /* Required for the fade-out effect */
+    overflow-y: auto; /* Allow vertical scrolling within the container */
+    overflow-x: hidden; /* Prevent horizontal overflow */
+    
+}
+
+/* Add scanline effect */
+.TOS-Container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 1px,
+        rgba(0, 0, 0, 0.1) 1px,
+        rgba(0, 0, 0, 0.1) 2px
+    );
+    pointer-events: none; /* Ensure the scanlines don't block interactions */
+    z-index: 3; /* Ensure the scanlines are above everything */
 }
 
 .TOS-Container pre, .TOS-Container span {
-    width: 100%;
+    position: relative;
+    top: 0; /* Adjust as needed */
+    left: 0; /* Adjust as needed */
     text-align: left;
     white-space: pre-wrap;
     word-break: break-word;
     overflow-x: hidden;
     margin: 0;
+    margin-right: 20px; /* Reduce margin to prevent overflow */
     font-family: BIOSFont;
-    line-height: 1.5;
+    line-height: 1.2;
     color: #00ff00; /* Ensures text remains green */
     padding: 10px; /* Padding inside the pre tag for spacing */
     box-sizing: border-box; /* Prevents the padding from causing overflow */
+    transform: perspective(500px) rotateX(0.5deg); /* Slight warp effect */
 }
 
 /* Container for the prompt text and input field */
@@ -37,24 +85,27 @@
     display: flex; /* Use flex to align the prompt and input field */
     align-items: center; /* Vertically center the text and input field */
     margin-top: 10px; /* Space between the content and the input prompt */
+    transform: perspective(500px) rotateX(1deg); /* Slight warp effect */
 }
 
 /* Prompt text styling */
 .prompt-text {
-    margin-right: 0; /* Remove the space between the prompt text and input */
+    margin-right: 10px; /* Add some space between the prompt text and input */
     white-space: nowrap; /* Prevent the prompt text from wrapping */
 }
 
 /* Input field styling */
 .input-field {
+    position: relative;
     outline: none;
     border: none;
     font-size: 1.3em;
     font-family: BIOSFont; /* Ensure same font as the rest of the text */
-    background-color: black; /* Black background for the input */
+    background-color: transparent; /* Transparent background for the input */
     color: #00ff00; /* Green text color */
     flex-grow: 1; /* Allow the input field to grow and fill the remaining space */
-    padding: 5px; /* Padding inside the input field */
     text-align: left; /* Left-align the input text */
     width: auto; /* Let the input size adjust based on content */
+    left:-30px;
+    transform: perspective(500px) rotateX(1deg); /* Slight warp effect */
 }

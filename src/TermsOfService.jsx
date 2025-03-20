@@ -72,28 +72,33 @@ const TermsOfServicePage = () => {
             </Helmet>
 
             <div className='TOS-Container'>
-                <div className={`fade-overlay ${isFading ? 'active' : ''}`}></div>
-                <pre>
-                    {displayedText}
-                </pre>
+    <div className='SemiContainer'>
+        <div className={`fade-overlay ${isFading ? 'active' : ''}`}></div>
+        <pre>
+            {displayedText}
+        </pre>
 
-                {/* Displaying the prompt after the text is shown */}
-                {inputEnabled && (
-                    <div className="input-prompt-container">
-                        <span className="prompt-text">
-                            Do you want to continue [y/n]?:
-                        </span>
-                        <input
-                            type="text"
-                            value={userInput}
-                            onChange={handleChange}
-                            onKeyDown={handleKeyDown}
-                            maxLength="1"
-                            className="input-field"
-                        />
-                    </div>
-                )}
+        {/* Displaying the prompt after the text is shown */}
+        {inputEnabled && (
+            <div className="input-prompt-container">
+                <span className="prompt-text">
+                    Do you want to continue [y/n]?:
+                </span>
+                <input
+                    type="text"
+                    value={userInput}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyDown}
+                    maxLength="1"
+                    className="input-field"
+                />
             </div>
+        )}
+        <br></br>
+        <br></br>
+        <br></br>
+    </div>
+</div>
             </DitherEffect>
         </>
     );
