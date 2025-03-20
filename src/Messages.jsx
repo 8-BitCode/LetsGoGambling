@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./CssFiles/Messages.css";
 import { Helmet } from "react-helmet";
 import Draggable from "react-draggable";
@@ -13,6 +13,8 @@ const Messages = ({
     username,
     money,
     hasNewMail,
+    setLevel,
+    updateLevelInFirestore
 }) => {
     const [activeButton, setActiveButton] = useState(null);
     const [message, setMessage] = useState(
@@ -60,6 +62,28 @@ const Messages = ({
     const handleButtonClick = (buttonName) => {
         if (buttonName === activeButton) return;
         playClickSound();
+
+        // Scroll to top when switching messages
+        if (messageContentRef.current) {
+            messageContentRef.current.scrollTop = 0;
+        }
+
+        // Add level change conditions
+        if (buttonName === "steve-o" && Level === 78) {
+const newLevel = 79;
+            setLevel(newLevel);
+            updateLevelInFirestore(newLevel);
+        } else if (buttonName === "Mum" && Level === 45) {
+const newLevel = 46;
+            setLevel(newLevel);
+            updateLevelInFirestore(newLevel);
+
+        } else if (buttonName === "LGGCorp" && Level === 20) {
+const newLevel = 21;
+            setLevel(newLevel);
+            updateLevelInFirestore(newLevel);
+        }
+
         let newMessage = generateMessageForContact(buttonName);
 
         if (buttonName === "LGGCorp") {
@@ -81,26 +105,15 @@ const Messages = ({
                     newMessage;
             }
             if (Level >= 20) {
-                newMessage =
-                    "OOOOOH KEEP GAMBLING<br/><br/>OOOOOOOOH SUBLIMINAL MESSAGING<br/><br/>OOOOOH YOU DID NOT READ THIS" +
-                    generateSeparator() +
-                    newMessage;
+                newMessage = "<span style='color:gray;'>OOOOOH KEEP GAMBLING<br/><br/>OOOOOOOOH SUBLIMINAL MESSAGING<br/><br/>OOOOOH YOU DID NOT READ THIS</span>" + generateSeparator() + newMessage;
             }
 
             if (Level >= 30) {
-                newMessage =
-                    "WELL WELL WELL<br/><br/>I SEE YOU HAVE BEGUN TO PROCURE QUITE A HEALTHY BIT OF CAPITAL!<br/>A WHOLE " +
-                    money +
-                    " SHAMBUX?!<br/><br/>HOW PROMISING, YOU KNOW THAT IS JUST HOW MUCH I HAD WHEN I FIRST STARTED RUNNING BUSINESS…<br/>NOT!! I WAS BORN RICH. <br/><br/>AHEM, STILL. YOUR PACE IS QUITE EXTRAORDINARY... KEEP AT IT." +
-                    generateSeparator() +
-                    newMessage;
+                newMessage = "WELL WELL WELL<br/><br/>I SEE YOU HAVE BEGUN TO PROCURE QUITE A HEALTHY BIT OF CAPITAL!<br/>A WHOLE " + money + " <span style='color:lime;'>SHAMBUX</span>?!<br/><br/>HOW PROMISING, YOU KNOW THAT IS JUST HOW MUCH I HAD WHEN I FIRST STARTED RUNNING BUSINESS…<br/>NOT!! I WAS BORN RICH. <br/><br/>AHEM, STILL. YOUR PACE IS QUITE EXTRAORDINARY... KEEP AT IT." + generateSeparator() + newMessage;
             }
 
             if (Level >= 55) {
-                newMessage =
-                    "W-W-W-WO HAHA WOW USER!<br/><br/>YOU JUST KEEP GOING!<br/><br/>GAMBLING LIKE THIS.... . . . . .. . IT HAS NOT BEEN SEEN SINCE..?<br/>!<br/>NOT SINCE THE LEGENDARY WAGER WAR OF ’89 !!1!!!! !<br/><br/>YOU MIGHT JUST HAVE WHAT IT TAKES TO..." +
-                    generateSeparator() +
-                    newMessage;
+                newMessage = "W-W-W-WO HAHA WOW USER!<br/><br/>YOU JUST KEEP GOING!<br/><br/>GAMBLING LIKE THIS.... . . . . .. . IT HAS NOT BEEN SEEN SINCE..?<br/>!<br/>NOT SINCE THE LEGENDARY <span style='color:red;'>WAGER WAR OF ’89</span> !!1!!!! !<br/><br/>YOU MIGHT JUST HAVE WHAT IT TAKES TO..." + generateSeparator() + newMessage;
             }
 
             if (Level >= 79) {
@@ -111,10 +124,7 @@ const Messages = ({
             }
 
             if (Level >= 90) {
-                newMessage =
-                    "YOUR DEDICATION  !<br/>YOUR AMBITION !<br/>YOUR PASSION FOR THE CRAFT!<br/><br/>USER, YOU REMIND ME OF A YOUNGER ME.<br/><br/>THAT IS WHY I AM SELECTING YOU, AND ONLY YOU DEFINITELY NOT EVERY OTHER USER AS WELL AS THE SOLE PROPRIETOR OF THIS MISSION!<br/><br/>YOU HAVE SEEN THE LOCKED APP INCLUDED WITH YOUR “Let’s Go Gambling! Starter Collection 1995” RIGHT?! YOU SEE... IT HAS NEVER BEEN OPENED BEFORE. IT REQUIRES AN UNBELIEVABLE LEVEL OF GAMBLING ABILITY; I BELIEVE YOU HOLD THAT POWER.<br/><br/>UNLOCK THE LOCK! ONLY THEN WILL YOU UNDERSTAND THE TRUE MEANING OF GAMBLING!" +
-                    generateSeparator() +
-                    newMessage;
+                newMessage = "YOUR DEDICATION  !<br/>YOUR AMBITION !<br/>YOUR PASSION FOR THE CRAFT!<br/><br/>USER, YOU REMIND ME OF A YOUNGER ME.<br/><br/>THAT IS WHY I AM SELECTING YOU, AND ONLY YOU <i>DEFINITELY NOT EVERY OTHER USER AS WELL</i> AS THE SOLE PROPRIETOR OF THIS MISSION!<br/><br/>YOU HAVE SEEN THE LOCKED APP INCLUDED WITH YOUR <b>Let’s Go Gambling! Starter Collection 1995</b> RIGHT?! YOU SEE... IT HAS NEVER BEEN OPENED BEFORE. IT REQUIRES AN UNBELIEVABLE LEVEL OF GAMBLING ABILITY; I BELIEVE YOU HOLD THAT POWER.<br/><br/>UNLOCK THE LOCK! ONLY THEN WILL YOU UNDERSTAND THE TRUE MEANING OF GAMBLING!" + generateSeparator() + newMessage;
             }
 
             if (Level >= 150) {
@@ -168,22 +178,13 @@ const Messages = ({
                     newMessage;
             }
             if (Level >= 45) {
-                newMessage =
-                    "<b> I noticed you have not answered my phone calls >:( </b> <br/><br/>Were this under normal circumstances, I would be very angry with you. However, ahaha I have received an anonymous tip that suddenly changes everything!<br/><br/>Oh my sweet little child, you should have told me!! You’re becoming just like your father was when he was your age!<br/><br/>When he and I first got together, I was a bit apprehensive about his more… volatile line of income. But it was hard to argue when he would come home each night with two times more than the last!<br/><br/>I'm so proud of you <3  Good luck ;)" +
-                    generateSeparator() +
-                    newMessage;
+                newMessage = "<span style='color:darkred;'><b> I noticed you have not answered my phone calls >:( </b></span> <br/><br/>Were this under normal circumstances, I would be very angry with you. However, ahaha I have received an anonymous tip that suddenly changes everything!<br/><br/>Oh my sweet little child, you should have told me!! You’re becoming just like your father was when he was your age!<br/><br/>When he and I first got together, I was a bit apprehensive about his more… volatile line of income. But it was hard to argue when he would come home each night with two times more than the last!<br/><br/>I'm so proud of you <3  Good luck ;)" + generateSeparator() + newMessage;
             }
             if (Level >= 75) {
-                newMessage =
-                    "Hello my sweet little crab cake! Do you remember my old friend Layla? She bought a cute drawing from you once, and then you and Steven spent months hounding her with your homemade arts and crafts, trying to get her to buy more. Ahaha, she ended up spending so much at our house that she had to stop coming over!<br/><br/> Anyway, her son, Zain, fancies himself a bit of an internet investor. Keeps going on about some kind of 'dot-com balloon' and how it's never going to burst. Very confident. <br/><br/> Naturally, he was quite intrigued when I mentioned your <span style='color:blue;'><b>internet business!</b></span> <br/><br/> So, I have invited them both over for tea and biscuits tonight. If you and your business partner happen to be free, this could be a golden opportunity to continue your long-standing tradition of selling things to this poor family." +
-                    generateSeparator() +
-                    newMessage;
+                newMessage = "Hello my sweet little crab cake! Do you remember my old friend Layla? She bought a drawing from you once when you were a kid, and then you and Steven spent months hounding her with your homemade arts and crafts, trying to get her to buy more. Ahaha, she ended up spending so much at our house that she had to stop coming over!<br/><br/> Anyway, her son, Zain, fancies himself a bit of an internet investor. Keeps going on about some kind of 'dot-com balloon' and how it's never going to burst. Very confident. <br/><br/> Naturally, he was quite intrigued when I mentioned your <span style='color:blue;'><b>internet business!</b></span> <br/><br/> So, I have invited them both over for tea and biscuits tonight. If you and your business partner happen to be free, this could be a golden opportunity to continue your long-standing tradition of selling things to this poor family." + generateSeparator() + newMessage;
             }
             if (Level >= 110) {
-                newMessage =
-                    "Someone has placed a bomb on the freshly baked chelsea cakes --oooh and they are baked to perfection--<br/><br/> If only someone were here to defuse them! Oh well!" +
-                    generateSeparator() +
-                    newMessage;
+                newMessage = "Someone has placed a bomb on these freshly baked chelsea buns --oooh and they are baked to perfection--<br/><br/> If only someone were here to defuse them! Oh well!" + generateSeparator() + newMessage; 
             }
             if (Level >= 130) {
                 newMessage =
@@ -198,10 +199,7 @@ const Messages = ({
                     newMessage;
             }
             if (Level >= 150) {
-                newMessage =
-                    "You have some explaining to do.<br/><br/>I just got off the phone with Steven. I had been trying to prod him for details on your little 'business endeavour' because heaven knows you will never tell me anything. He kept coming up with excuses for why he could not say.<br/><br/>Ahaha... It started to remind me of when you two were kids. He'd stand by the kitchen door blocking me from entering, while you grabbed all the chelsea buns, making all sorts of excuses for why I couldn't go inside.<br/><br/>Ha, that boy is still absolutely rubbish at lying.<br/><br/><br/>I threated to revoke his 'hug license' if he didn't tell me the truth, and well, he cracked like an egg. But when I asked for details on what you two have really been doing for the past few weeks... He just hung up." +
-                    generateSeparator() +
-                    newMessage;
+                newMessage = "You have some explaining to do.<br/><br/>I just got off the phone with Steven. I had been trying to prod him for details on your little 'business endeavour' because heaven knows you will never tell me anything. He kept coming up with excuses for why he could not say.<br/><br/>Ahaha... It started to remind me of when you two were kids. He'd stand by the kitchen door blocking me from entering, while you grabbed all the chelsea buns, making all sorts of excuses for why I could not go inside.<br/><br/>Ha, that boy is still absolutely rubbish at lying.<br/><br/><br/>I threated to revoke his 'hug license' if he didn't tell me the truth, and well, he cracked like an egg. But when I asked for details on what you two have really been doing for the past few weeks... He just hung up." + generateSeparator() + newMessage;
             }
             if (Level >= 250) {
                 newMessage =
@@ -249,17 +247,11 @@ const Messages = ({
             }
 
             if (Level >= 46) {
-                newMessage =
-                    "so i may have just told your mum we’re opening up an internet business" +
-                    generateSeparator() +
-                    newMessage;
+                newMessage = "so your mum thinks we've decided to make a store together... on the internet<br/><br/>don't blame me dude she called and i panicked!!" + generateSeparator() + newMessage;
             }
             if (Level >= 65) {
-                newMessage =
-                    "hola mi dudemig-o!<br/><br/>CHECK OUT THESE GRAPHS I'VE JUST MADE!!<br/>[IMAGES CANNOT BE LOADED ON THIS DEVICE. BUT IT LOOKS LIKE A SQUIGGLY LINE DRAWN BY A CHILD]<br/><br/>LOOK AT THIS!! THE EARNINGS JUST KEEP GOING UP AND UP! AND TO THINK, WE ALMOST SETTLED ON BECOMING CLEANERS LIKE A COUPLE OF LOSERS!!<br/><br/>AWESOMENESS DOESN’T END THERE, USING THOSE FINANCIAL SKILLS I FORCED YOUR DAD TO TEACH ME, I’VE ESTIMATED THAT I SHOULD BE A TRILLIONAIRE IN JUST 3 SHORT WEEKS!!!!<br/><br/>oh wow... <br/>if this all pans out... i might just be able to afford a salad from the pret near university of manchester<br/><br/>ah who am I kidding, no one can afford that" +
-                    generateSeparator() +
-                    newMessage;
-            }
+                newMessage = "hola mi dudemig-o!<br/><br/>CHECK OUT THESE GRAPHS I'VE JUST MADE!!<br/><br/><i><span style='color:darkgray;'>[Graph depicting an exponential curve. The latter half is earmarked 'Future Earnings']</span></i><br/><br/>LOOK AT THIS!! THE SHAMBUX JUST KEEP GOING UP AND UP! AND TO THINK, WE COULD'VE ENDED UP SCRUBBING TOILETS LIKE A COUPLE OF <span style='color:red;'><b>LOSERS!!</b></span><br/><br/>USING THOSE FINANCIAL SKILLS I FORCED YOUR DAD TO TEACH ME, I’VE ESTIMATED THAT I SHOULD BE A TRILLIONAIRE IN JUST 3 SHORT WEEKS!!!!" + generateSeparator() + newMessage;
+	    }
 
             if (Level >= 78) {
                 newMessage =
@@ -376,6 +368,8 @@ const Messages = ({
         });
     };
 
+    const messageContentRef = useRef(null); // Add this ref
+
     return (
         <>
             <Helmet>
@@ -427,6 +421,7 @@ const Messages = ({
                                 </button>
                             </div>
                             <div
+                                ref={messageContentRef}
                                 className="Messages-content"
                                 style={{
                                     padding: "30px",
