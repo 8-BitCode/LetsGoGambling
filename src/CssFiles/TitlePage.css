@@ -6,7 +6,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #008080;
+    background: url('../Assets/title.png');
+    background-size:cover;
+    image-rendering: pixelated;
   }
   
   .window-frame {
