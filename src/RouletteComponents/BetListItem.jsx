@@ -5,8 +5,6 @@ function BetListItem({bet}) {
         
         let output = '';
 
-        console.log(bet[0], bet[0].length)
-
         switch (bet[0].length) {
             case 2:
                 output = `Split - ${bet[0][0]}: ${bet[0][1]}`;

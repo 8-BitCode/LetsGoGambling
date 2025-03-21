@@ -307,21 +307,17 @@ const GameSelection = () => {
             iconRect.bottom > easterEggRect.top;
     
         if (isOverlapping) {
-            console.log(`Icon ${game.name} deleted.`);
             iconRef.style.display = "none";
             setDeletedIcons((prev) => {
                 const newDeletedIcons = [...prev, game.id];
-                console.log("Deleted Icons:", newDeletedIcons);
     
                 // Check if all icons (except "Locked") are deleted
                 const allIconsDeleted = games
                     .filter((game) => game.name !== "Locked")
                     .every((game) => newDeletedIcons.includes(game.id));
     
-                console.log("All icons deleted?", allIconsDeleted);
     
                 if (allIconsDeleted) {
-                    console.log("Unlocking END route...");
                     setIsEndUnlocked(true); // Set isEndUnlocked to true
                     const updatedGames = games.map((game) => {
                         if (game.name === "Locked") {
@@ -335,7 +331,6 @@ const GameSelection = () => {
                         return game;
                     });
                     setGames(updatedGames);
-                    console.log("Games array updated:", updatedGames);
                 }
     
                 return newDeletedIcons;
