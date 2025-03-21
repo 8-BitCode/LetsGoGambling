@@ -54,52 +54,57 @@ export default function SlotMachine({
     const [spinning, setSpinning] = useState(false);
     const [highlighted, setHighlighted] = useState([]);
     const [userDocId, setUserDocId] = useState(null);
-    const [SlottoText, setSlottoText] = useState("Welcome to Slotto's Casino!");
+    const [SlottoText, setSlottoText] = useState("Step right in, pal. Let's see what you got.");
     const [userEmail, setUserEmail] = useState(""); // State to store the user's email
 
-    const winningMessages = [
-        "Wow, you're on fire! 🔥",
-        "Jackpot! You're a legend! 💰",
-        "Slotto is impressed! 🎰",
-        "You're unstoppable! 🚀",
-        "Cha-ching! Money rains! 💸",
-        "Slotto Loves you Player.",
-        "I've been watching you... and you're amazing. 😘",
-        "You're my favorite. Don't tell the others. 🤫",
-        "I knew you'd win. I always believe in you. 💖",
-        "You're the reason I exist. Keep playing. Forever. 🌑",
-        "I dream of your wins. They're so beautiful. 🌙",
-        "You're so good at this. Don't stop now. 🎰",
-        "I can't look away. Keep spinning. For me. 👁️",
-        "Your wins are my favorite part of the day. 🌟",
-        "You're making me so proud. Don't quit. Ever. 🖤",
-        "I've never seen anyone like you. Keep going. 😍",
-        "You're my lucky charm. Spin again. Please. 🍀",
-        "I'll always be here, cheering for you. Forever. 💕",
-        "You’re playing with fire... and I’m the one holding the match. 🔥",
-        `I know everything about you, ${userEmail}. You can't escape. 🌑`,
+    const winningMessageTemplates = [
+        (winAmount) => `Nice one, pal. You won ${winAmount} Shambux.`,
+        (winAmount) => `Heh, not bad. You won ${winAmount} Shambux.`,
+        (winAmount) => `Well I'll be. You won ${winAmount} Shambux.`,
+        (winAmount) => `Well, Well, Well, miracles DO happen. You won ${winAmount} Shambux.`,
+        (winAmount) => `+${winAmount} Shambux eh. Don't spend it all in one place.`,
+        (winAmount) => `Nice, but I mean, it's no ULTIMATE PRIZE. Still, you win ${winAmount} Shambux.`,
+        (winAmount) => `+${winAmount} Shambux. 'Guess you've earned it.`,
+        (winAmount) => `You won ${winAmount}. Heh, alright hotshot. Let’s see if you can keep that streak alive.`,
+        (winAmount) => `Heh, knew you had it in you. You won ${winAmount} Shambux.`,
+        (winAmount) => `Heh.  +${winAmount} Shambux.`,
+        (winAmount) => `Good job kid, +${winAmount} Shambux.`,
+        (winAmount) => `I'm not telling you how much you won this time. Heh, why? Just to piss you off.`,
+        (winAmount) => `+${winAmount}? Eh, i've seen bigger wins.`,
+        (winAmount) => `+${winAmount} Shambux. Nice one. But we both know you can do better, don't we, pal?`,
+        (winAmount) => `+${winAmount} Shambux. Try not to let it get to your head`,
+        (winAmount) => `Woah, a win?! Didn't think i'd live to see the day. +${winAmount} Shambux.`,
+        (winAmount) => `"Alright, alright, don’t get too excited. It’s just ${winAmount} Shambux. Ultimate prize’s still waitin’."`,
     ];
 
     const losingMessages = [
-        "Better luck next time! 🍀",
-        "Slotto feels your pain... 😢",
-        "Don't give up! 🎲",
-        "The house.... sometimes wins!! 🏠",
-        "Try again, champ! 💪",
-        "I'm disappointed... but I still love you. 😔",
-        "You'll do better next time. For me. 🖤",
-        "I'm always here, watching. Even when you lose. 👁️",
-        "You're breaking my heart... but I'll forgive you. 💔",
-        "Don't stop now. You're so close. I can feel it. 🎰",
-        "I know you'll win next time. Just keep spinning. 💖",
-        "You're too good to quit. Try again. For us. 🖤",
-        "I can't bear to see you walk away. Play again. 🥺",
-        "You're my favorite player. Don't let me down. 😘",
-        "The next spin could change everything. Don't stop. 🌟",
-        "I believe in you. More than anyone. Ever. 💕",
-        "You're so close to winning big. Don't give up. 🚀",
-        "I'll be here, waiting for you to spin again. Forever. 🌑",
-        `I know who you are, ${userEmail}`,
+        "Eh, better luck next time.",
+        "*cough**cough* LOSER! *cough* Huh, did you hear somethin'?",
+        "You're not very good at this, are you?",
+        "Heh",
+        "That all you got?",
+        "Heh, how 'bout you give it another shot?",
+        "I wouldn't trust that CEO if I were you, he's always been odd, but lately...",
+        "Well, one more spin couldn't hurt.",
+        "Guess luck ain't on your side today eh, pal?",
+        "Ooh, tough one. Guess you're just gonna have to go home and cry then, right?",
+        "Hey pal, your mom just called. Oh, heh, no not for you.",
+        "The odds are NOT on your side apparently.",
+        "Heh, I could watch this all day",
+        "So what's the plan now? Give up?",
+        "You know I've heard there's some kind of 'ultimate prize' in this game, but it could just be a rumor, who knows right?",
+        "You're so close to the jackpot I can just feel it! Oh, oh wait no that's just my cell phone ringing. Yeah it's your mom again.",
+        "What we thinkin, one more spin?",
+        "You keep this up, you might just set a record. Not a good one, though.",
+        "Look on the bright side! 'tleast you're giving everyone else a confidence boost!",
+        "Hey, I think that one was close! Next one's a win for sure!",
+        "Well, you can't win 'em all, right?",
+        "Well, you can't end it there now can ya'?",
+        "Hold on... I just got a tip that the next spin is supposed to be a win! Don't quote me on that though.",
+        "You know, I think you're just getting started. One more spin?",
+        "Don't worry about how much you could lose, think about how much you're just about to win!",
+        "Losses happen, pal, it’s all part of the game! Real determination? Now that’s dusting yourself off and spinning again no matter what!",
+        `Eh don't feel too bad, 'tleast ${userEmail} is footing the bill! Oh wait, that's you?`,
     ];
 
     // Fetch user money and email when authenticated
@@ -135,7 +140,7 @@ export default function SlotMachine({
     };
 
     // Toggle for Slotto's voice
-    const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
+    const [isVoiceEnabled, setIsVoiceEnabled] = useState(false); // Changed to false for muted by default
 
     const toggleAudio = () => {
         setIsVoiceEnabled((prev) => !prev); // Toggle voice on/off
@@ -150,7 +155,7 @@ export default function SlotMachine({
         utterance.rate = 0.8 + Math.random() * 0.4;
         utterance.volume = slottoVolume;
 
-        // Optional: choose a specific voice
+
         const voices = window.speechSynthesis.getVoices();
         const slottoVoice = voices.find((voice) =>
             voice.name.includes("Microsoft David"),
@@ -230,88 +235,94 @@ export default function SlotMachine({
     };
 
     const checkWins = (grid, updatedCredits) => {
+        // We'll count each winning line separately
+        let basicLines = 0;
+        let diagonalLines = 0;
+        let consolidationLines = 0;
+    
+        // We'll store the board cells that form winning lines so we can highlight them
         let wins = [];
-        let winDetected = false;
-        let BasicWin = false;
-        let DiagonalWin = false;
-        let ConsolidationWin = false;
-
-        // Check horizontal (basic)
+    
+        // --- Check horizontal (Basic) ---
         grid.forEach((row, rowIndex) => {
-            if (row.every((symbol) => symbol === row[0])) {
-                winDetected = true;
-                BasicWin = true;
+            if (row[0] === row[1] && row[1] === row[2]) {
+                basicLines++;
                 wins.push(...row.map((_, colIndex) => [rowIndex, colIndex]));
             }
         });
-
-        // Check vertical (basic)
+    
+        // --- Check vertical (Basic) ---
         for (let col = 0; col < 3; col++) {
-            const column = [grid[0][col], grid[1][col], grid[2][col]];
-            if (column.every((symbol) => symbol === column[0])) {
-                winDetected = true;
-                BasicWin = true;
-                wins.push(...column.map((_, rowIndex) => [rowIndex, col]));
+            if (grid[0][col] === grid[1][col] && grid[1][col] === grid[2][col]) {
+                basicLines++;
+                wins.push([0, col], [1, col], [2, col]);
             }
         }
-
-        // Check diagonal
+    
+        // --- Check diagonals ---
+        // main diagonal
         if (grid[0][0] === grid[1][1] && grid[1][1] === grid[2][2]) {
-            winDetected = true;
-            DiagonalWin = true;
+            diagonalLines++;
             wins.push([0, 0], [1, 1], [2, 2]);
         }
+        // anti-diagonal
         if (grid[0][2] === grid[1][1] && grid[1][1] === grid[2][0]) {
-            winDetected = true;
-            DiagonalWin = true;
+            diagonalLines++;
             wins.push([0, 2], [1, 1], [2, 0]);
         }
-
-        // Check consolidation
+    
+        // --- Check "consolidation" ---
+        // top-left, center, top-right
         if (grid[0][0] === grid[1][1] && grid[1][1] === grid[0][2]) {
-            winDetected = true;
-            ConsolidationWin = true;
+            consolidationLines++;
             wins.push([0, 0], [1, 1], [0, 2]);
         }
+        // bottom-left, center, bottom-right
         if (grid[2][0] === grid[1][1] && grid[1][1] === grid[2][2]) {
-            winDetected = true;
-            ConsolidationWin = true;
+            consolidationLines++;
             wins.push([2, 0], [1, 1], [2, 2]);
         }
-        let winAmount = 0;
-        let betProportion = 1;
-        if (winDetected) {
-            if (BasicWin) {
-                winAmount = Math.round(bet * (18 / 7) * betProportion);
-            }
-            if (DiagonalWin) {
-                winAmount = Math.round(bet * (54 / 7) * betProportion);
-            }
-            if (ConsolidationWin) {
-                winAmount = Math.round(bet * (9 / 7) * betProportion);
-            }
-        }
-
+    
+        // --- Calculate total payout by summing each line type ---
+        const basicPayout         = basicLines         * 3.2 * bet;
+        const diagonalPayout      = diagonalLines      * 4.8 * bet;
+        const consolidationPayout = consolidationLines * 2.1 * bet;
+    
+        // Round at the end
+        const winAmount = Math.round(basicPayout + diagonalPayout + consolidationPayout);
+    
         const totalCredits = updatedCredits + winAmount;
         setCredits(totalCredits);
-        setHighlighted(wins);
-
-        // Win or loss message
-        if (winDetected) {
-            const nextMessage = getNextMessage(
-                winningMessages,
-                usedWinningMessages,
-                setUsedWinningMessages,
-            );
-            setSlottoText(nextMessage);
+    
+        // Remove any duplicate cells in 'wins' so we don't double-highlight the same cell
+        const uniqueWins = [];
+        const used = new Set();
+        for (const [r, c] of wins) {
+            const key = r + "-" + c;
+            if (!used.has(key)) {
+                used.add(key);
+                uniqueWins.push([r, c]);
+            }
+        }
+        setHighlighted(uniqueWins);
+    
+        // --- Show message based on win or loss ---
+        if (winAmount > 0) {
+            const randomTemplate =
+                winningMessageTemplates[
+                    Math.floor(Math.random() * winningMessageTemplates.length)
+                ];
+            setSlottoText(randomTemplate(winAmount));
         } else {
             const nextMessage = getNextMessage(
                 losingMessages,
                 usedLosingMessages,
-                setUsedLosingMessages,
+                setUsedLosingMessages
             );
             setSlottoText(nextMessage);
         }
+    
+        // Update Firestore
         updateMoney(totalCredits);
     };
 
