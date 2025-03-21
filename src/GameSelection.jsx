@@ -319,7 +319,7 @@ const GameSelection = () => {
     
                 // Check if all icons (except "Locked", "Messages", and "Bank") are deleted
                 const allIconsDeleted = games
-                    .filter((game) => !["Locked", "Messages", "Bank"].includes(game.name))
+                    .filter((game) => !["Locked", "Messages"].includes(game.name))
                     .every((game) => newDeletedIcons.includes(game.id));
     
     
