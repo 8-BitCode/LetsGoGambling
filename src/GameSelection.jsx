@@ -32,9 +32,11 @@ import BlackJackIcon from "./Assets/Icons/BlackJackIcon.png";
 import RouletteIcon from "./Assets/Icons/RouletteIcon.png";
 import SlotsIcon from "./Assets/Icons/SlotsIcon.png";
 import BankIcon from "./Assets/Icons/BankIcon.png";
-import QuestionMarkIcon from "./Assets/Icons/QuestionMarkIcon.png";
+import LockedIcon from './Assets/Icons/LockedIcon.png'
+import UnlockedIcon from './Assets/Icons/UnlockedIcon.png'
 import SoundOnIcon from "./Assets/Icons/SoundOnIcon.png";
 import SoundOffIcon from "./Assets/Icons/SoundOffIcon.png";
+import BinIcon from "./Assets/Icons/BinIcon.png";
 const MoneySlot = ({ amount }) => {
     const digits = amount.toString().split("");
 
@@ -89,7 +91,6 @@ const GameSelection = () => {
     const [activePopups, setActivePopups] = useState([]);
     const [deletedIcons, setDeletedIcons] = useState([]);
     const [isEndUnlocked, setIsEndUnlocked] = useState(false); // Track if END is unlocked
-    const [showUnlockMessage, setShowUnlockMessage] = useState(false);
     const [isPlaying, setIsPlaying] = useState(true); // Track audio state
     const audioRef = useRef(null); // Ref for the audio element
     const [volume, setVolume] = useState(1);
@@ -100,7 +101,7 @@ const GameSelection = () => {
         { id: 3, name: "Roulette", icon: RouletteIcon, route: "/GameSelection" },
         { id: 4, name: "Slots", icon: SlotsIcon, route: "/GameSelection" },
         { id: 5, name: "Bank", icon: BankIcon, route: "/GameSelection" },
-        { id: 6, name: "Locked", icon: QuestionMarkIcon, route: "/GameSelection" },
+        { id: 6, name: "Locked", icon: LockedIcon, route: "/GameSelection" },
     ]);
 
     const toggleAudio = () => {
@@ -273,6 +274,11 @@ const GameSelection = () => {
             navigate("/END", { state: { isEndUnlocked, money } });
             return;
         }
+        if (game.name === "Unlocked") {
+            // Navigate to /END with isEndUnlocked and money
+            navigate("/END", { state: { isEndUnlocked, money } });
+            return;
+        }
     
         if (!activeGames.includes(game.name)) {
             setActiveGames([...activeGames, game.name]);
@@ -307,18 +313,15 @@ const GameSelection = () => {
             iconRect.bottom > easterEggRect.top;
     
         if (isOverlapping) {
-            console.log(`Icon ${game.name} deleted.`);
             iconRef.style.display = "none";
             setDeletedIcons((prev) => {
                 const newDeletedIcons = [...prev, game.id];
-                console.log("Deleted Icons:", newDeletedIcons);
     
                 // Check if all icons (except "Locked", "Messages", and "Bank") are deleted
                 const allIconsDeleted = games
                     .filter((game) => !["Locked", "Messages", "Bank"].includes(game.name))
                     .every((game) => newDeletedIcons.includes(game.id));
     
-                console.log("All icons deleted?", allIconsDeleted);
     
                 if (allIconsDeleted) {
                     console.log("Unlocking END route...");
@@ -327,8 +330,8 @@ const GameSelection = () => {
                         if (game.name === "Locked") {
                             return {
                                 ...game,
-                                icon: "🔓",
-                                name: "Locked",
+                                icon: UnlockedIcon,
+                                name: "Unlocked",
                                 route: "/END",
                             };
                         }
@@ -571,9 +574,8 @@ const GameSelection = () => {
                 <div className="GS-TaskbarUsername">Hello, {username}</div>
             </div>
 
-            <div className="GS-EasterEgg" ref={easterEggRef}>
-                🗑️
-            </div>
+            <img src={BinIcon} className="GS-EasterEgg" ref={easterEggRef}>
+            </img>
 
             {activePopups.map((gameName) => (
                 <Draggable key={gameName} defaultPosition={{ x: randomX, y: randomY }}>

@@ -120,6 +120,8 @@
     right: 20px;  /* Adjust this to position the bin from the right side */
     font-size: 50px; /* Adjust the size of the bin icon if necessary */
     cursor: pointer;
+    width: 100px;
+    height:100px;
   }
   .GS-TaskbarUsername {
     margin-left: auto;  /* Push the username to the right */
