@@ -16,7 +16,8 @@ const TermsOfServicePage = () => {
     If you or someone you know struggles with gambling-related issues, professional resources and support systems are available. Seeking guidance from responsible gambling organizations can provide valuable assistance in making informed financial and personal decisions.\n\n
     By proceeding, you acknowledge that:\n\n- This website is entirely satirical. Any content, visuals, or mechanics presented here exist for comedic or critical purposes only.\n- There is no real gambling taking place. Nothing on this website involves actual monetary transactions or opportunities for financial gain or loss.\n- Gambling should be approached with extreme caution. The risks associated with it are well-documented, and this website does not encourage participation in any form of real gambling.\n- You understand that we are not responsible for any actions taken outside of this website. If you choose to engage in gambling elsewhere, we strongly encourage responsible decision-making and adherence to local laws and regulations.\n\n
     This website is meant to be an informative and humorous critique, not a gambling platform. If you are looking for responsible financial decisions, gambling is unlikely to be one of them.\n\n
-    Thank you for taking the time to read this disclaimer. If you choose to continue, please do so with the understanding that this site is purely satirical.\n\n`
+    Thank you for taking the time to read this disclaimer. If you choose to continue, please do so with the understanding that this site is purely satirical.\n\n
+    Sound Effect Attribution:\nThe "You Got Mail" sound effect used on this website is licensed under the Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) license. This sound effect is provided by AOL, recorded by voice actor Elwood Edwards and is used in compliance with the license terms.\n\n`;
 
     useEffect(() => {
         let index = 0;
