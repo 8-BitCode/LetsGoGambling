@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { isMobile } from "react-device-detect"; // Import the isMobile utility
 
 import TitlePage from "./TitlePage";
 import TermsOfService from "./TermsOfService";
@@ -23,11 +24,12 @@ export default () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (isPortrait) {
+  // Show the message if the user is on a mobile device, regardless of orientation
+  if (isMobile) {
     return (
       <div className="funny-message">
         <h1>🎰 Bad Bet, Buddy! 🎰</h1>
-        <p>We don't gamble in portrait mode. Flip your phone, or you're out of luck! 🍀</p>
+        <p>We don't gamble on mobile devices. Get on a desktop, or you're out of luck! 🍀</p>
       </div>
     );
   }
