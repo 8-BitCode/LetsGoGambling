@@ -24,12 +24,12 @@ export default () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Show the message if the user is on a mobile device, regardless of orientation
-  if (isMobile) {
+  // Show the message if the user is on a mobile device OR the screen is in portrait mode
+  if (isMobile || isPortrait) {
     return (
       <div className="funny-message">
         <h1>🎰 Bad Bet, Buddy! 🎰</h1>
-        <p>We don't gamble on mobile devices. Get on a desktop, or you're out of luck! 🍀</p>
+        <p>We don't gamble on mobile devices or in portrait mode. Get on a desktop in landscape mode, or you're out of luck! 🍀</p>
       </div>
     );
   }
