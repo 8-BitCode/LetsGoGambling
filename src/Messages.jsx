@@ -257,12 +257,6 @@ const Messages = ({
                     generateSeparator() +
                     newMessage;
             }
-            if (Level >= 400) {
-                newMessage =
-                    "Dear Users,<br/><br/>I would like to extend a sincere and humble apology for the conduct of our former Chief Executive Officer, known solely as “gamble_ceo.” His behaviour was unprofessional, erratic, and most regrettably, deeply damaging to the image and integrity of our company.<br/><br/>We recognise the harm caused by his leadership. The constant firing-and-rehiring, the questionable monetisation mechanics, the obsessive messaging of users.<br/>None of it aligns with the vision LGGCorp seeks to uphold. That era is over.<br/>Under my leadership, we are entering a new chapter: one defined by clarity, structure, and mutual respect.<br/><br/>Your continued engagement is essential to us. And we are excited for you to join us as we push forward the <b>Let's Go Gambling</b> experience beyond anything it has ever been before.<br/><br/><br/>Thank you for your loyalty and understanding.<br/><br/>No bad bets this time. This time, we’re playing to win.<br/><br/><br/>Warm regards, Zain Qureshi<br/>Chief Executive Officer of LGGCorp™" +
-                    generateSeparator() +
-                    newMessage;
-            }
         } else if (buttonName === "steve-o") {
             if (Level >= 1) {
                 newMessage =
