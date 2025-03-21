@@ -155,7 +155,8 @@ return (
                             alt="Fade-in Image"
                             className="fade-in-image"
                         />
-                        <p className="fade-in-text">Let's Go Gambling</p>
+                        <p className="fade-in-text">Let's Go Gambling By:</p>
+                        <div>Akram, Heeseung, Khalid, Koda, Oliver, Noah</div>
                     </div>
                 </>
             )}
