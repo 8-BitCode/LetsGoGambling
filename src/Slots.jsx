@@ -59,8 +59,8 @@ export default function SlotMachine({
 
     const winningMessageTemplates = [
         (winAmount) => `Nice one, pal. You won ${winAmount} Shambux.`,
-        (winAmount) => `Heh, not bad. You won ${winAmount} Shambux.`,
-        (winAmount) => `Well I'll be. You won ${winAmount} Shambux.`,
+        (winAmount) => `Heh, not bad. +${winAmount} Shambux.`,
+        (winAmount) => `Well I'll be. +${winAmount} Shambux.`,
         (winAmount) => `Well, Well, Well, miracles DO happen. You won ${winAmount} Shambux.`,
         (winAmount) => `+${winAmount} Shambux eh. Don't spend it all in one place.`,
         (winAmount) => `Nice, but I mean, it's no ULTIMATE PRIZE. Still, you win ${winAmount} Shambux.`,
