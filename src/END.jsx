@@ -117,7 +117,7 @@ return (
             {/* Alternate Message */}
             {!isEndUnlocked && (
               <div className='LockedContainer'>
-                <p style={{position:'absolute', color:'red', zIndex:'10000', top:'50x', left:'100px',fontSize:'9em', color:'white'}}>:(</p>
+                <p style={{position:'absolute', zIndex:'10000', top:'50x', left:'100px',fontSize:'9em', color:'white'}}>:(</p>
                 <div className="unlock-message-overlay">
                     <div className="unlock-message">
                         <h1>TO UNLOCK PLEASE GAIN ${calculateRequiredAmount(money)}</h1>
