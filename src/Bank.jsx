@@ -90,7 +90,7 @@ export default function Bank({ closeBank, userId }) {
             value={amount}
             onChange={(e) => setAmount(Math.max(0, parseInt(e.target.value) || 0))}
           />
-          <div style={{ color: 'black', opacity: '40%' }}>Interest (e% per minute)</div>
+          <div style={{ color: 'black', opacity: '40%' }}>Interest (e% per minute whilst playing)</div>
           <div className="button-group">
             <button className="bank-button" onClick={handleTakeLoan}>Take Loan</button>
             <button className="bank-button" onClick={handleRepayLoan} disabled={amount > balance || amount > debt}>

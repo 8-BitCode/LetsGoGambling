@@ -212,7 +212,13 @@ const GameSelection = () => {
 
     useEffect(() => {
         const calculateInterest = async () => {
-            if (debt > 0 && userDocId) {
+            // Check if any of the games (Blackjack, Roulette, or Slots) are active
+            const isGameActive =
+                activeGames.includes("Black Jack") ||
+                activeGames.includes("Roulette") ||
+                activeGames.includes("Slots");
+
+            if (isGameActive && debt > 0 && userDocId) {
                 const interest = (debt * Math.E) / 100; // 1% interest
                 const newDebt = parseFloat((debt + interest).toFixed(2)); // Round to 2 decimal places
 
@@ -230,7 +236,7 @@ const GameSelection = () => {
 
         const interval = setInterval(calculateInterest, 60000); // 1 minute
         return () => clearInterval(interval);
-    }, [debt, userDocId]);
+    }, [debt, userDocId, activeGames]); // Add activeGames as a dependency
 
     const updateLevelInFirestore = async (newLevel) => {
         try {
