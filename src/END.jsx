@@ -156,7 +156,7 @@ return (
                             className="fade-in-image"
                         />
                         <p className="fade-in-text">Let's Go Gambling By:</p>
-                        <div>Akram, Heeseung, Khalid, Koda, Oliver, Noah</div>
+                        <div>Akram, Heeseung Lee, Khalid Albugamy, Koda Pinto,Noah Maclean, Oliver Kot</div>
                     </div>
                 </>
             )}
