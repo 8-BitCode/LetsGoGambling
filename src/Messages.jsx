@@ -18,7 +18,7 @@ const Messages = ({
 }) => {
     const [activeButton, setActiveButton] = useState(null);
     const [message, setMessage] = useState(
-        hasNewMail ? "You got mail" : "No new mail",
+        hasNewMail ? "You got mail!" : "No new mail :(",
     );
     const [newMailFor, setNewMailFor] = useState([]); // Tracks which people have new mail
     const randomX = Math.floor(Math.random() * (window.innerWidth - 600));
@@ -114,7 +114,7 @@ const Messages = ({
                 newMessage =
                     "WELL WELL WELL<br/><br/>I SEE YOU HAVE BEGUN TO PROCURE QUITE A HEALTHY BIT OF CAPITAL!<br/>A WHOLE " +
                     money +
-                    " <span style='color:lime;'>SHAMBUX</span>?!<br/><br/>HOW PROMISING, YOU KNOW THAT IS JUST HOW MUCH I HAD WHEN I FIRST STARTED RUNNING BUSINESS…<br/>NOT!! I WAS BORN RICH. <br/><br/>AHEM, STILL. YOUR PACE IS QUITE EXTRAORDINARY... KEEP AT IT." +
+                    " <span style='color:lime;'>SHAMBUX</span>?!<br/><br/>HOW PROMISING, YOU KNOW THAT IS JUST HOW MUCH I HAD WHEN I FIRST STARTED <span style='color:DarkGoldenRod;'>RUNNING BUSINESS…</span><br/>NOT!! I WAS BORN RICH. <br/><br/>AHEM, STILL. YOUR PACE IS QUITE EXTRAORDINARY... KEEP AT IT." +
                     generateSeparator() +
                     newMessage;
             }
@@ -149,14 +149,14 @@ const Messages = ({
 
             if (Level >= 190) {
                 newMessage =
-                    "A CEO MUST ALWAYS NEGOTIATE FROM A POSITION OF STRENGTH.<br/><br/> THAT'S WHY I OFFERED THE EMPLOYEES A VERY GENEROUS DEAL.<br/><br/> KEEP WORKING FOR MINIMUM WAGE, DISSOLVE THE UNION, AND STOP THREATENING TO LEAK OUR 100% LEGAL TIME-MANIPULATION TECHNOLOGY. OR JUST QUIT!<br/><br/><br/>ON AN ENTIRELY UNRELATED NOTE, HEY USER YOU WOULDN'T HAPPEN TO BE SEARCHING FOR EMPLOYMENT?" +
+                    "A CEO MUST ALWAYS NEGOTIATE FROM A POSITION OF STRENGTH.<br/><br/> THAT IS WHY I OFFERED THE EMPLOYEES A VERY GENEROUS DEAL.<br/><br/> KEEP WORKING FOR MINIMUM WAGE, DISSOLVE THE UNION, AND STOP THREATENING TO LEAK OUR 100% LEGAL TIME-MANIPULATION TECHNOLOGY. OR JUST QUIT!<br/><br/><br/>ON AN ENTIRELY UNRELATED NOTE, HEY USER YOU WOULDN'T HAPPEN TO BE SEARCHING FOR EMPLOYMENT?" +
                     generateSeparator() +
                     newMessage;
             }
 
             if (Level >= 210) {
                 newMessage =
-                    "STOCK PRICES ARE TUMBLING, INVESTORS ARE LOSING CONFIDENCE.<br/><br/>ZAIN HAS GIVEN ME 1 WEEK TO SORT OUT THE COMPANY, OR THEY'RE FIRING ME AS CEO!<br/><br/>JEEZ SO YOU LOSE ONE ENTIRE WORKFORCE. AND YOU SPEND JUST ONE HALF OF THE COMPANY BUDGET PAYING PEOPLE TO STAY QUIET. AND THEN ONE OTHER HALF HIRING INEXPERIENCED GAMBLING ADDICTS TO PICK UP THE SLACK... SUBSEQUENTLY CAUSING US TO ALSO LOSE OUR MAIN REVENUE SOURCE SIMULTANEOUSLY.<br/><br/>NOT THE BEST WEEK FOR LGGCORP..." +
+                    "STOCK PRICES ARE TUMBLING, INVESTORS ARE LOSING CONFIDENCE.<br/><br/>ZAIN HAS GIVEN ME 1 WEEK TO SORT OUT THE COMPANY, OR THEY'RE FIRING ME AS CEO!<br/><br/>JEEZ SO YOU LOSE ONE ENTIRE WORKFORCE. AND YOU SPEND JUST ONE HALF OF THE COMPANY BUDGET PAYING PEOPLE TO STAY QUIET. AND THEN ONE OTHER HALF HIRING INEXPERIENCED GAMBLING ADDICTS TO PICK UP THE SLACK... CAUSING US TO ALSO LOSE OUR MAIN REVENUE SOURCE SIMULTANEOUSLY.<br/><br/>NOT THE BEST WEEK FOR LGGCORP..." +
                     generateSeparator() +
                     newMessage;
             }
@@ -179,20 +179,20 @@ const Messages = ({
                 newMessage =
                     "USER!!!! <br/><br/> NO, " +
                     username +
-                    "... <br/><br/> I HAVE ALWAYS BEEN THERE WHEN YOU NEEDED ME<br/><br/> LET'S LOOK BACK ON THE MEMORIES <br/><br/><br/><br/> AHHH GOOD TIMES. <br/><br/> BUT NOW, YOU NEED TO RETURN THE FAVOUR! <br/><br/> NO ONE KNOWS HOW TO GAMBLE LIKE YOU DO <br/><br/> NO ONE WHO ISN'T NOW ON MY PAYROLL AT LEAST! AHAHAHA! <br/><br/><br/> SERIOUSLY USER, I'M SCREWED. THE ONLY WAY YOU CAN HELP ME OUT... IS BY CONTINUING TO PLACE THOSE BIG BIG BETS! GENERATING REVENUE FOR MY COMPANY! AND FINALLY, BY UNLOCKING THAT LOCK, WE MAY JUST BE ABLE TO SAVE THIS COMPANY, TOGETHER. <" +
+                    "... <br/><br/> I HAVE ALWAYS BEEN THERE WHEN YOU NEEDED ME<br/><br/> LET'S LOOK BACK ON THE MEMORIES <br/><br/><br/><br/> AHHH GOOD TIMES. <br/><br/> BUT NOW, YOU NEED TO RETURN THE FAVOUR! <br/><br/> NO ONE KNOWS HOW TO GAMBLE LIKE YOU DO <br/><br/> NO ONE WHO ISN'T NOW ON MY PAYROLL AT LEAST! AHAHAHA! <br/><br/><br/> SERIOUSLY USER, I'M SCREWED. THE ONLY WAY YOU CAN HELP ME OUT... IS BY CONTINUING TO PLACE THOSE BIG BIG BETS! GENERATING REVENUE FOR MY COMPANY! AND FINALLY, BY UNLOCKING THAT LOCK, WE MAY JUST BE ABLE TO SAVE THIS COMPANY, TOGETHER." +
                     generateSeparator() +
                     newMessage;
             }
         } else if (buttonName === "Mum") {
             if (Level >= 1) {
                 newMessage =
-                    "Hey sweetheart, I hope you are having a wonderful day today :). <br/>How has the job search been going? Any offers just yet? Please keep me updated I hate when you do not tell me things!! <br/><br/>...<br/>Your father's just told me the position as an associate in his company is still open, but please, for my sake, don't take it! Spend more time with him and you might become just as insufferable, ahahaha! <br/><br/>Please visit soon, Love Mum <3." +
+                    "Hey sweetheart, I hope you are having a wonderful day today :). <br/>How has the job search been going? Any offers just yet? Please keep me updated I hate when you do not tell me things!! <br/><br/>...<br/>Your father has just told me the position as an associate in his company is still open, but please, for my sake, don't take it! Spend more time with him and you might become just as insufferable, ahahaha! <br/><br/>Please visit soon, Love Mum <3." +
                     generateSeparator() +
                     newMessage;
             }
             if (Level >= 45) {
                 newMessage =
-                    "<span style='color:darkred;'><b> I noticed you have not answered my phone calls >:( </b></span> <br/><br/>Were this under normal circumstances, I would be very angry with you. However, ahaha I have received an anonymous tip that suddenly changes everything!<br/><br/>Oh my sweet little child, you should have told me!! You’re becoming just like your father was when he was your age!<br/><br/>When he and I first got together, I was a bit apprehensive about his more… volatile line of income. But it was hard to argue when he would come home each night with two times more than the last!<br/><br/>I'm so proud of you <3  Good luck ;)" +
+                    "<span style='color:darkred;'><b> I noticed you have not answered my phone calls >:( </b></span> <br/><br/>Were this under normal circumstances, I would be very angry with you. However, I have received an anonymous <img src='" + SteveOPfpIcon + "' style='width:20px;height:20px;vertical-align:middle;'> tip that suddenly changes everything!<br/><br/>Oh my sweet little child, you should have told me!! You are becoming just like your father was when he was your age!<br/><br/>When he and I first got together, I was a bit apprehensive about his more… volatile line of income. But it was hard to argue when he would come home each night with two times more than the last ahaha!<br/><br/>I'm so proud of you <3  Good luck ;)" +
                     generateSeparator() +
                     newMessage;
             }
@@ -210,7 +210,7 @@ const Messages = ({
             }
             if (Level >= 130) {
                 newMessage =
-                    "Oh sweetie!! You must come quick!<br/><br/>Your father is about to start his solo reenactment of 'The Card'!<br/><br/> He’s been practicing all week. There are props. There are costume changes. Worst of all, I think he expects audience participation. He handed me a script and said, ‘You’ll know when to come in.’ I will not. <br/><br/>Please come save me! If you let me suffer through this alone, I will never forgive you!!" +
+                    "Oh sweetie!! You must come quick!<br/><br/>Your father is about to start his solo reenactment of 'The Card'!<br/><br/> He has been practicing all week. There are props. There are costume changes. Worst of all, I think he expects 'audience participation'. He handed me a script and said, ‘You’ll know when to come in.’ I will not. <br/><br/>Please come save me! If you let me suffer through this alone, I will never forgive you!!" +
                     generateSeparator() +
                     newMessage;
             }
@@ -228,7 +228,7 @@ const Messages = ({
             }
             if (Level >= 250) {
                 newMessage =
-                    "I have been standing outside your front door knocking for the past hour. <br/><br/>I could hear your ringtone playing from the inside as I phoned you (and even while I wasn't?). And what sounded like the audio of a computer game? <br/><br/>I still do not know what you have gotten yourself into, but please do not leave me in the dark like this. If it’s something you feel like you need to do, then I will try to support you. But please, this secrecy is killing me. <br/><br/>By the way, apologies for the scratches on the door. You see your father came along... You understand." +
+                    "I have been standing outside your front door knocking for the past hour. <br/><br/>I could hear your ringtone playing from the inside as I phoned you. And what sounded like the audio of a computer game? <br/><br/>I still do not know what you have gotten yourself into, but please do not leave me in the dark like this. If it’s something you feel like you need to do, then I will try to support you. But please, this secrecy is killing me. <br/><br/>By the way, apologies for the scratches on the door. You see your father came along... You understand." +
                     generateSeparator() +
                     newMessage;
             }
@@ -240,13 +240,13 @@ const Messages = ({
             }
             if (Level >= 310) {
                 newMessage =
-                    "I've contacted the bank. They said the files were 'confidential' but I threatened to revoke their 'hug licenses', and they cracked like eggs. <br/><br/>The bank tells me that your finances over the last few weeks have been extremely erratic. Rapid rise and falls, transfers and withdrawals, loans and paybacks even within the same day. They’ve had to call you dozens of times just to be sure you have not been defrauded. But funnily enough, you always manage to answer.<br/><br/>So then, do you just enjoy torturing your poor mother?<br/><br/>Regardless, this all paints me a clear enough picture. You are safe. Ensuring that has always been my priority.<br/><br/>Whatever financial nonsense you have gotten yourself involved in, I do not want to hear of any part of it. But the moment you come to your senses and realise that there are more important things.<br/>You can always come home. We won’t need to talk about it. And your chelsea buns will still be in the freezer, ready to be dethawed.<br/>Until then, goodbye. Please take care of yourself." +
+                    "I have contacted the bank. They said the files were 'confidential' but I threatened to revoke their 'hug licenses', and they cracked like eggs. <br/><br/>The bank tells me your finances over the last few weeks have been extremely erratic. Rapid rise and falls, transfers and withdrawals, loans and paybacks even within the same day. They’ve had to call you dozens of times just to be sure you have not been defrauded. But funnily enough, you always manage to answer.<br/><br/>So then, do you just enjoy torturing your poor mother?<br/><br/>Regardless, this all paints me a clear enough picture. You are safe. Ensuring that has always been my priority.<br/><br/>Whatever financial nonsense you have gotten yourself involved in, I do not want to hear of any part of it. But the moment you come to your senses and realise that there are more important things.<br/>You can always come home. We won’t need to talk about it. And your chelsea buns will still be in the freezer, ready to be dethawed.<br/>Until then, goodbye. Please take care of yourself." +
                     generateSeparator() +
                     newMessage;
             }
             if (Level >= 360) {
                 newMessage =
-                    "Hello.<br/><br/>I just wanted to update you on what has been going on recently.<br/><br/>Steven has been staying at our home the last several days. I caught the poor boy crying alone in the library, clicking on a digital slot machine every few seconds. It turns out, he’d been evicted, and had been sleeping outside in the cold for days!<br/><br/>I brought him back home, wrapped him up in a nice warm blanket, and made him some tea. Within minutes, he started telling me everything, from the beginning. What the both of you have been up to.<br/><br/>How can you be so stupid?! You’ve thrown your entire life away over GAMBLING? NO WONDER YOU DID NOT WANT TO TELL ME, THAT IS PATHETIC!!!<br/>HAVE YOU NOT HEARD THAT THE HOUSE ALWAYS WINS! You are being completely manipulated!<br/><br/>...<br/>I cannot believe however, that despite that revelation. You are still not the member of this family I am most angry at. I noticed as Steven progressed through his story, your father grew more and more nervous. Before he broke down too, and started telling his own story... and well. I'll just let him explain.<br/><br/><br/><br/>WHY HELLO THERE CHUM ! !!<br/><br/>I SHOULD HAVE KNOWN A USER OF YOUR EXPERTISE COULD ONLY BE MY VERY OWN NEXT OF KIN!<br/><br/>SO YES, IT IS TRUE. I HAVE BEEN HIDING AN ENTIRE GAMBLING EMPIRE IN SECRET, BUT IN MY DEFENSE.<br/><br/><br/>ANYWAY.<br/>IT'S NOT LIKE IT MATTERS ANYMORE, ZAIN FIRED ME. AND SINCE I GOT PAID MOSTLY IN STOCK THAT IS NOW WORTHLESS. I... WELL.<br/><br/>INSTEAD OF PRETENDING TO BE MIDDLE CLASS, NOW I ACTUALLY AM!<br/>THESE CORRUPT BILLIONAIRES, THROWING POOR HARD-WORKING CEOS OUT ONTO THE STREET... HOW COULD SOMEONE DO SOMETHING LIKE THAT?! HOLD ON...<br/><br/>EFFECTIVELY I'M BACK TO SQUARE ONE. I WANTED TO HIT THE GROUND RUNNING AND GET RIGHT BACK TO STARTING NEW BUSINESS. BUT YOUR MOTHER PRESENTED ME WITH A CRUEL LIST OF DEMANDS. AS A POWERFUL FORMER CEO, I HAD TO NEGOTIATE FROM A POSITION OF STRENGTH. BUT SHE THREATENED TO REVOKE MY 'HUG LICENSE' AND WELL... I CRACKED LIKE AN EGG.<br/><br/>FIRST OFF, NO MORE DISHONESTY. SECOND, I MUST 100% FOLLOW HER PERSONAL ETHICAL GUIDELINES!!(TYRANNY)!!. AND LASTLY... I MUST INCLUDE<br/><br/><br/>H-HEY! WHAT ARE YO-<br/><br/><br/>yoooo dudeski i'm totally pumped!! i feel like i could pop a million wheelies!!!!<br/><br/>me and your dad, are like total best friends now<br/><br/><br/>WE ARE NOT ! ! ! ! !<br/><br/><br/>he says he's gonna make me an 'associate' in his next company. i can't wait, he's already got me started on associate business ! !!<br/><br/><br/>EXCUSE ME. DON'T YOU HAVE A JOB TO BE DOING<br/><br/><br/>oh right!! see you later dudezilla!<br/><br/><br/>I'M MAKING HIM CLEAN THE TOILETS. HE NEEDS TO LEARN PROPER WORK ETHIC BEFORE HE EVEN CONSIDERS BEING AT THE TOP.<br/><br/><br/>but weren't you born rich?<br/><br/><br/>THAT'S A LIE I TELL PEOPLE SO THEY DON'T LOOK INTO MY PAST!! AND AREN'T YOU SUPPOSED TO BE WORKING ! !<br/><br/><br/>yes, sir!!<br/><br/><br/>AHEM, RIGHT. I GUESS I SHOULD APOLOGISE FOR WHAT MY PROGRAMS DID TO YOU AND YOUR ANNOYING FRIEND. LOOKING OVER YOUR MOTHERS ETHICS LIST... MY COMPANY BROKE A LOOOOT OF THESE. THE LAW REALLY NEEDS TO CATCH UP.<br/><br/>SO... I'M SORRY. I'M SORRY I DID THIS TO YOU. I'M SORRY YOU FEEL LIKE YOU CAN'T STOP. SORRY YOU EVER GOT SUCKED IN IN THE FIRST PLACE.<br/><br/>I HAVE NO CONTROL OVER THE COMPANY ANYMORE, SO I CAN'T HELP YOU ANY MORE THAN THAT. BUT I CAN SAY, IF YOU'RE STILL TRYING TO MAKE ENOUGH MONEY TO OPEN THE LOCK... LET ME TELL YOU, IT ISN'T WORTH TRYING.<br/><br/>IT'S JUST A TRICK, ALL OF IT. IT'S DESIGNED TO ALWAYS BE OUT OF REACH. I DON'T EVEN KNOW WHAT'S BEHIND IT, I'M NOT SURE ANYTHING EVEN IS.<br/><br/><br/>JUST... GET OFF THE GAMES AND MOVE ON. IT'S THE ONLY TRUE WAY TO WIN.<br/><br/><br/><br/>WELL, THAT'S ALL I REALLY HAVE TO SAY. I'M GONNA GET BACK TO STARTING NEW BUSINESS. I'M THINKING OF OPENING A THEATRE ? !<br/><br/><br/><br/><br/>You know it's kind of hard to believe he genuinely was a good businessman once. Ahaha I suppose it's no surprise actually, that he starts to go off the rails the minute he no longer has me by his side!<br/><br/><br/>...I know that breaking the cycle of a<b>d</b>diction isn't <b>e</b>asy. I can't pretend to have any kind of clue on what you're going through. But p<b>l</b><b>e</b>ase if no<b>t</b> for yours<b>e</b>lf just yet, <b>the</b>n for me, for us. Don't think about it. Just stop. <b>G</b>et up from the screen. T<b>a</b>ke a deep breath, and go outside. Every step away from this darkness is one step closer to reclai<b>m</b>ing who you truly ar<b>e</b>. Addiction thrives in <b>s</b>ilence, shame, and isolation. But you don't have to fight it alone, you never have.<br/><br/>The three of us are having a nice big family dinner tonight, chelsea buns will be on the table! And I've made sure to invite Zain over to bully your father, ahahaha!<br/><br/>I've left a sixth chair empty for you. I hope I see you here with us tonight.<br/><br/>Love, Mum <3" +
+                    "Hello.<br/><br/>I just wanted to update you on what has been going on recently.<br/><br/>Steven has been staying at our home the last several days. I caught the poor boy crying alone in the library, clicking on a digital slot machine every few seconds. It turns out, he’d been evicted, and had been sleeping outside in the cold for days!<br/><br/>I brought him back home, wrapped him up in a nice warm blanket, and made him some tea. Within minutes, he started telling me everything, from the beginning. What the both of you have been up to.<br/><br/>How can you be so stupid?! You’ve thrown your entire life away over GAMBLING? NO WONDER YOU DID NOT WANT TO TELL ME, THAT IS PATHETIC!!!<br/>HAVE YOU NOT HEARD THAT THE HOUSE ALWAYS WINS! You are being completely manipulated!<br/><br/>...<br/>I cannot believe however, that despite that revelation. You are still not the member of this family I am most angry at. I noticed as Steven progressed through his story, your father grew more and more nervous. Before he broke down too, and started telling his own story... and well. I'll just let him explain.<br/><br/><br/><br/>WHY HELLO THERE CHUM ! !!<br/><br/>I SHOULD HAVE KNOWN A USER OF YOUR EXPERTISE COULD ONLY BE MY VERY OWN NEXT OF KIN!<br/><br/>SO YES, IT IS TRUE. I HAVE BEEN HIDING AN ENTIRE GAMBLING EMPIRE IN SECRET, BUT IN MY DEFENSE.<br/><br/><br/>ANYWAY.<br/>IT'S NOT LIKE IT MATTERS ANYMORE, ZAIN FIRED ME. AND SINCE I GOT PAID MOSTLY IN STOCK THAT IS NOW WORTHLESS. I... WELL.<br/><br/>INSTEAD OF PRETENDING TO BE MIDDLE CLASS, NOW I ACTUALLY AM!<br/>THESE CORRUPT BILLIONAIRES, THROWING POOR HARD-WORKING CEOS OUT ONTO THE STREET... HOW COULD SOMEONE DO SOMETHING LIKE THAT?! HOLD ON...<br/><br/>EFFECTIVELY I'M BACK TO SQUARE ONE. I WANTED TO HIT THE GROUND RUNNING AND GET RIGHT BACK TO STARTING NEW BUSINESS. BUT YOUR MOTHER PRESENTED ME WITH A CRUEL LIST OF DEMANDS. AS A POWERFUL FORMER CEO, I HAD TO NEGOTIATE FROM A POSITION OF STRENGTH. BUT SHE THREATENED TO REVOKE MY 'HUG LICENSE' AND WELL... I CRACKED LIKE AN EGG.<br/><br/>FIRST OFF, NO MORE DISHONESTY. SECOND, I MUST 100% FOLLOW HER PERSONAL ETHICAL GUIDELINES!!(TYRANNY)!!. AND LASTLY... I MUST INCLUDE<br/><br/><br/>H-HEY! WHAT ARE YO-<br/><br/><br/>yoooo dudeski!!! i'm totally pumped!! i feel like i could pop a million wheelies!!!!<br/><br/>me and your dad, are like total best friends now<br/><br/><br/>WE ARE NOT ! ! ! ! !<br/><br/><br/>he says he's gonna make me an 'associate' in his new company. i can't wait, he's already got me started on special <i>associate business</i> ! !!<br/><br/><br/>EXCUSE ME. DON'T YOU HAVE A JOB TO BE DOING<br/><br/><br/>oh right!! see you later dudezilla!<br/><br/><br/>I'M MAKING HIM START BY CLEANING THE TOILETS. HE NEEDS TO LEARN PROPER WORK ETHIC BEFORE HE EVEN CONSIDERS BEING AT THE TOP.<br/><br/><br/>but weren't you born rich?<br/><br/><br/>THAT'S A LIE I TELL PEOPLE SO THEY DON'T LOOK INTO MY PAST!! AND AREN'T YOU SUPPOSED TO BE WORKING ! !<br/><br/><br/>yes, sir!!<br/><br/><br/>AHEM, RIGHT. I GUESS I SHOULD APOLOGISE FOR WHAT MY PROGRAMS DID TO YOU AND YOUR ANNOYING FRIEND. LOOKING OVER YOUR MOTHERS ETHICS LIST... MY COMPANY REALLY BROKE A LOOOOT OF THESE. THE LAW REALLY NEEDS TO CATCH UP.<br/><br/>SO... I'M SORRY. I'M SORRY I DID THIS TO YOU. I'M SORRY YOU FEEL LIKE YOU CAN'T STOP. SORRY YOU EVER GOT SUCKED IN IN THE FIRST PLACE.<br/><br/>I HAVE NO CONTROL OVER THE COMPANY ANYMORE, SO I CAN'T HELP YOU ANY MORE THAN THAT. BUT I CAN SAY, IF YOU'RE STILL TRYING TO MAKE ENOUGH MONEY TO OPEN THE LOCK... LET ME TELL YOU, IT ISN'T WORTH TRYING.<br/><br/>IT'S JUST A TRICK, ALL OF IT. IT'S DESIGNED TO ALWAYS BE OUT OF REACH. I DON'T EVEN KNOW WHAT'S BEHIND IT, I'M NOT SURE ANYTHING EVEN IS.<br/><br/><br/>JUST... GET OFF THE GAMES AND MOVE ON. IT'S THE ONLY TRUE WAY TO WIN.<br/><br/><br/><br/>WELL, THAT'S ALL I REALLY HAVE TO SAY. I'M GONNA GET BACK TO STARTING NEW BUSINESS. I'M THINKING OF OPENING A THEATRE ? !<br/><br/><br/><br/><br/>You know it is kind of hard to believe he genuinely was a good businessman once. Ahaha I suppose it is no surprise actually, that he starts to go off the rails the minute he no longer has me by his side!<br/><br/><br/>...I know that breaking the cycle of a<b>d</b>diction isn't <b>e</b>asy. I can't pretend to have any kind of clue on what you're going through. But p<b>l</b><b>e</b>ase if no<b>t</b> for yours<b>e</b>lf just yet, <b>the</b>n for me, for us. Don't think about it. Just stop. <b>G</b>et up from the screen. T<b>a</b>ke a deep breath, and go outside. Every step away from this darkness is one step closer to reclai<b>m</b>ing who you truly ar<b>e</b>. Addiction thrives in <b>s</b>ilence, shame, and isolation. But you don't have to fight it alone, you never have.<br/><br/>The three of us are having a nice big family dinner tonight, chelsea buns will be on the table! And I've made sure to invite Zain over to bully your father, ahahaha!<br/><br/>I've left a sixth chair empty for you. I hope I see you here with us tonight.<br/><br/>Love, Mum <3" +
                     generateSeparator() +
                     newMessage;
             }
@@ -307,21 +307,21 @@ const Messages = ({
 
             if (Level >= 140) {
                 newMessage =
-                    "things have been kinda tense between me and hailey the past couple days<br/><br/>i think she’s starting to realise i was lying, it’s really worrying me<br/><br/>think i’m gonna try to buy something to butter her up... and then tell her the truth. if she sees how much money i’m making, she won’t be mad." +
+                    "things have been kinda tense between me and hailey the past couple days<br/><br/>i think she knows i was lying, it’s really worrying me<br/><br/>think i’m gonna try to buy something to butter her up... and then tell her the truth. if she sees how much money i’m making, maybe she won’t be mad." +
                     generateSeparator() +
                     newMessage;
             }
 
             if (Level >= 155) {
                 newMessage =
-                    "i’ve been at the skate park all day today, trying to think of what to get hailey, but all that’s on my mind is how pissed i am at slotto for beating me last spin<br/><br/>can’t even pop any wheelies dude<br/>slotto’s ruined me<br/><br/>think i’m just gonna go home now, i won’t feel better until i get that money back and wipe that smug look off his face" +
+                    "i’ve been at the skate park all day today, trying to think of what to get hailey, but all that’s on my mind is how angry i am at slotto for beating me last spin<br/><br/>can’t even pop any wheelies dude<br/>slotto’s ruined me<br/><br/>think i’m just gonna go home now, i won’t feel better until i get that money back and wipe that smug look off his face" +
                     generateSeparator() +
                     newMessage;
             }
 
             if (Level >= 175) {
                 newMessage =
-                    "so i was just going home from the skatepark, a little deflated<br/>but on the way back...<br/><br/>a store, but not just any store. right on the display case, the most beautiful engagement ring i’ve ever seen.<br/><br/> dude-tree, it's been 3 months. i think it's finally time." +
+                    "so i was just going home from the skatepark, a little deflated, but on the way back...<br/><br/><b>a store?!</b> <i>but not just any store!</i> right on the display case, the most beautiful engagement ring i’ve ever seen.<br/><br/> dude-tree, it's been 3 months. i think it's finally time." +
                     generateSeparator() +
                     newMessage;
             }
@@ -349,7 +349,7 @@ const Messages = ({
 
             if (Level >= 280) {
                 newMessage =
-                    "why isn’t it going up<br/><br/>i thought<br/><br/>the chart" +
+                    "why isn’t it going up<br/><br/>i thought<br/><br/>the graph" +
                     generateSeparator() +
                     newMessage;
             }
@@ -377,7 +377,7 @@ const Messages = ({
 
             if (Level >= 331) {
                 newMessage =
-                    "actually, i don’t even know why i’m still messaging you. you’ve been ignoring me the past month.<br/><br/>well, I guess it’s just...<br/>every time I’ve check, you’ve always been online on LGG: switching between slots, blackjack, roulette, taking strategic loans, paying off interest. you’re the most dedicated gambler I’ve ever seen (though whether that’s a good thing is up to you).<br/>it’s why... I find it curious that the only time I’ve ever seen you go offline, is the moment right after I send you a message." +
+                    "actually, i don’t even know why i’m still messaging you. you’ve been ignoring me the past month.<br/><br/>well, I guess it’s just...<br/>every time i've checked, you’ve always been online on LGG: switching between slots, blackjack, roulette, taking strategic loans, paying off interest. you’re the most dedicated gambler I’ve ever seen (though whether that’s a good thing is up to you).<br/>it’s why... I find it curious that the only time i’ve ever seen you go offline, is the moment right after I send you a message." +
                     generateSeparator() +
                     newMessage;
             }
