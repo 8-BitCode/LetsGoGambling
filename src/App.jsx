@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { isMobile } from "react-device-detect"; // Import the isMobile utility
 
 import TitlePage from "./TitlePage";
 import TermsOfService from "./TermsOfService";
@@ -14,6 +13,9 @@ export default () => {
   const [isPortrait, setIsPortrait] = useState(
     window.innerWidth < 768 || window.matchMedia("(orientation: portrait)").matches
   );
+
+  // Detect mobile devices using the user agent string
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
   useEffect(() => {
     const handleResize = () => {
@@ -29,7 +31,11 @@ export default () => {
     return (
       <div className="funny-message">
         <h1>🎰 Bad Bet, Buddy! 🎰</h1>
-        <p>We don't gamble on mobile devices or in portrait mode. Get on a desktop in landscape mode, or you're out of luck! 🍀</p>
+        <p>
+          {isMobile
+            ? "We don't gamble on mobile devices. Get on a desktop, or you're out of luck! 🍀"
+            : "We don't gamble in portrait mode. Rotate your device to landscape mode, or you're out of luck! 🍀"}
+        </p>
       </div>
     );
   }
