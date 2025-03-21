@@ -24,7 +24,7 @@ import Roulette from "./Roulette";
 import { doc, getDoc, setDoc, updateDoc, increment } from "firebase/firestore";
 import Click from "./Assets/SoundEffects/Click.wav";
 import EmailSound from "./Assets/SoundEffects/YouGotMail.wav";
-import JAZZ from "./Assets/SoundEffects/JAZZ.wav";
+import JAZZ from "./Assets/SoundEffects/JAZZ.mp3";
 import NoMailIcon from "./Assets/Icons/NoMailIcon.png";
 import NewMailIcon from "./Assets/Icons/NewMailIcon.png";
 import StatsIcon from "./Assets/Icons/StatsIcon.png";
