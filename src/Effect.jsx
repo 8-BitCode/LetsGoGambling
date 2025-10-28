@@ -1,20 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 const Effect = ({ children }) => {
   const addRef = useRef(null);
-  const [textureUrl, setTextureUrl] = useState('http://i.imgur.com/xrwK0bK.png');
-
-  useEffect(() => {
-    const img = new Image();
-    img.src = textureUrl;
-    img.onload = () => {
-      // Image loaded fine — keep the texture
-    };
-    img.onerror = () => {
-      // If it fails, clear it so the overlay is blank
-      setTextureUrl('');
-    };
-  }, [textureUrl]);
 
   useEffect(() => {
     const updateBackgroundPosition = () => {
@@ -60,7 +47,7 @@ const Effect = ({ children }) => {
         {children}
       </div>
 
-      {/* Overlay the dithering texture */}
+      {/* Overlay (now blank, no external image) */}
       <div
         ref={addRef}
         style={{
@@ -71,8 +58,8 @@ const Effect = ({ children }) => {
           height: '100%',
           pointerEvents: 'none',
           mixBlendMode: 'overlay',
-          background: textureUrl ? `url('${textureUrl}')` : 'none',
-          opacity: textureUrl ? 1 : 0,
+          background: 'none', // removed the image
+          opacity: 1,
           zIndex: 9999,
         }}
       />
