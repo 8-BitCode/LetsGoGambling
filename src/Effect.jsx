@@ -1,7 +1,20 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const Effect = ({ children }) => {
   const addRef = useRef(null);
+  const [textureUrl, setTextureUrl] = useState('http://i.imgur.com/xrwK0bK.png');
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = textureUrl;
+    img.onload = () => {
+      // Image loaded fine — keep the texture
+    };
+    img.onerror = () => {
+      // If it fails, clear it so the overlay is blank
+      setTextureUrl('');
+    };
+  }, [textureUrl]);
 
   useEffect(() => {
     const updateBackgroundPosition = () => {
@@ -26,18 +39,24 @@ const Effect = ({ children }) => {
       <svg style={{ position: 'absolute', top: 0, left: 0, width: 0, height: 0 }}>
         <filter id="mild-color-effect" colorInterpolationFilters="sRGB">
           <feComponentTransfer>
-            {/* Mildly adjust the red channel */}
             <feFuncR type="linear" slope="1" intercept="-0.05" />
-            {/* Mildly adjust the green channel */}
             <feFuncG type="linear" slope="1" intercept="0.05" />
-            {/* Mildly adjust the blue channel */}
             <feFuncB type="linear" slope="1" intercept="-0.02" />
           </feComponentTransfer>
         </filter>
       </svg>
 
       {/* Apply the mild color filter to the content */}
-      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', filter: 'url(#mild-color-effect)' }}>
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          filter: 'url(#mild-color-effect)',
+        }}
+      >
         {children}
       </div>
 
@@ -51,9 +70,9 @@ const Effect = ({ children }) => {
           width: '100%',
           height: '100%',
           pointerEvents: 'none',
-          mixBlendMode: 'overlay', // Use 'overlay' for subtle texture blending
-          background: "url('http://i.imgur.com/xrwK0bK.png')",
-          opacity: 1, // Adjust opacity to control the intensity of the effect
+          mixBlendMode: 'overlay',
+          background: textureUrl ? `url('${textureUrl}')` : 'none',
+          opacity: textureUrl ? 1 : 0,
           zIndex: 9999,
         }}
       />
