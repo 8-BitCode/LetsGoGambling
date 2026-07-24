@@ -34,7 +34,7 @@ export default () => {
         <p>
           {isMobile
             ? "We don't gamble on mobile devices. Get on a desktop, or you're out of luck! 🍀"
-            : "We don't gamble in portrait mode. Rotate your device to landscape mode, or you're out of luck! 🍀"}
+            : "We don't gamble in portrait mode or on mobile devices. Rotate your desktop to landscape mode, or you're out of luck! 🍀"}
         </p>
       </div>
     );
